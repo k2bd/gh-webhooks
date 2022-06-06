@@ -1,0 +1,76 @@
+[tool.poetry]
+name = "poetry-library-template"
+version = "0.1.0"
+description = ""
+authors = []
+
+license = "MIT"
+readme = "README.md"
+homepage = "https://github.com/k2bd/poetry-library-template"
+repository = "https://github.com/k2bd/poetry-library-template"
+keywords = []
+classifiers = [
+    "Operating System :: OS Independent",
+    "Development Status :: 1 - Planning",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.7",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "License :: OSI Approved :: MIT License",
+    "Intended Audience :: Developers",
+]
+include = [
+    "LICENSE",
+]
+
+[tool.poetry.dependencies]
+python = "^3.7"
+
+[tool.poetry.dev-dependencies]
+pytest = "^5.2"
+black = "^21.12b0"
+isort = "^5.10.1"
+flake8 = "^4.0.1"
+mypy = "^0.931"
+pytest-cov = "^3.0.0"
+poethepoet = "^0.11.0"
+
+[tool.isort]
+profile = "black"
+multi_line_output = 3
+
+[tool.poe.tasks]
+docs = "make clean html -C docs"
+
+autoformat.sequence = [
+    {cmd = "black src tests"},
+    {cmd = "isort src tests"},
+]
+
+lint.sequence = [
+    {cmd = "black --check -v src tests"},
+    {cmd = "isort --check -v src tests"},
+    {cmd = "flake8 src tests"},
+    {cmd = "mypy --pretty src tests"},
+]
+
+test.sequence = ["unit", "integration"]
+
+[tool.poe.tasks.unit]
+sequence = [
+    {cmd = "pytest -vv --cov-report xml --cov-report term --cov=poetry_library_template tests/unit"},
+]
+
+[tool.poe.tasks.integration]
+sequence = [
+    {shell = "pytest -vv --cov-append --cov-report xml --cov-report term --cov=poetry_library_template tests/integration"},
+]
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.extras]
+docs = ["sphinx", "sphinx_rtd_theme"]
