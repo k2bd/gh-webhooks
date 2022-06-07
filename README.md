@@ -1,7 +1,29 @@
 # Types for GitHub Webhook Events
 
-This library provides types for GitHub Webhook events in Python.
-These types are auto-generated using [datamodel-code-generator](https://github.com/koxudaxi/datamodel-code-generator).
+This library provides types for using GitHub Webhook events in Python, and a class for registering event handlers for each event type.
+
+An example using FastAPI:
+
+```python
+from fastapi import FastAPI, Request
+from gh_webhooks import GhWebhookEventHandler
+from gh_webhooks.types import BranchProtectionRuleCreated
+
+app = FastAPI()
+event_handler = GhWebhookEventHandler()
+
+@event_handler.on(BranchProtectionRuleCreated)
+async def handle_new_branch_protection_rule(event: BranchProtectionRuleCreated):
+    print(event.repository.name)
+
+
+@app.post("/payload")
+async def handle_webhook_payload(request: Request):
+    await event_handler.handle_event(request.json())
+```
+
+The types are auto-generated using [datamodel-code-generator](https://github.com/koxudaxi/datamodel-code-generator).
+A GitHub action maintains these types automatically.
 
 Integration tests are also auto-generated from the [example events](https://github.com/octokit/webhooks/tree/master/payload-examples) in the GitHub Webhook events spec docs.
 

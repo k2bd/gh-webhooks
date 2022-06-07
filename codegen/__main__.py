@@ -6,7 +6,7 @@ import requests
 from datamodel_code_generator.__main__ import main as generate_main
 
 ROOT = Path(__file__).parent.parent
-CODEGEN_TARGET = str(ROOT / "src" / "gh_webhooks" / "models.py")
+CODEGEN_TARGET = str(ROOT / "src" / "gh_webhooks" / "types.py")
 ALIASES = str(Path(__file__).parent / "aliases.json")
 
 result = requests.get("https://unpkg.com/@octokit/webhooks-schemas/schema.json")

@@ -1,6 +1,6 @@
 from typing import Any, Dict
 
-from gh_webhooks.models import Model
+from gh_webhooks.types import Model
 
 
 def resolve_event(event: Dict[str, Any]):

@@ -31,7 +31,7 @@ pydantic = "1.9.0"  # Pin to 1.9.0 - see https://github.com/koxudaxi/datamodel-c
 
 [tool.poetry.dev-dependencies]
 datamodel-code-generator = {extras = ["http"], version = "^0.13.0"}
-pytest = "^5.2"
+pytest = "^6.1.0"
 black = "^22.3.0"
 isort = "^5.10.1"
 flake8 = "^4.0.1"
@@ -40,6 +40,7 @@ pytest-cov = "^3.0.0"
 poethepoet = "^0.11.0"
 requests = "^2.27.1"
 types-requests = "^2.27.30"
+pytest-asyncio = "^0.18.3"
 
 [tool.isort]
 profile = "black"
@@ -69,7 +70,7 @@ sequence = [
 
 [tool.poe.tasks.integration]
 sequence = [
-    {shell = "pytest -vv -x --cov-append --cov-report xml --cov-report term --cov=gh_webhooks tests/integration"},
+    {shell = "pytest -vv --cov-append --cov-report xml --cov-report term --cov=gh_webhooks tests/integration"},
 ]
 
 [tool.poe.tasks.codegen]
