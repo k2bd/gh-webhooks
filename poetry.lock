@@ -1002,7 +1002,7 @@ docs = []
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.7"
-content-hash = "85b38612b94a14410c0f55769127bbf1661992f0a3741b9d156bbbad540ad6ce"
+content-hash = "7fd2d40d822146a28131f2e4983cf691d2658c209f8ee74f4dc3754be0307563"
 
 [metadata.files]
 alabaster = [

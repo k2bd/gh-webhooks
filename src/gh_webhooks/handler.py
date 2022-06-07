@@ -1,7 +1,9 @@
 import asyncio
 from collections import defaultdict
 from dataclasses import dataclass, field
-from typing import Any, Awaitable, Dict, List, Protocol, Type, runtime_checkable
+from typing import Any, Awaitable, Dict, List, Type
+
+from typing_extensions import Protocol, runtime_checkable
 
 from gh_webhooks.resolve_event import resolve_event
 from gh_webhooks.types import Model
