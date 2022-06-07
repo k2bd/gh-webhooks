@@ -27,7 +27,7 @@ with tempfile.TemporaryDirectory() as tempdir:
             "--input-file-type",
             "jsonschema",
             "--target-python-version",
-            "3.9",
+            "3.7",
             "--aliases",
             ALIASES,
             "--enum-field-as-literal",

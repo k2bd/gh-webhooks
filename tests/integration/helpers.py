@@ -1,6 +1,5 @@
 from typing import Any, Dict, List
 
-import pytest
 import requests
 
 EXAMPLE_EVENTS_URL = (

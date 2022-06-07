@@ -1,7 +1,6 @@
-from typing import Any, Dict, Union
+from typing import Any, Dict
 
 from gh_webhooks.models import Model
-
 
 
 def resolve_event(event: Dict[str, Any]):
@@ -10,5 +9,5 @@ def resolve_event(event: Dict[str, Any]):
     """
     result = Model.parse_obj(event)
     while "__root__" in result.dict():
-        result = result.__root__
+        result = result.__root__  # type: ignore
     return result

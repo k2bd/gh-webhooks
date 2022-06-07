@@ -1,8 +1,7 @@
-from typing import Any, Dict, List
+from typing import Any, Dict
 
 import pytest
 
-from gh_webhooks.models import Model
 from gh_webhooks.resolve_event import resolve_event
 from tests.integration.helpers import get_example_events
 

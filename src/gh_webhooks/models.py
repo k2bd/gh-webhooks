@@ -5,9 +5,10 @@ from __future__ import annotations
 
 from datetime import datetime
 from enum import Enum
-from typing import Any, Dict, List, Literal, Optional, Union
+from typing import Any, Dict, List, Optional, Union
 
 from pydantic import AnyUrl, BaseModel, EmailStr, Extra, Field
+from typing_extensions import Literal
 
 
 class AuthorizedActorsOnly(BaseModel):

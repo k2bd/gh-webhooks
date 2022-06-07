@@ -39,6 +39,7 @@ mypy = "^0.931"
 pytest-cov = "^3.0.0"
 poethepoet = "^0.11.0"
 requests = "^2.27.1"
+types-requests = "^2.27.30"
 
 [tool.isort]
 profile = "black"
