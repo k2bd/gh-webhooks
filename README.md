@@ -1,4 +1,4 @@
-# Types for GitHub Webhook Events
+# Typed event handling for GitHub Webhooks
 
 This library provides types for using GitHub Webhook events in Python, and a class for registering event handlers for each event type.
 
