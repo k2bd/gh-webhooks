@@ -25,6 +25,8 @@ async def handle_webhook_payload(request: Request):
     await event_handler.handle_event(request.json())
 ```
 
+Multiple handlers can be registered to the same event type, and they'll run concurrently.
+
 The types are auto-generated using [datamodel-code-generator](https://github.com/koxudaxi/datamodel-code-generator).
 A GitHub action maintains these types automatically.
 
