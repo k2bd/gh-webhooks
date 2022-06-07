@@ -1,7 +1,7 @@
-poetry-library-template
+gh-webhooks
 =======================
 
-``poetry-library-template`` is a library.
+``gh-webhooks`` is a library.
 
 .. toctree::
    :maxdepth: 2
