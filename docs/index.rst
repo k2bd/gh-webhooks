@@ -1,16 +1,11 @@
 gh-webhooks
 =======================
 
-``gh-webhooks`` is a library.
+``gh-webhooks`` is a library for building typed event handlers for GitHub webhook events.
 
-.. toctree::
-   :maxdepth: 2
-   :caption: Contents
+Its primary offering is the class to register event handlers and process event JSON payloads:
 
+.. autoclass:: gh_webhooks.GhWebhookEventHandler
+   :members:
 
-Indices and tables
-==================
-
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`
+It autogenerates the types of the webhook payloads, which are available in ``gh_webhooks.types``.

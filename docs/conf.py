@@ -17,9 +17,9 @@ sys.path.insert(0, os.path.abspath('../src'))
 
 # -- Project information -----------------------------------------------------
 
-project = "firebasil"
-copyright = "2022, You"
-author = "You"
+project = "gh-webhooks"
+copyright = "2022, Kevin Duff"
+author = "Kevin Duff"
 
 
 # -- General configuration ---------------------------------------------------
