@@ -2,6 +2,7 @@
 
 [![CI](https://github.com/k2bd/gh-webhooks/actions/workflows/ci.yml/badge.svg)](https://github.com/k2bd/gh-webhooks/actions/workflows/ci.yml)
 [![codecov](https://codecov.io/gh/k2bd/gh-webhooks/branch/main/graph/badge.svg?token=NE813K6GET)](https://codecov.io/gh/k2bd/gh-webhooks)
+[![PyPI](https://img.shields.io/pypi/v/gh-webhooks)](https://pypi.org/project/gh-webhooks/)
 
 This library provides types for using GitHub Webhook events in Python, and a class for registering event handlers for each event type.
 
