@@ -1476,6 +1476,8 @@ class Changes33(BaseModel):
 class Conclusion12(str, Enum):
     success = "success"
     failure = "failure"
+    cancelled = "cancelled"
+    skipped = "skipped"
 
 
 class Conclusion13(str, Enum):
@@ -1676,6 +1678,7 @@ class BranchProtectionRule(BaseModel):
         PullRequestReviewsEnforcementLevel
     ] = None
     admin_enforced: Optional[bool] = None
+    create_protected: Optional[bool] = None
     allow_force_pushes_enforcement_level: Optional[
         PullRequestReviewsEnforcementLevel
     ] = None
@@ -1847,6 +1850,7 @@ class Event1(str, Enum):
     org_block = "org_block"
     page_build = "page_build"
     project = "project"
+    projects_v2_item = "projects_v2_item"
     project_card = "project_card"
     project_column = "project_column"
     public = "public"
@@ -1860,6 +1864,7 @@ class Event1(str, Enum):
     repository = "repository"
     repository_dispatch = "repository_dispatch"
     secret_scanning_alert = "secret_scanning_alert"
+    secret_scanning_alert_location = "secret_scanning_alert_location"
     star = "star"
     status = "status"
     team = "team"
@@ -2229,6 +2234,8 @@ class WebhookEvents(BaseModel):
 class Conclusion15(Enum):
     success = "success"
     failure = "failure"
+    cancelled = "cancelled"
+    skipped = "skipped"
     NoneType_None = None
 
 
@@ -3398,6 +3405,7 @@ class DeploymentWorkflowRun(BaseModel):
 
     id: Optional[int] = None
     name: Optional[str] = None
+    path: Optional[str] = None
     node_id: Optional[str] = None
     head_branch: Optional[str] = None
     head_sha: Optional[str] = None
@@ -3571,7 +3579,7 @@ class ProjectCard(BaseModel):
     created_at: Optional[datetime] = None
     updated_at: Optional[datetime] = None
     content_url: Optional[AnyUrl] = None
-    after_id: Optional[Optional[str]] = None
+    after_id: Optional[Optional[Union[str, float]]] = None
 
 
 class Project(BaseModel):
@@ -3737,6 +3745,7 @@ class ReleaseModel(BaseModel):
     tarball_url: Optional[Optional[str]] = None
     zipball_url: Optional[Optional[str]] = None
     body: Optional[str] = None
+    mentions_count: Optional[int] = None
     reactions: Optional[Reactions] = None
     discussion_url: Optional[AnyUrl] = None
 
@@ -3924,6 +3933,7 @@ class Repository(BaseModel):
         None, description="Whether to allow private forks"
     )
     allow_update_branch: Optional[bool] = None
+    use_squash_pr_title_as_default: Optional[bool] = None
     is_template: Optional[bool] = None
     topics: Optional[List[str]] = None
     visibility: Optional[Visibility] = None
@@ -4054,6 +4064,7 @@ class WorkflowRun(BaseModel):
     head_commit: Optional[CommitSimple] = None
     head_repository: Optional[RepositoryLite] = None
     head_sha: Optional[str] = None
+    path: Optional[str] = None
     html_url: Optional[AnyUrl] = None
     id: Optional[int] = None
     jobs_url: Optional[AnyUrl] = None
@@ -5450,6 +5461,7 @@ class MemberAdded(BaseModel):
     member: Optional[User] = Field(None, description="The user that was added.")
     repository: Optional[Repository] = None
     installation: Optional[InstallationLite] = None
+    organization: Optional[Organization] = None
     sender: Optional[User] = None
 
 
@@ -5466,6 +5478,7 @@ class MemberEdited(BaseModel):
     )
     repository: Optional[Repository] = None
     installation: Optional[InstallationLite] = None
+    organization: Optional[Organization] = None
     sender: Optional[User] = None
 
 
@@ -5477,6 +5490,7 @@ class MemberRemoved(BaseModel):
     member: Optional[User] = Field(None, description="The user that was removed.")
     repository: Optional[Repository] = None
     installation: Optional[InstallationLite] = None
+    organization: Optional[Organization] = None
     sender: Optional[User] = None
 
 
@@ -7007,7 +7021,6 @@ class WorkflowJobCompleted(BaseModel):
 
 class WorkflowJob1(WorkflowJob):
     status: Optional[Literal["in_progress"]] = None
-    steps: Optional[List[WorkflowStepInProgress]] = Field(None, min_items=1)
 
 
 class WorkflowJobInProgress(BaseModel):
@@ -7112,6 +7125,7 @@ class Issue(BaseModel):
     body: Optional[Optional[str]] = Field(None, description="Contents of the issue")
     reactions: Optional[Reactions] = None
     timeline_url: Optional[AnyUrl] = None
+    state_reason: Optional[Optional[str]] = None
 
 
 class Head4(Head5):
