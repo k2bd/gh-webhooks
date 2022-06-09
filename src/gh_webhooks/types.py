@@ -822,6 +822,89 @@ class Changes17(BaseModel):
     name: Optional[Name2] = None
 
 
+class ArchivedAt(BaseModel):
+    class Config:
+        extra = Extra.forbid
+
+    from_: Optional[Any] = Field(None, alias="from")
+    to: Optional[datetime] = None
+
+
+class Changes18(BaseModel):
+    class Config:
+        extra = Extra.forbid
+
+    archived_at: Optional[ArchivedAt] = None
+
+
+class ContentType2(BaseModel):
+    class Config:
+        extra = Extra.forbid
+
+    from_: Optional[Literal["DraftIssue"]] = Field(None, alias="from")
+    to: Optional[Literal["Issue"]] = None
+
+
+class Changes19(BaseModel):
+    class Config:
+        extra = Extra.forbid
+
+    content_type: Optional[ContentType2] = None
+
+
+class FieldType(str, Enum):
+    single_select = "single_select"
+    date = "date"
+    number = "number"
+    text = "text"
+    iteration = "iteration"
+
+
+class FieldValue(BaseModel):
+    class Config:
+        extra = Extra.forbid
+
+    field_type: Optional[FieldType] = None
+    field_node_id: Optional[str] = None
+
+
+class Changes20(BaseModel):
+    class Config:
+        extra = Extra.forbid
+
+    field_value: Optional[FieldValue] = None
+
+
+class PreviousProjectsV2ItemNodeId(BaseModel):
+    class Config:
+        extra = Extra.forbid
+
+    from_: Optional[str] = Field(None, alias="from")
+    to: Optional[Optional[str]] = None
+
+
+class Changes21(BaseModel):
+    class Config:
+        extra = Extra.forbid
+
+    previous_projects_v2_item_node_id: Optional[PreviousProjectsV2ItemNodeId] = None
+
+
+class ArchivedAt1(BaseModel):
+    class Config:
+        extra = Extra.forbid
+
+    from_: Optional[datetime] = Field(None, alias="from")
+    to: Optional[Any] = None
+
+
+class Changes22(BaseModel):
+    class Config:
+        extra = Extra.forbid
+
+    archived_at: Optional[ArchivedAt1] = None
+
+
 class Body5(Body4):
     pass
 
@@ -846,7 +929,7 @@ class Base(BaseModel):
     sha: Optional[Sha] = None
 
 
-class Changes18(BaseModel):
+class Changes23(BaseModel):
     class Config:
         extra = Extra.forbid
 
@@ -859,7 +942,7 @@ class Body6(Body4):
     pass
 
 
-class Changes19(BaseModel):
+class Changes24(BaseModel):
     class Config:
         extra = Extra.forbid
 
@@ -870,7 +953,7 @@ class Body7(Body2):
     pass
 
 
-class Changes20(BaseModel):
+class Changes25(BaseModel):
     class Config:
         extra = Extra.forbid
 
@@ -885,7 +968,7 @@ class Name3(Name):
     pass
 
 
-class Changes21(BaseModel):
+class Changes26(BaseModel):
     class Config:
         extra = Extra.forbid
 
@@ -908,7 +991,7 @@ class Homepage(Description2):
     pass
 
 
-class Changes22(BaseModel):
+class Changes27(BaseModel):
     class Config:
         extra = Extra.forbid
 
@@ -928,7 +1011,7 @@ class Repository10(BaseModel):
     name: Optional[Name4] = None
 
 
-class Changes23(BaseModel):
+class Changes28(BaseModel):
     class Config:
         extra = Extra.forbid
 
@@ -1259,7 +1342,7 @@ class PrivacyLevel(BaseModel):
     )
 
 
-class Changes25(BaseModel):
+class Changes30(BaseModel):
     class Config:
         extra = Extra.forbid
 
@@ -1380,7 +1463,7 @@ class Repository12(BaseModel):
     permissions: Optional[Permissions] = None
 
 
-class Changes28(BaseModel):
+class Changes33(BaseModel):
     class Config:
         extra = Extra.forbid
 
@@ -1904,6 +1987,12 @@ class ProjectColumn(BaseModel):
     name: Optional[str] = Field(None, description="Name of the project column")
     created_at: Optional[datetime] = None
     updated_at: Optional[datetime] = None
+
+
+class ContentType3(str, Enum):
+    DraftIssue = "DraftIssue"
+    Issue = "Issue"
+    PullRequest = "PullRequest"
 
 
 class Links6(BaseModel):
@@ -2989,7 +3078,7 @@ class Owner(BaseModel):
     from_: Optional[From1] = Field(None, alias="from")
 
 
-class Changes24(BaseModel):
+class Changes29(BaseModel):
     class Config:
         extra = Extra.forbid
 
@@ -3051,7 +3140,7 @@ class SponsorshipEdited(BaseModel):
 
     action: Optional[Literal["edited"]] = None
     sponsorship: Optional[Sponsorship2] = None
-    changes: Optional[Changes25] = None
+    changes: Optional[Changes30] = None
     sender: Optional[User] = None
 
 
@@ -3083,7 +3172,7 @@ class Tier(BaseModel):
     from_: Optional[SponsorshipTier] = Field(None, alias="from")
 
 
-class Changes26(BaseModel):
+class Changes31(BaseModel):
     class Config:
         extra = Extra.forbid
 
@@ -3100,7 +3189,7 @@ class SponsorshipPendingTierChange(BaseModel):
         None,
         description="The `pending_cancellation` and `pending_tier_change` event types will include the date the cancellation or tier change will take effect.",
     )
-    changes: Optional[Changes26] = None
+    changes: Optional[Changes31] = None
     sender: Optional[User] = None
 
 
@@ -3112,7 +3201,7 @@ class Tier1(Tier):
     pass
 
 
-class Changes27(BaseModel):
+class Changes32(BaseModel):
     class Config:
         extra = Extra.forbid
 
@@ -3125,7 +3214,7 @@ class SponsorshipTierChanged(BaseModel):
 
     action: Optional[Literal["tier_changed"]] = None
     sponsorship: Optional[Sponsorship5] = None
-    changes: Optional[Changes27] = None
+    changes: Optional[Changes32] = None
     sender: Optional[User] = None
 
 
@@ -3504,6 +3593,21 @@ class Project(BaseModel):
     creator: Optional[User] = None
     created_at: Optional[datetime] = None
     updated_at: Optional[datetime] = None
+
+
+class ProjectsV2Item(BaseModel):
+    class Config:
+        extra = Extra.forbid
+
+    id: Optional[float] = None
+    node_id: Optional[str] = None
+    project_node_id: Optional[str] = None
+    content_node_id: Optional[str] = None
+    content_type: Optional[ContentType3] = None
+    creator: Optional[User] = None
+    created_at: Optional[datetime] = None
+    updated_at: Optional[datetime] = None
+    archived_at: Optional[Optional[str]] = None
 
 
 class PullRequestReviewComment(BaseModel):
@@ -5819,6 +5923,121 @@ class ProjectColumnEvent(BaseModel):
     ] = None
 
 
+class ProjectsV2ItemModel(ProjectsV2Item):
+    class Config:
+        extra = Extra.forbid
+
+    archived_at: Optional[datetime] = None
+
+
+class ProjectsV2ItemArchived(BaseModel):
+    class Config:
+        extra = Extra.forbid
+
+    changes: Optional[Changes18] = None
+    action: Optional[Literal["archived"]] = None
+    projects_v2_item: Optional[ProjectsV2ItemModel] = None
+    sender: Optional[User] = None
+    organization: Optional[Organization] = None
+    installation: Optional[InstallationLite] = None
+
+
+class ProjectsV2Item1(ProjectsV2Item):
+    content_type: Optional[Literal["Issue"]] = None
+
+
+class ProjectsV2ItemConverted(BaseModel):
+    class Config:
+        extra = Extra.forbid
+
+    changes: Optional[Changes19] = None
+    action: Optional[Literal["converted"]] = None
+    projects_v2_item: Optional[ProjectsV2Item1] = None
+    sender: Optional[User] = None
+    organization: Optional[Organization] = None
+    installation: Optional[InstallationLite] = None
+
+
+class ProjectsV2Item2(ProjectsV2Item):
+    archived_at: Optional[Any] = None
+
+
+class ProjectsV2ItemCreated(BaseModel):
+    class Config:
+        extra = Extra.forbid
+
+    action: Optional[Literal["created"]] = None
+    projects_v2_item: Optional[ProjectsV2Item2] = None
+    sender: Optional[User] = None
+    organization: Optional[Organization] = None
+    installation: Optional[InstallationLite] = None
+
+
+class ProjectsV2ItemDeleted(BaseModel):
+    class Config:
+        extra = Extra.forbid
+
+    action: Optional[Literal["deleted"]] = None
+    projects_v2_item: Optional[ProjectsV2Item] = None
+    sender: Optional[User] = None
+    organization: Optional[Organization] = None
+    installation: Optional[InstallationLite] = None
+
+
+class ProjectsV2ItemEdited(BaseModel):
+    class Config:
+        extra = Extra.forbid
+
+    changes: Optional[Changes20] = None
+    action: Optional[Literal["edited"]] = None
+    projects_v2_item: Optional[ProjectsV2Item] = None
+    sender: Optional[User] = None
+    organization: Optional[Organization] = None
+    installation: Optional[InstallationLite] = None
+
+
+class ProjectsV2ItemReordered(BaseModel):
+    class Config:
+        extra = Extra.forbid
+
+    changes: Optional[Changes21] = None
+    action: Optional[Literal["reordered"]] = None
+    projects_v2_item: Optional[ProjectsV2Item] = None
+    sender: Optional[User] = None
+    organization: Optional[Organization] = None
+    installation: Optional[InstallationLite] = None
+
+
+class ProjectsV2Item3(ProjectsV2Item2):
+    pass
+
+
+class ProjectsV2ItemRestored(BaseModel):
+    class Config:
+        extra = Extra.forbid
+
+    changes: Optional[Changes22] = None
+    action: Optional[Literal["restored"]] = None
+    projects_v2_item: Optional[ProjectsV2Item3] = None
+    sender: Optional[User] = None
+    organization: Optional[Organization] = None
+    installation: Optional[InstallationLite] = None
+
+
+class ProjectsV2ItemEvent(BaseModel):
+    __root__: Optional[
+        Union[
+            ProjectsV2ItemArchived,
+            ProjectsV2ItemConverted,
+            ProjectsV2ItemCreated,
+            ProjectsV2ItemDeleted,
+            ProjectsV2ItemEdited,
+            ProjectsV2ItemReordered,
+            ProjectsV2ItemRestored,
+        ]
+    ] = None
+
+
 class Repository6(Repository):
     private: Optional[Literal[False]] = None
 
@@ -5851,7 +6070,7 @@ class PullRequestReviewEdited(BaseModel):
         extra = Extra.forbid
 
     action: Optional[Literal["edited"]] = None
-    changes: Optional[Changes19] = None
+    changes: Optional[Changes24] = None
     review: Optional[Review1] = Field(None, description="The review that was affected.")
     pull_request: Optional[SimplePullRequest] = None
     repository: Optional[Repository] = None
@@ -6064,7 +6283,7 @@ class PullRequestReviewCommentEdited(BaseModel):
         extra = Extra.forbid
 
     action: Optional[Literal["edited"]] = None
-    changes: Optional[Changes20] = Field(
+    changes: Optional[Changes25] = Field(
         None, description="The changes to the comment."
     )
     comment: Optional[PullRequestReviewComment] = None
@@ -6201,7 +6420,7 @@ class ReleaseEdited(BaseModel):
         extra = Extra.forbid
 
     action: Optional[Literal["edited"]] = None
-    changes: Optional[Changes21] = None
+    changes: Optional[Changes26] = None
     release: Optional[ReleaseModel] = None
     repository: Optional[Repository] = None
     sender: Optional[User] = None
@@ -6330,7 +6549,7 @@ class RepositoryEdited(BaseModel):
         extra = Extra.forbid
 
     action: Optional[Literal["edited"]] = None
-    changes: Optional[Changes22] = None
+    changes: Optional[Changes27] = None
     repository: Optional[Repository] = None
     sender: Optional[User] = None
     installation: Optional[InstallationLite] = None
@@ -6376,7 +6595,7 @@ class RepositoryRenamed(BaseModel):
         extra = Extra.forbid
 
     action: Optional[Literal["renamed"]] = None
-    changes: Optional[Changes23] = None
+    changes: Optional[Changes28] = None
     repository: Optional[Repository] = None
     sender: Optional[User] = None
     installation: Optional[InstallationLite] = None
@@ -6388,7 +6607,7 @@ class RepositoryTransferred(BaseModel):
         extra = Extra.forbid
 
     action: Optional[Literal["transferred"]] = None
-    changes: Optional[Changes24] = None
+    changes: Optional[Changes29] = None
     repository: Optional[Repository] = None
     sender: Optional[User] = None
     installation: Optional[InstallationLite] = None
@@ -6686,7 +6905,7 @@ class TeamEdited(BaseModel):
         extra = Extra.forbid
 
     action: Optional[Literal["edited"]] = None
-    changes: Optional[Changes28] = Field(
+    changes: Optional[Changes33] = Field(
         None, description="The changes to the team if the action was `edited`."
     )
     team: Optional[Team] = None
@@ -6750,13 +6969,21 @@ class WorkflowDispatchEvent(BaseModel):
     class Config:
         extra = Extra.forbid
 
-    inputs: Optional[Union[Dict[str, Any], Any]] = None
-    ref: Optional[str] = None
+    inputs: Optional[Union[Dict[str, Any], Any]] = Field(
+        None,
+        description="Inputs to the workflow. Each key represents the name of the input while it's value represents the value of that input.",
+    )
+    ref: Optional[str] = Field(
+        None, description="The branch ref from which the workflow was run."
+    )
     repository: Optional[Repository] = None
     sender: Optional[User] = None
     installation: Optional[InstallationLite] = None
     organization: Optional[Organization] = None
-    workflow: Optional[str] = None
+    workflow: Optional[str] = Field(
+        None,
+        description="Relative path to the workflow file which contains the workflow.",
+    )
 
 
 class WorkflowJobModel(WorkflowJob):
@@ -7422,7 +7649,7 @@ class PullRequestEdited(BaseModel):
 
     action: Optional[Literal["edited"]] = None
     number: Optional[int] = Field(None, description="The pull request number.")
-    changes: Optional[Changes18] = Field(
+    changes: Optional[Changes23] = Field(
         None, description="The changes to the comment if the action was `edited`."
     )
     pull_request: Optional[PullRequest] = None
@@ -7710,6 +7937,7 @@ class Model(BaseModel):
             ProjectEvent,
             ProjectCardEvent,
             ProjectColumnEvent,
+            ProjectsV2ItemEvent,
             PublicEvent,
             PullRequestEvent,
             PullRequestReviewEvent,
