@@ -24,13 +24,10 @@ def test_example_events_parse_from_dict(event: Dict[str, Any]):
 
 def test_example_events_parse_from_dict_with_extra_fields():
     """
-    Test that all example events from the GitHub Webhook events documentation
-    get properly parsed.
+    Test that adding a new field (e.g. when the spec is updated in a
+    non-breaking way) doesn't break parsing
     """
     event = {**(EVENTS[0]), "another_random_field_not_in_spec": 123}
-
-    # TMP
-    BranchProtectionRuleCreated.parse_obj(event)
 
     try:
         resolve_event(event)
