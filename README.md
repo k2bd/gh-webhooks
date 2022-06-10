@@ -27,6 +27,8 @@ async def handle_webhook_payload(request: Request):
     await event_handler.handle_event(event)
 ```
 
+You can also see a basic example project [here](https://github.com/k2bd/gh-webhooks-test).
+
 Multiple handlers can be registered to the same event type, and they'll run concurrently.
 
 The types are auto-generated using [datamodel-code-generator](https://github.com/koxudaxi/datamodel-code-generator).
