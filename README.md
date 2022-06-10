@@ -23,7 +23,8 @@ async def handle_new_branch_protection_rule(event: BranchProtectionRuleCreated):
 
 @app.post("/payload")
 async def handle_webhook_payload(request: Request):
-    await event_handler.handle_event(request.json())
+    event = await request.json()
+    await event_handler.handle_event(event)
 ```
 
 Multiple handlers can be registered to the same event type, and they'll run concurrently.
