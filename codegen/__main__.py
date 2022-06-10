@@ -11,6 +11,9 @@ ALIASES = str(Path(__file__).parent / "aliases.json")
 
 result = requests.get("https://unpkg.com/@octokit/webhooks-schemas/schema.json")
 
+FORBID_STR = "extra = Extra.forbid"
+PASS_STR = "pass"
+
 
 with tempfile.TemporaryDirectory() as tempdir:
     schema_file = os.path.join(tempdir, "schema.json")
@@ -30,6 +33,8 @@ with tempfile.TemporaryDirectory() as tempdir:
             "3.7",
             "--aliases",
             ALIASES,
+            "--base-class",
+            "gh_webhooks.base.GhWebhooksModel",
             "--enum-field-as-literal",
             "one",
             "--use-subclass-enum",
@@ -37,3 +42,13 @@ with tempfile.TemporaryDirectory() as tempdir:
             "--force-optional",
         ]
     )
+
+    # Postprocessing
+    def postprocess_content(content: str) -> str:
+        return content.replace(FORBID_STR, PASS_STR)
+
+    with open(CODEGEN_TARGET, "r") as f:
+        generated_content = f.read()
+
+    with open(CODEGEN_TARGET, "w") as f:
+        f.write(postprocess_content(generated_content))

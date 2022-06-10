@@ -7,20 +7,22 @@ from datetime import datetime
 from enum import Enum
 from typing import Any, Dict, List, Optional, Union
 
-from pydantic import AnyUrl, BaseModel, EmailStr, Extra, Field
+from pydantic import AnyUrl, EmailStr, Extra, Field
 from typing_extensions import Literal
 
+from gh_webhooks.base import GhWebhooksModel
 
-class AuthorizedActorsOnly(BaseModel):
+
+class AuthorizedActorsOnly(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     from_: Optional[bool] = Field(None, alias="from")
 
 
-class AuthorizedActorNames(BaseModel):
+class AuthorizedActorNames(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     from_: Optional[List[str]] = Field(None, alias="from")
 
@@ -29,9 +31,9 @@ class RequiredStatusChecks(AuthorizedActorNames):
     pass
 
 
-class Changes(BaseModel):
+class Changes(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     authorized_actors_only: Optional[AuthorizedActorsOnly] = None
     authorized_actor_names: Optional[AuthorizedActorNames] = None
@@ -50,9 +52,9 @@ class Conclusion(Enum):
     NoneType_None = None
 
 
-class Output(BaseModel):
+class Output(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     title: Optional[Optional[str]] = None
     summary: Optional[Optional[str]] = None
@@ -78,9 +80,9 @@ class Conclusion1(Enum):
     NoneType_None = None
 
 
-class RequestedAction(BaseModel):
+class RequestedAction(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     identifier: Optional[str] = Field(
         None,
@@ -164,9 +166,9 @@ class Severity(Enum):
     NoneType_None = None
 
 
-class Rule(BaseModel):
+class Rule(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     id: Optional[str] = Field(
         None, description="A unique identifier for the rule used to detect the alert."
@@ -177,9 +179,9 @@ class Rule(BaseModel):
     )
 
 
-class Tool(BaseModel):
+class Tool(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     name: Optional[str] = Field(
         None,
@@ -190,9 +192,9 @@ class Tool(BaseModel):
     )
 
 
-class Rule1(BaseModel):
+class Rule1(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     id: Optional[str] = Field(
         None, description="A unique identifier for the rule used to detect the alert."
@@ -207,9 +209,9 @@ class Rule1(BaseModel):
     help: Optional[Any] = None
 
 
-class Tool1(BaseModel):
+class Tool1(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     name: Optional[str] = Field(
         None,
@@ -263,9 +265,9 @@ class RefType(str, Enum):
     branch = "branch"
 
 
-class Key(BaseModel):
+class Key(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     id: Optional[int] = None
     key: Optional[str] = None
@@ -280,9 +282,9 @@ class Key1(Key):
     pass
 
 
-class CheckRun4(BaseModel):
+class CheckRun4(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     id: Optional[int] = Field(None, description="The id of the check.")
     name: Optional[str] = Field(None, description="The name of the check run.")
@@ -306,13 +308,13 @@ class CheckRun4(BaseModel):
     completed_at: Optional[Optional[str]] = None
 
 
-class Category(BaseModel):
+class Category(GhWebhooksModel):
     is_answerable: Optional[Literal[True]] = None
 
 
-class From(BaseModel):
+class From(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     id: Optional[int] = None
     repository_id: Optional[int] = None
@@ -325,16 +327,16 @@ class From(BaseModel):
     is_answerable: Optional[bool] = None
 
 
-class Category1(BaseModel):
+class Category1(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     from_: Optional[From] = Field(None, alias="from")
 
 
-class Changes1(BaseModel):
+class Changes1(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     category: Optional[Category1] = None
 
@@ -344,9 +346,9 @@ class State4(str, Enum):
     converting = "converting"
 
 
-class Title(BaseModel):
+class Title(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     from_: Optional[str] = Field(None, alias="from")
 
@@ -355,9 +357,9 @@ class Body(Title):
     pass
 
 
-class Changes2(BaseModel):
+class Changes2(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     title: Optional[Title] = None
     body: Optional[Body] = None
@@ -371,9 +373,9 @@ class Body1(Title):
     pass
 
 
-class Changes4(BaseModel):
+class Changes4(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     body: Optional[Body1] = None
 
@@ -383,9 +385,9 @@ class Action(str, Enum):
     edited = "edited"
 
 
-class Page(BaseModel):
+class Page(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     page_name: Optional[str] = Field(None, description="The name of the page.")
     title: Optional[str] = Field(None, description="The current page title.")
@@ -400,9 +402,9 @@ class Page(BaseModel):
     )
 
 
-class Repository1(BaseModel):
+class Repository1(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     id: Optional[int] = Field(None, description="Unique identifier of the repository")
     node_id: Optional[str] = None
@@ -455,18 +457,18 @@ class State5(str, Enum):
     closed = "closed"
 
 
-class Body2(BaseModel):
+class Body2(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     from_: Optional[str] = Field(
         None, alias="from", description="The previous version of the body."
     )
 
 
-class Changes5(BaseModel):
+class Changes5(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     body: Optional[Body2] = None
 
@@ -475,18 +477,18 @@ class Body3(Body2):
     pass
 
 
-class Title1(BaseModel):
+class Title1(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     from_: Optional[str] = Field(
         None, alias="from", description="The previous version of the title."
     )
 
 
-class Changes6(BaseModel):
+class Changes6(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     body: Optional[Body3] = None
     title: Optional[Title1] = None
@@ -500,9 +502,9 @@ class ActiveLockReason(Enum):
     NoneType_None = None
 
 
-class Color(BaseModel):
+class Color(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     from_: Optional[str] = Field(
         None,
@@ -511,9 +513,9 @@ class Color(BaseModel):
     )
 
 
-class Name(BaseModel):
+class Name(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     from_: Optional[str] = Field(
         None,
@@ -522,9 +524,9 @@ class Name(BaseModel):
     )
 
 
-class Description(BaseModel):
+class Description(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     from_: Optional[str] = Field(
         None,
@@ -533,18 +535,18 @@ class Description(BaseModel):
     )
 
 
-class Changes9(BaseModel):
+class Changes9(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     color: Optional[Color] = None
     name: Optional[Name] = None
     description: Optional[Description] = None
 
 
-class Sender(BaseModel):
+class Sender(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     login: Optional[str] = None
     id: Optional[int] = None
@@ -587,23 +589,23 @@ class To(str, Enum):
     admin = "admin"
 
 
-class Permission(BaseModel):
+class Permission(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     to: Optional[To] = None
 
 
-class Changes10(BaseModel):
+class Changes10(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     permission: Optional[Permission] = None
 
 
-class OldPermission(BaseModel):
+class OldPermission(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     from_: Optional[str] = Field(
         None,
@@ -612,9 +614,9 @@ class OldPermission(BaseModel):
     )
 
 
-class Changes11(BaseModel):
+class Changes11(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     old_permission: Optional[OldPermission] = None
 
@@ -624,9 +626,9 @@ class Scope(str, Enum):
     organization = "organization"
 
 
-class TeamItem(BaseModel):
+class TeamItem(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     id: Optional[int] = None
     name: Optional[str] = None
@@ -638,9 +640,9 @@ class ContentType(str, Enum):
     form = "form"
 
 
-class Config(BaseModel):
+class Config(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     content_type: Optional[ContentType] = None
     insecure_ssl: Optional[str] = None
@@ -652,9 +654,9 @@ class Description1(Description):
     pass
 
 
-class DueOn(BaseModel):
+class DueOn(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     from_: Optional[str] = Field(
         None,
@@ -663,9 +665,9 @@ class DueOn(BaseModel):
     )
 
 
-class Title2(BaseModel):
+class Title2(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     from_: Optional[str] = Field(
         None,
@@ -674,18 +676,18 @@ class Title2(BaseModel):
     )
 
 
-class Changes12(BaseModel):
+class Changes12(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     description: Optional[Description1] = None
     due_on: Optional[DueOn] = None
     title: Optional[Title2] = None
 
 
-class PackageFile(BaseModel):
+class PackageFile(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     download_url: Optional[AnyUrl] = None
     id: Optional[int] = None
@@ -700,9 +702,9 @@ class PackageFile(BaseModel):
     updated_at: Optional[str] = None
 
 
-class Registry(BaseModel):
+class Registry(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     about_url: Optional[AnyUrl] = None
     name: Optional[str] = None
@@ -719,16 +721,16 @@ class Registry1(Registry):
     pass
 
 
-class Error(BaseModel):
+class Error(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     message: Optional[Optional[str]] = None
 
 
-class Config1(BaseModel):
+class Config1(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     content_type: Optional[ContentType] = None
     secret: Optional[str] = None
@@ -736,18 +738,18 @@ class Config1(BaseModel):
     insecure_ssl: Optional[str] = None
 
 
-class LastResponse(BaseModel):
+class LastResponse(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     code: Optional[Any] = None
     status: Optional[str] = None
     message: Optional[Any] = None
 
 
-class Name1(BaseModel):
+class Name1(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     from_: Optional[str] = Field(
         None,
@@ -756,9 +758,9 @@ class Name1(BaseModel):
     )
 
 
-class Body4(BaseModel):
+class Body4(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     from_: Optional[str] = Field(
         None,
@@ -767,9 +769,9 @@ class Body4(BaseModel):
     )
 
 
-class Changes13(BaseModel):
+class Changes13(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     name: Optional[Name1] = None
     body: Optional[Body4] = None
@@ -779,9 +781,9 @@ class Note(Title):
     pass
 
 
-class Changes14(BaseModel):
+class Changes14(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     note: Optional[Note] = None
 
@@ -790,23 +792,23 @@ class Note1(Title):
     pass
 
 
-class Changes15(BaseModel):
+class Changes15(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     note: Optional[Note1] = None
 
 
-class ColumnId(BaseModel):
+class ColumnId(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     from_: Optional[int] = Field(None, alias="from")
 
 
-class Changes16(BaseModel):
+class Changes16(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     column_id: Optional[ColumnId] = None
 
@@ -815,11 +817,94 @@ class Name2(Title):
     pass
 
 
-class Changes17(BaseModel):
+class Changes17(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     name: Optional[Name2] = None
+
+
+class ArchivedAt(GhWebhooksModel):
+    class Config:
+        pass
+
+    from_: Optional[Any] = Field(None, alias="from")
+    to: Optional[datetime] = None
+
+
+class Changes18(GhWebhooksModel):
+    class Config:
+        pass
+
+    archived_at: Optional[ArchivedAt] = None
+
+
+class ContentType2(GhWebhooksModel):
+    class Config:
+        pass
+
+    from_: Optional[Literal["DraftIssue"]] = Field(None, alias="from")
+    to: Optional[Literal["Issue"]] = None
+
+
+class Changes19(GhWebhooksModel):
+    class Config:
+        pass
+
+    content_type: Optional[ContentType2] = None
+
+
+class FieldType(str, Enum):
+    single_select = "single_select"
+    date = "date"
+    number = "number"
+    text = "text"
+    iteration = "iteration"
+
+
+class FieldValue(GhWebhooksModel):
+    class Config:
+        pass
+
+    field_type: Optional[FieldType] = None
+    field_node_id: Optional[str] = None
+
+
+class Changes20(GhWebhooksModel):
+    class Config:
+        pass
+
+    field_value: Optional[FieldValue] = None
+
+
+class PreviousProjectsV2ItemNodeId(GhWebhooksModel):
+    class Config:
+        pass
+
+    from_: Optional[str] = Field(None, alias="from")
+    to: Optional[Optional[str]] = None
+
+
+class Changes21(GhWebhooksModel):
+    class Config:
+        pass
+
+    previous_projects_v2_item_node_id: Optional[PreviousProjectsV2ItemNodeId] = None
+
+
+class ArchivedAt1(GhWebhooksModel):
+    class Config:
+        pass
+
+    from_: Optional[datetime] = Field(None, alias="from")
+    to: Optional[Any] = None
+
+
+class Changes22(GhWebhooksModel):
+    class Config:
+        pass
+
+    archived_at: Optional[ArchivedAt1] = None
 
 
 class Body5(Body4):
@@ -838,17 +923,17 @@ class Sha(Title):
     pass
 
 
-class Base(BaseModel):
+class Base(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     ref: Optional[Ref] = None
     sha: Optional[Sha] = None
 
 
-class Changes18(BaseModel):
+class Changes23(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     body: Optional[Body5] = None
     title: Optional[Title3] = None
@@ -859,9 +944,9 @@ class Body6(Body4):
     pass
 
 
-class Changes19(BaseModel):
+class Changes24(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     body: Optional[Body6] = None
 
@@ -870,9 +955,9 @@ class Body7(Body2):
     pass
 
 
-class Changes20(BaseModel):
+class Changes25(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     body: Optional[Body7] = None
 
@@ -885,17 +970,17 @@ class Name3(Name):
     pass
 
 
-class Changes21(BaseModel):
+class Changes26(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     body: Optional[Body8] = None
     name: Optional[Name3] = None
 
 
-class Description2(BaseModel):
+class Description2(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     from_: Optional[Optional[str]] = Field(None, alias="from")
 
@@ -908,9 +993,9 @@ class Homepage(Description2):
     pass
 
 
-class Changes22(BaseModel):
+class Changes27(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     description: Optional[Description2] = None
     default_branch: Optional[DefaultBranch] = None
@@ -921,16 +1006,16 @@ class Name4(Title):
     pass
 
 
-class Repository10(BaseModel):
+class Repository10(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     name: Optional[Name4] = None
 
 
-class Changes23(BaseModel):
+class Changes28(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     repository: Optional[Repository10] = None
 
@@ -941,9 +1026,9 @@ class Status9(str, Enum):
     failure = "failure"
 
 
-class Alert10(BaseModel):
+class Alert10(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     number: Optional[int] = None
     secret_type: Optional[str] = None
@@ -963,55 +1048,55 @@ class Resolution(str, Enum):
     used_in_tests = "used_in_tests"
 
 
-class Cvss(BaseModel):
+class Cvss(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     vector_string: Optional[Optional[str]] = None
     score: Optional[float] = None
 
 
-class Cwe(BaseModel):
+class Cwe(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     cwe_id: Optional[str] = None
     name: Optional[str] = None
 
 
-class Identifier(BaseModel):
+class Identifier(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     value: Optional[str] = None
     type: Optional[str] = None
 
 
-class Reference(BaseModel):
+class Reference(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     url: Optional[AnyUrl] = None
 
 
-class Package2(BaseModel):
+class Package2(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     ecosystem: Optional[str] = None
     name: Optional[str] = None
 
 
-class FirstPatchedVersion(BaseModel):
+class FirstPatchedVersion(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     identifier: Optional[str] = None
 
 
-class Vulnerability(BaseModel):
+class Vulnerability(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     package: Optional[Package2] = None
     severity: Optional[str] = None
@@ -1019,9 +1104,9 @@ class Vulnerability(BaseModel):
     first_patched_version: Optional[FirstPatchedVersion] = None
 
 
-class SecurityAdvisory(BaseModel):
+class SecurityAdvisory(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     cvss: Optional[Cvss] = None
     cwes: Optional[List[Cwe]] = None
@@ -1037,9 +1122,9 @@ class SecurityAdvisory(BaseModel):
     vulnerabilities: Optional[List[Vulnerability]] = None
 
 
-class SecurityAdvisoryPerformed(BaseModel):
+class SecurityAdvisoryPerformed(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     action: Optional[Literal["performed"]] = None
     security_advisory: Optional[SecurityAdvisory] = Field(
@@ -1072,9 +1157,9 @@ class FirstPatchedVersion1(FirstPatchedVersion):
     pass
 
 
-class Vulnerability1(BaseModel):
+class Vulnerability1(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     package: Optional[Package3] = None
     severity: Optional[str] = None
@@ -1082,9 +1167,9 @@ class Vulnerability1(BaseModel):
     first_patched_version: Optional[FirstPatchedVersion1] = None
 
 
-class SecurityAdvisory1(BaseModel):
+class SecurityAdvisory1(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     cvss: Optional[Cvss1] = None
     cwes: Optional[List[Cwe1]] = None
@@ -1100,9 +1185,9 @@ class SecurityAdvisory1(BaseModel):
     vulnerabilities: Optional[List[Vulnerability1]] = None
 
 
-class SecurityAdvisoryPublished(BaseModel):
+class SecurityAdvisoryPublished(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     action: Optional[Literal["published"]] = None
     security_advisory: Optional[SecurityAdvisory1] = Field(
@@ -1135,9 +1220,9 @@ class FirstPatchedVersion2(FirstPatchedVersion):
     pass
 
 
-class Vulnerability2(BaseModel):
+class Vulnerability2(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     package: Optional[Package4] = None
     severity: Optional[str] = None
@@ -1145,9 +1230,9 @@ class Vulnerability2(BaseModel):
     first_patched_version: Optional[FirstPatchedVersion2] = None
 
 
-class SecurityAdvisory2(BaseModel):
+class SecurityAdvisory2(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     cvss: Optional[Cvss2] = None
     cwes: Optional[List[Cwe2]] = None
@@ -1163,9 +1248,9 @@ class SecurityAdvisory2(BaseModel):
     vulnerabilities: Optional[List[Vulnerability2]] = None
 
 
-class SecurityAdvisoryUpdated(BaseModel):
+class SecurityAdvisoryUpdated(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     action: Optional[Literal["updated"]] = None
     security_advisory: Optional[SecurityAdvisory2] = Field(
@@ -1198,9 +1283,9 @@ class FirstPatchedVersion3(FirstPatchedVersion):
     pass
 
 
-class Vulnerability3(BaseModel):
+class Vulnerability3(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     package: Optional[Package5] = None
     severity: Optional[str] = None
@@ -1208,9 +1293,9 @@ class Vulnerability3(BaseModel):
     first_patched_version: Optional[FirstPatchedVersion3] = None
 
 
-class SecurityAdvisory3(BaseModel):
+class SecurityAdvisory3(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     cvss: Optional[Cvss3] = None
     cwes: Optional[List[Cwe3]] = None
@@ -1226,9 +1311,9 @@ class SecurityAdvisory3(BaseModel):
     vulnerabilities: Optional[List[Vulnerability3]] = None
 
 
-class SecurityAdvisoryWithdrawn(BaseModel):
+class SecurityAdvisoryWithdrawn(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     action: Optional[Literal["withdrawn"]] = None
     security_advisory: Optional[SecurityAdvisory3] = Field(
@@ -1237,7 +1322,7 @@ class SecurityAdvisoryWithdrawn(BaseModel):
     )
 
 
-class SecurityAdvisoryEvent(BaseModel):
+class SecurityAdvisoryEvent(GhWebhooksModel):
     __root__: Optional[
         Union[
             SecurityAdvisoryPerformed,
@@ -1248,9 +1333,9 @@ class SecurityAdvisoryEvent(BaseModel):
     ] = None
 
 
-class PrivacyLevel(BaseModel):
+class PrivacyLevel(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     from_: Optional[str] = Field(
         None,
@@ -1259,9 +1344,9 @@ class PrivacyLevel(BaseModel):
     )
 
 
-class Changes25(BaseModel):
+class Changes30(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     privacy_level: Optional[PrivacyLevel] = None
 
@@ -1273,9 +1358,9 @@ class State11(str, Enum):
     error = "error"
 
 
-class Tree(BaseModel):
+class Tree(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     sha: Optional[str] = None
     url: Optional[AnyUrl] = None
@@ -1297,9 +1382,9 @@ class Reason(str, Enum):
     valid = "valid"
 
 
-class Verification(BaseModel):
+class Verification(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     verified: Optional[bool] = None
     reason: Optional[Reason] = None
@@ -1307,9 +1392,9 @@ class Verification(BaseModel):
     payload: Optional[Optional[str]] = None
 
 
-class Parent(BaseModel):
+class Parent(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     sha: Optional[str] = None
     url: Optional[AnyUrl] = None
@@ -1320,9 +1405,9 @@ class Commit3(Tree):
     pass
 
 
-class Branch(BaseModel):
+class Branch(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     name: Optional[str] = None
     commit: Optional[Commit3] = None
@@ -1337,9 +1422,9 @@ class Name5(Name):
     pass
 
 
-class Privacy(BaseModel):
+class Privacy(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     from_: Optional[str] = Field(
         None,
@@ -1348,9 +1433,9 @@ class Privacy(BaseModel):
     )
 
 
-class From2(BaseModel):
+class From2(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     admin: Optional[bool] = Field(
         None,
@@ -1366,23 +1451,23 @@ class From2(BaseModel):
     )
 
 
-class Permissions(BaseModel):
+class Permissions(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     from_: Optional[From2] = Field(None, alias="from")
 
 
-class Repository12(BaseModel):
+class Repository12(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     permissions: Optional[Permissions] = None
 
 
-class Changes28(BaseModel):
+class Changes33(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     description: Optional[Description3] = None
     name: Optional[Name5] = None
@@ -1393,6 +1478,8 @@ class Changes28(BaseModel):
 class Conclusion12(str, Enum):
     success = "success"
     failure = "failure"
+    cancelled = "cancelled"
+    skipped = "skipped"
 
 
 class Conclusion13(str, Enum):
@@ -1406,16 +1493,16 @@ class Conclusion13(str, Enum):
     skipped = "skipped"
 
 
-class Message(BaseModel):
+class Message(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     text: Optional[str] = None
 
 
-class Location(BaseModel):
+class Location(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     path: Optional[str] = None
     start_line: Optional[int] = None
@@ -1424,9 +1511,9 @@ class Location(BaseModel):
     end_column: Optional[int] = None
 
 
-class AlertInstance(BaseModel):
+class AlertInstance(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     ref: Optional[str] = Field(
         None,
@@ -1452,9 +1539,9 @@ class Actions(str, Enum):
     write = "write"
 
 
-class Permissions1(BaseModel):
+class Permissions1(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     actions: Optional[Actions] = None
     administration: Optional[Actions] = None
@@ -1564,9 +1651,9 @@ class PullRequestReviewsEnforcementLevel(str, Enum):
     everyone = "everyone"
 
 
-class BranchProtectionRule(BaseModel):
+class BranchProtectionRule(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     id: Optional[int] = None
     repository_id: Optional[int] = None
@@ -1593,6 +1680,7 @@ class BranchProtectionRule(BaseModel):
         PullRequestReviewsEnforcementLevel
     ] = None
     admin_enforced: Optional[bool] = None
+    create_protected: Optional[bool] = None
     allow_force_pushes_enforcement_level: Optional[
         PullRequestReviewsEnforcementLevel
     ] = None
@@ -1610,9 +1698,9 @@ class BranchProtectionRule(BaseModel):
     authorized_actor_names: Optional[List[str]] = None
 
 
-class CheckRunDeployment(BaseModel):
+class CheckRunDeployment(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     url: Optional[AnyUrl] = None
     id: Optional[int] = None
@@ -1627,9 +1715,9 @@ class CheckRunDeployment(BaseModel):
     repository_url: Optional[AnyUrl] = None
 
 
-class Committer(BaseModel):
+class Committer(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     name: Optional[str] = Field(None, description="The git author's name.")
     email: Optional[Optional[EmailStr]] = Field(
@@ -1656,9 +1744,9 @@ class State13(str, Enum):
     converting = "converting"
 
 
-class GithubOrg(BaseModel):
+class GithubOrg(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     login: Optional[str] = None
     id: Optional[int] = None
@@ -1682,9 +1770,9 @@ class GithubOrg(BaseModel):
     site_admin: Optional[bool] = None
 
 
-class InstallationLite(BaseModel):
+class InstallationLite(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     id: Optional[int] = Field(None, description="The ID of the installation.")
     node_id: Optional[str] = None
@@ -1695,9 +1783,9 @@ class TargetType(str, Enum):
     Organization = "Organization"
 
 
-class Permissions2(BaseModel):
+class Permissions2(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     actions: Optional[Actions] = None
     administration: Optional[Actions] = None
@@ -1764,6 +1852,7 @@ class Event1(str, Enum):
     org_block = "org_block"
     page_build = "page_build"
     project = "project"
+    projects_v2_item = "projects_v2_item"
     project_card = "project_card"
     project_column = "project_column"
     public = "public"
@@ -1777,6 +1866,7 @@ class Event1(str, Enum):
     repository = "repository"
     repository_dispatch = "repository_dispatch"
     secret_scanning_alert = "secret_scanning_alert"
+    secret_scanning_alert_location = "secret_scanning_alert_location"
     star = "star"
     status = "status"
     team = "team"
@@ -1787,9 +1877,9 @@ class Event1(str, Enum):
     workflow_run = "workflow_run"
 
 
-class PullRequest9(BaseModel):
+class PullRequest9(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     url: Optional[AnyUrl] = None
     html_url: Optional[AnyUrl] = None
@@ -1798,9 +1888,9 @@ class PullRequest9(BaseModel):
     merged_at: Optional[Optional[str]] = None
 
 
-class Label(BaseModel):
+class Label(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     id: Optional[int] = None
     node_id: Optional[str] = None
@@ -1814,9 +1904,9 @@ class Label(BaseModel):
     default: Optional[bool] = None
 
 
-class License(BaseModel):
+class License(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     key: Optional[str] = None
     name: Optional[str] = None
@@ -1825,16 +1915,16 @@ class License(BaseModel):
     node_id: Optional[str] = None
 
 
-class Link(BaseModel):
+class Link(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     href: Optional[str] = None
 
 
-class Account(BaseModel):
+class Account(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     type: Optional[str] = None
     id: Optional[int] = None
@@ -1843,9 +1933,9 @@ class Account(BaseModel):
     organization_billing_email: Optional[str] = None
 
 
-class Plan(BaseModel):
+class Plan(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     id: Optional[int] = None
     name: Optional[str] = None
@@ -1858,9 +1948,9 @@ class Plan(BaseModel):
     bullets: Optional[List[str]] = None
 
 
-class MarketplacePurchase(BaseModel):
+class MarketplacePurchase(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     account: Optional[Account] = None
     billing_cycle: Optional[str] = None
@@ -1871,9 +1961,9 @@ class MarketplacePurchase(BaseModel):
     plan: Optional[Plan] = None
 
 
-class Organization(BaseModel):
+class Organization(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     login: Optional[str] = None
     id: Optional[int] = None
@@ -1890,9 +1980,9 @@ class Organization(BaseModel):
     description: Optional[Optional[str]] = None
 
 
-class ProjectColumn(BaseModel):
+class ProjectColumn(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     url: Optional[AnyUrl] = None
     project_url: Optional[AnyUrl] = None
@@ -1906,9 +1996,15 @@ class ProjectColumn(BaseModel):
     updated_at: Optional[datetime] = None
 
 
-class Links6(BaseModel):
+class ContentType3(str, Enum):
+    DraftIssue = "DraftIssue"
+    Issue = "Issue"
+    PullRequest = "PullRequest"
+
+
+class Links6(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     self: Optional[Link] = None
     html: Optional[Link] = None
@@ -1926,9 +2022,9 @@ class Side(str, Enum):
     RIGHT = "RIGHT"
 
 
-class Links7(BaseModel):
+class Links7(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     self: Optional[Link] = None
     html: Optional[Link] = None
@@ -1940,9 +2036,9 @@ class Links7(BaseModel):
     statuses: Optional[Link] = None
 
 
-class Reactions(BaseModel):
+class Reactions(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     url: Optional[AnyUrl] = None
     total_count: Optional[int] = None
@@ -1956,9 +2052,9 @@ class Reactions(BaseModel):
     eyes: Optional[int] = None
 
 
-class RepoRef(BaseModel):
+class RepoRef(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     id: Optional[int] = None
     url: Optional[AnyUrl] = None
@@ -1971,9 +2067,9 @@ class Visibility(str, Enum):
     internal = "internal"
 
 
-class Permissions3(BaseModel):
+class Permissions3(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     pull: Optional[bool] = None
     push: Optional[bool] = None
@@ -1986,9 +2082,9 @@ class Links8(Links7):
     pass
 
 
-class SponsorshipTier(BaseModel):
+class SponsorshipTier(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     node_id: Optional[str] = None
     created_at: Optional[str] = None
@@ -2006,9 +2102,9 @@ class Privacy1(str, Enum):
     secret = "secret"
 
 
-class Parent1(BaseModel):
+class Parent1(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     name: Optional[str] = Field(None, description="Name of the team")
     id: Optional[int] = Field(None, description="Unique identifier of the team")
@@ -2027,9 +2123,9 @@ class Parent1(BaseModel):
     )
 
 
-class Team(BaseModel):
+class Team(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     name: Optional[str] = Field(None, description="Name of the team")
     id: Optional[int] = Field(None, description="Unique identifier of the team")
@@ -2055,9 +2151,9 @@ class Type(str, Enum):
     Organization = "Organization"
 
 
-class User(BaseModel):
+class User(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     login: Optional[str] = None
     id: Optional[int] = None
@@ -2131,7 +2227,7 @@ class WebhookEvent(str, Enum):
     workflow_run = "workflow_run"
 
 
-class WebhookEvents(BaseModel):
+class WebhookEvents(GhWebhooksModel):
     __root__: Optional[Union[List[WebhookEvent], List[str]]] = Field(
         None, title="Webhook Events"
     )
@@ -2140,12 +2236,14 @@ class WebhookEvents(BaseModel):
 class Conclusion15(Enum):
     success = "success"
     failure = "failure"
+    cancelled = "cancelled"
+    skipped = "skipped"
     NoneType_None = None
 
 
-class Head6(BaseModel):
+class Head6(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     ref: Optional[str] = None
     sha: Optional[str] = None
@@ -2156,9 +2254,9 @@ class Base7(Head6):
     pass
 
 
-class PullRequest10(BaseModel):
+class PullRequest10(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     url: Optional[AnyUrl] = None
     id: Optional[float] = None
@@ -2181,9 +2279,9 @@ class Conclusion17(str, Enum):
     success = "success"
 
 
-class WorkflowStepCompleted(BaseModel):
+class WorkflowStepCompleted(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     name: Optional[str] = None
     status: Optional[Literal["completed"]] = None
@@ -2193,9 +2291,9 @@ class WorkflowStepCompleted(BaseModel):
     completed_at: Optional[str] = None
 
 
-class WorkflowStepInProgress(BaseModel):
+class WorkflowStepInProgress(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     name: Optional[str] = None
     status: Optional[Literal["in_progress"]] = None
@@ -2205,15 +2303,15 @@ class WorkflowStepInProgress(BaseModel):
     completed_at: Optional[Any] = None
 
 
-class WorkflowStep(BaseModel):
+class WorkflowStep(GhWebhooksModel):
     __root__: Optional[Union[WorkflowStepInProgress, WorkflowStepCompleted]] = Field(
         None, title="Workflow Step"
     )
 
 
-class Workflow(BaseModel):
+class Workflow(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     badge_url: Optional[AnyUrl] = None
     created_at: Optional[datetime] = None
@@ -2227,9 +2325,9 @@ class Workflow(BaseModel):
     url: Optional[AnyUrl] = None
 
 
-class Alert(BaseModel):
+class Alert(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     number: Optional[int] = Field(None, description="The code scanning alert number.")
     created_at: Optional[datetime] = Field(
@@ -2260,9 +2358,9 @@ class Instance(AlertInstance):
     state: Optional[Literal["dismissed"]] = None
 
 
-class Alert1(BaseModel):
+class Alert1(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     number: Optional[int] = Field(None, description="The code scanning alert number.")
     created_at: Optional[datetime] = Field(
@@ -2295,9 +2393,9 @@ class Instance1(AlertInstance):
     state: Optional[State1] = None
 
 
-class Alert2(BaseModel):
+class Alert2(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     number: Optional[int] = Field(None, description="The code scanning alert number.")
     created_at: Optional[datetime] = Field(
@@ -2328,9 +2426,9 @@ class Instance2(AlertInstance):
     state: Optional[Literal["fixed"]] = None
 
 
-class Alert3(BaseModel):
+class Alert3(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     number: Optional[int] = Field(None, description="The code scanning alert number.")
     created_at: Optional[datetime] = Field(
@@ -2364,9 +2462,9 @@ class Instance3(AlertInstance):
     state: Optional[Literal["open"]] = None
 
 
-class Alert4(BaseModel):
+class Alert4(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     number: Optional[int] = Field(None, description="The code scanning alert number.")
     created_at: Optional[datetime] = Field(
@@ -2397,9 +2495,9 @@ class Instance4(Instance3):
     pass
 
 
-class Alert5(BaseModel):
+class Alert5(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     number: Optional[int] = Field(None, description="The code scanning alert number.")
     created_at: Optional[datetime] = Field(
@@ -2428,9 +2526,9 @@ class Alert5(BaseModel):
     tool: Optional[Tool5] = None
 
 
-class Comment(BaseModel):
+class Comment(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     url: Optional[AnyUrl] = None
     html_url: Optional[AnyUrl] = None
@@ -2458,9 +2556,9 @@ class Comment(BaseModel):
     body: Optional[str] = Field(None, description="The text of the comment.")
 
 
-class Answer(BaseModel):
+class Answer(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     id: Optional[int] = None
     node_id: Optional[str] = None
@@ -2480,9 +2578,9 @@ class OldAnswer(Answer):
     pass
 
 
-class Comment1(BaseModel):
+class Comment1(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     id: Optional[int] = None
     node_id: Optional[str] = None
@@ -2507,28 +2605,28 @@ class Comment3(Comment1):
     pass
 
 
-class GithubAppAuthorizationRevoked(BaseModel):
+class GithubAppAuthorizationRevoked(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     action: Optional[Literal["revoked"]] = None
     sender: Optional[User] = None
 
 
-class GithubAppAuthorizationEvent(BaseModel):
+class GithubAppAuthorizationEvent(GhWebhooksModel):
     __root__: Optional[GithubAppAuthorizationRevoked] = None
 
 
 class MarketplacePurchaseModel(MarketplacePurchase):
     class Config:
-        extra = Extra.forbid
+        pass
 
     next_billing_date: Optional[str] = None
 
 
-class MarketplacePurchaseCancelled(BaseModel):
+class MarketplacePurchaseCancelled(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     action: Optional[Literal["cancelled"]] = None
     effective_date: Optional[str] = None
@@ -2541,9 +2639,9 @@ class MarketplacePurchase1(MarketplacePurchase):
     next_billing_date: Optional[str] = None
 
 
-class MarketplacePurchaseChanged(BaseModel):
+class MarketplacePurchaseChanged(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     action: Optional[Literal["changed"]] = None
     effective_date: Optional[str] = None
@@ -2556,9 +2654,9 @@ class MarketplacePurchase2(MarketplacePurchase1):
     pass
 
 
-class MarketplacePurchasePendingChange(BaseModel):
+class MarketplacePurchasePendingChange(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     action: Optional[Literal["pending_change"]] = None
     effective_date: Optional[str] = None
@@ -2571,9 +2669,9 @@ class MarketplacePurchase3(MarketplacePurchase1):
     pass
 
 
-class MarketplacePurchasePendingChangeCancelled(BaseModel):
+class MarketplacePurchasePendingChangeCancelled(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     action: Optional[Literal["pending_change_cancelled"]] = None
     effective_date: Optional[str] = None
@@ -2586,9 +2684,9 @@ class MarketplacePurchase4(MarketplacePurchase1):
     pass
 
 
-class MarketplacePurchasePurchased(BaseModel):
+class MarketplacePurchasePurchased(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     action: Optional[Literal["purchased"]] = None
     effective_date: Optional[str] = None
@@ -2597,7 +2695,7 @@ class MarketplacePurchasePurchased(BaseModel):
     previous_marketplace_purchase: Optional[MarketplacePurchase] = None
 
 
-class MarketplacePurchaseEvent(BaseModel):
+class MarketplacePurchaseEvent(GhWebhooksModel):
     __root__: Optional[
         Union[
             MarketplacePurchaseCancelled,
@@ -2609,9 +2707,9 @@ class MarketplacePurchaseEvent(BaseModel):
     ] = None
 
 
-class MembershipAdded(BaseModel):
+class MembershipAdded(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     action: Optional[Literal["added"]] = None
     scope: Optional[Literal["team"]] = Field(
@@ -2630,9 +2728,9 @@ class MembershipAdded(BaseModel):
     installation: Optional[InstallationLite] = None
 
 
-class MembershipRemoved(BaseModel):
+class MembershipRemoved(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     action: Optional[Literal["removed"]] = None
     scope: Optional[Scope] = Field(
@@ -2651,13 +2749,13 @@ class MembershipRemoved(BaseModel):
     installation: Optional[InstallationLite] = None
 
 
-class MembershipEvent(BaseModel):
+class MembershipEvent(GhWebhooksModel):
     __root__: Optional[Union[MembershipAdded, MembershipRemoved]] = None
 
 
-class Hook(BaseModel):
+class Hook(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     type: Optional[str] = None
     id: Optional[int] = None
@@ -2669,9 +2767,9 @@ class Hook(BaseModel):
     created_at: Optional[str] = None
 
 
-class OrgBlockBlocked(BaseModel):
+class OrgBlockBlocked(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     action: Optional[Literal["blocked"]] = None
     blocked_user: Optional[User] = Field(
@@ -2682,9 +2780,9 @@ class OrgBlockBlocked(BaseModel):
     organization: Optional[Organization] = None
 
 
-class OrgBlockUnblocked(BaseModel):
+class OrgBlockUnblocked(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     action: Optional[Literal["unblocked"]] = None
     blocked_user: Optional[User] = Field(
@@ -2695,13 +2793,13 @@ class OrgBlockUnblocked(BaseModel):
     organization: Optional[Organization] = None
 
 
-class OrgBlockEvent(BaseModel):
+class OrgBlockEvent(GhWebhooksModel):
     __root__: Optional[Union[OrgBlockBlocked, OrgBlockUnblocked]] = None
 
 
-class Invitation(BaseModel):
+class Invitation(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     id: Optional[float] = None
     node_id: Optional[str] = None
@@ -2716,9 +2814,9 @@ class Invitation(BaseModel):
     invitation_teams_url: Optional[AnyUrl] = None
 
 
-class OrganizationMemberInvited(BaseModel):
+class OrganizationMemberInvited(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     action: Optional[Literal["member_invited"]] = None
     invitation: Optional[Invitation] = Field(
@@ -2731,9 +2829,9 @@ class OrganizationMemberInvited(BaseModel):
     organization: Optional[Organization] = None
 
 
-class Release(BaseModel):
+class Release(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     url: Optional[AnyUrl] = None
     html_url: Optional[AnyUrl] = None
@@ -2748,9 +2846,9 @@ class Release(BaseModel):
     published_at: Optional[str] = None
 
 
-class PackageVersion(BaseModel):
+class PackageVersion(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     id: Optional[int] = None
     version: Optional[str] = None
@@ -2777,9 +2875,9 @@ class PackageVersion(BaseModel):
     installation_command: Optional[str] = None
 
 
-class Package(BaseModel):
+class Package(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     id: Optional[int] = None
     name: Optional[str] = None
@@ -2795,9 +2893,9 @@ class Package(BaseModel):
     registry: Optional[Registry] = None
 
 
-class Release1(BaseModel):
+class Release1(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     url: Optional[AnyUrl] = None
     html_url: Optional[AnyUrl] = None
@@ -2812,9 +2910,9 @@ class Release1(BaseModel):
     published_at: Optional[str] = None
 
 
-class PackageVersion1(BaseModel):
+class PackageVersion1(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     id: Optional[int] = None
     version: Optional[str] = None
@@ -2841,9 +2939,9 @@ class PackageVersion1(BaseModel):
     installation_command: Optional[str] = None
 
 
-class Package1(BaseModel):
+class Package1(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     id: Optional[int] = None
     name: Optional[str] = None
@@ -2859,9 +2957,9 @@ class Package1(BaseModel):
     registry: Optional[Registry1] = None
 
 
-class Build(BaseModel):
+class Build(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     url: Optional[AnyUrl] = None
     status: Optional[str] = None
@@ -2873,9 +2971,9 @@ class Build(BaseModel):
     updated_at: Optional[str] = None
 
 
-class Hook1(BaseModel):
+class Hook1(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     type: Optional[str] = None
     id: Optional[int] = None
@@ -2896,17 +2994,17 @@ class Hook1(BaseModel):
     last_response: Optional[LastResponse] = None
 
 
-class Links(BaseModel):
+class Links(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     html: Optional[Link] = None
     pull_request: Optional[Link] = None
 
 
-class Review(BaseModel):
+class Review(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     id: Optional[int] = Field(None, description="Unique identifier of the review")
     node_id: Optional[str] = None
@@ -2925,9 +3023,9 @@ class Links1(Links):
     pass
 
 
-class Review1(BaseModel):
+class Review1(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     id: Optional[int] = Field(None, description="Unique identifier of the review")
     node_id: Optional[str] = None
@@ -2946,9 +3044,9 @@ class Links2(Links):
     pass
 
 
-class Review2(BaseModel):
+class Review2(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     id: Optional[int] = Field(None, description="Unique identifier of the review")
     node_id: Optional[str] = None
@@ -2975,30 +3073,30 @@ class Links5(Links7):
     pass
 
 
-class From1(BaseModel):
+class From1(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     user: Optional[User] = None
 
 
-class Owner(BaseModel):
+class Owner(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     from_: Optional[From1] = Field(None, alias="from")
 
 
-class Changes24(BaseModel):
+class Changes29(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     owner: Optional[Owner] = None
 
 
-class Alert12(BaseModel):
+class Alert12(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     number: Optional[int] = None
     secret_type: Optional[str] = None
@@ -3007,9 +3105,9 @@ class Alert12(BaseModel):
     resolved_at: Optional[str] = None
 
 
-class Sponsorship(BaseModel):
+class Sponsorship(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     node_id: Optional[str] = None
     created_at: Optional[str] = None
@@ -3019,9 +3117,9 @@ class Sponsorship(BaseModel):
     tier: Optional[SponsorshipTier] = None
 
 
-class SponsorshipCancelled(BaseModel):
+class SponsorshipCancelled(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     action: Optional[Literal["cancelled"]] = None
     sponsorship: Optional[Sponsorship] = None
@@ -3032,9 +3130,9 @@ class Sponsorship1(Sponsorship):
     pass
 
 
-class SponsorshipCreated(BaseModel):
+class SponsorshipCreated(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     action: Optional[Literal["created"]] = None
     sponsorship: Optional[Sponsorship1] = None
@@ -3045,13 +3143,13 @@ class Sponsorship2(Sponsorship):
     pass
 
 
-class SponsorshipEdited(BaseModel):
+class SponsorshipEdited(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     action: Optional[Literal["edited"]] = None
     sponsorship: Optional[Sponsorship2] = None
-    changes: Optional[Changes25] = None
+    changes: Optional[Changes30] = None
     sender: Optional[User] = None
 
 
@@ -3059,9 +3157,9 @@ class Sponsorship3(Sponsorship):
     pass
 
 
-class SponsorshipPendingCancellation(BaseModel):
+class SponsorshipPendingCancellation(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     action: Optional[Literal["pending_cancellation"]] = None
     sponsorship: Optional[Sponsorship3] = None
@@ -3076,23 +3174,23 @@ class Sponsorship4(Sponsorship):
     pass
 
 
-class Tier(BaseModel):
+class Tier(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     from_: Optional[SponsorshipTier] = Field(None, alias="from")
 
 
-class Changes26(BaseModel):
+class Changes31(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     tier: Optional[Tier] = None
 
 
-class SponsorshipPendingTierChange(BaseModel):
+class SponsorshipPendingTierChange(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     action: Optional[Literal["pending_tier_change"]] = None
     sponsorship: Optional[Sponsorship4] = None
@@ -3100,7 +3198,7 @@ class SponsorshipPendingTierChange(BaseModel):
         None,
         description="The `pending_cancellation` and `pending_tier_change` event types will include the date the cancellation or tier change will take effect.",
     )
-    changes: Optional[Changes26] = None
+    changes: Optional[Changes31] = None
     sender: Optional[User] = None
 
 
@@ -3112,24 +3210,24 @@ class Tier1(Tier):
     pass
 
 
-class Changes27(BaseModel):
+class Changes32(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     tier: Optional[Tier1] = None
 
 
-class SponsorshipTierChanged(BaseModel):
+class SponsorshipTierChanged(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     action: Optional[Literal["tier_changed"]] = None
     sponsorship: Optional[Sponsorship5] = None
-    changes: Optional[Changes27] = None
+    changes: Optional[Changes32] = None
     sender: Optional[User] = None
 
 
-class SponsorshipEvent(BaseModel):
+class SponsorshipEvent(GhWebhooksModel):
     __root__: Optional[
         Union[
             SponsorshipCancelled,
@@ -3150,9 +3248,9 @@ class Committer1(Author):
     pass
 
 
-class Commit2(BaseModel):
+class Commit2(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     author: Optional[Author] = None
     committer: Optional[Committer1] = None
@@ -3163,9 +3261,9 @@ class Commit2(BaseModel):
     verification: Optional[Verification] = None
 
 
-class Commit1(BaseModel):
+class Commit1(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     sha: Optional[str] = None
     node_id: Optional[str] = None
@@ -3178,9 +3276,9 @@ class Commit1(BaseModel):
     parents: Optional[List[Parent]] = None
 
 
-class WorkflowJob2(BaseModel):
+class WorkflowJob2(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     id: Optional[int] = None
     run_id: Optional[float] = None
@@ -3204,9 +3302,9 @@ class WorkflowJob2(BaseModel):
     completed_at: Optional[Any] = None
 
 
-class App(BaseModel):
+class App(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     id: Optional[int] = Field(None, description="Unique identifier of the GitHub app")
     slug: Optional[str] = Field(None, description="The slug name of the GitHub app")
@@ -3226,9 +3324,9 @@ class App(BaseModel):
     )
 
 
-class AutoMerge(BaseModel):
+class AutoMerge(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     enabled_by: Optional[User] = None
     merge_method: Optional[MergeMethod] = Field(
@@ -3250,9 +3348,9 @@ class Base4(Head6):
     pass
 
 
-class CheckRunPullRequest(BaseModel):
+class CheckRunPullRequest(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     url: Optional[AnyUrl] = None
     id: Optional[int] = None
@@ -3261,9 +3359,9 @@ class CheckRunPullRequest(BaseModel):
     base: Optional[Base4] = None
 
 
-class CommitSimple(BaseModel):
+class CommitSimple(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     id: Optional[str] = None
     tree_id: Optional[str] = None
@@ -3273,9 +3371,9 @@ class CommitSimple(BaseModel):
     committer: Optional[Committer] = None
 
 
-class Commit(BaseModel):
+class Commit(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     id: Optional[str] = None
     tree_id: Optional[str] = None
@@ -3303,12 +3401,13 @@ class Commit(BaseModel):
     )
 
 
-class DeploymentWorkflowRun(BaseModel):
+class DeploymentWorkflowRun(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     id: Optional[int] = None
     name: Optional[str] = None
+    path: Optional[str] = None
     node_id: Optional[str] = None
     head_branch: Optional[str] = None
     head_sha: Optional[str] = None
@@ -3330,9 +3429,9 @@ class DeploymentWorkflowRun(BaseModel):
     run_started_at: Optional[datetime] = None
 
 
-class Deployment(BaseModel):
+class Deployment(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     url: Optional[AnyUrl] = None
     id: Optional[int] = None
@@ -3354,9 +3453,9 @@ class Deployment(BaseModel):
     performed_via_github_app: Optional[Optional[App]] = None
 
 
-class Discussion(BaseModel):
+class Discussion(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     repository_url: Optional[str] = None
     category: Optional[Category3] = None
@@ -3380,9 +3479,9 @@ class Discussion(BaseModel):
     reactions: Optional[Reactions] = None
 
 
-class Installation(BaseModel):
+class Installation(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     id: Optional[int] = Field(None, description="The ID of the installation.")
     account: Optional[User] = None
@@ -3411,9 +3510,9 @@ class Installation(BaseModel):
     suspended_at: Optional[Optional[str]] = None
 
 
-class IssueComment(BaseModel):
+class IssueComment(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     url: Optional[AnyUrl] = Field(None, description="URL for the issue comment")
     html_url: Optional[AnyUrl] = None
@@ -3431,9 +3530,9 @@ class IssueComment(BaseModel):
     performed_via_github_app: Optional[Optional[App]] = None
 
 
-class Membership(BaseModel):
+class Membership(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     url: Optional[AnyUrl] = None
     state: Optional[str] = None
@@ -3442,9 +3541,9 @@ class Membership(BaseModel):
     user: Optional[User] = None
 
 
-class Milestone(BaseModel):
+class Milestone(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     url: Optional[AnyUrl] = None
     html_url: Optional[AnyUrl] = None
@@ -3464,9 +3563,9 @@ class Milestone(BaseModel):
     closed_at: Optional[Optional[str]] = None
 
 
-class ProjectCard(BaseModel):
+class ProjectCard(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     url: Optional[AnyUrl] = None
     project_url: Optional[AnyUrl] = None
@@ -3482,12 +3581,12 @@ class ProjectCard(BaseModel):
     created_at: Optional[datetime] = None
     updated_at: Optional[datetime] = None
     content_url: Optional[AnyUrl] = None
-    after_id: Optional[Optional[str]] = None
+    after_id: Optional[Optional[Union[str, float]]] = None
 
 
-class Project(BaseModel):
+class Project(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     owner_url: Optional[AnyUrl] = None
     url: Optional[AnyUrl] = None
@@ -3506,9 +3605,24 @@ class Project(BaseModel):
     updated_at: Optional[datetime] = None
 
 
-class PullRequestReviewComment(BaseModel):
+class ProjectsV2Item(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
+
+    id: Optional[float] = None
+    node_id: Optional[str] = None
+    project_node_id: Optional[str] = None
+    content_node_id: Optional[str] = None
+    content_type: Optional[ContentType3] = None
+    creator: Optional[User] = None
+    created_at: Optional[datetime] = None
+    updated_at: Optional[datetime] = None
+    archived_at: Optional[Optional[str]] = None
+
+
+class PullRequestReviewComment(GhWebhooksModel):
+    class Config:
+        pass
 
     url: Optional[AnyUrl] = Field(
         None, description="URL for the pull request review comment"
@@ -3582,9 +3696,9 @@ class PullRequestReviewComment(BaseModel):
     )
 
 
-class ReleaseAsset(BaseModel):
+class ReleaseAsset(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     url: Optional[AnyUrl] = None
     browser_download_url: Optional[AnyUrl] = None
@@ -3603,9 +3717,9 @@ class ReleaseAsset(BaseModel):
     uploader: Optional[User] = None
 
 
-class ReleaseModel(BaseModel):
+class ReleaseModel(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     url: Optional[AnyUrl] = None
     assets_url: Optional[AnyUrl] = None
@@ -3633,13 +3747,14 @@ class ReleaseModel(BaseModel):
     tarball_url: Optional[Optional[str]] = None
     zipball_url: Optional[Optional[str]] = None
     body: Optional[str] = None
+    mentions_count: Optional[int] = None
     reactions: Optional[Reactions] = None
     discussion_url: Optional[AnyUrl] = None
 
 
-class RepositoryLite(BaseModel):
+class RepositoryLite(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     archive_url: Optional[str] = None
     assignees_url: Optional[str] = None
@@ -3691,9 +3806,9 @@ class RepositoryLite(BaseModel):
     url: Optional[AnyUrl] = None
 
 
-class RepositoryVulnerabilityAlertAlert(BaseModel):
+class RepositoryVulnerabilityAlertAlert(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     id: Optional[int] = None
     number: Optional[int] = None
@@ -3714,9 +3829,9 @@ class RepositoryVulnerabilityAlertAlert(BaseModel):
     created_at: Optional[str] = None
 
 
-class Repository(BaseModel):
+class Repository(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     id: Optional[int] = Field(None, description="Unique identifier of the repository")
     node_id: Optional[str] = None
@@ -3820,6 +3935,7 @@ class Repository(BaseModel):
         None, description="Whether to allow private forks"
     )
     allow_update_branch: Optional[bool] = None
+    use_squash_pr_title_as_default: Optional[bool] = None
     is_template: Optional[bool] = None
     topics: Optional[List[str]] = None
     visibility: Optional[Visibility] = None
@@ -3833,9 +3949,9 @@ class Repository(BaseModel):
     organization: Optional[str] = None
 
 
-class Head5(BaseModel):
+class Head5(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     label: Optional[str] = None
     ref: Optional[str] = None
@@ -3848,9 +3964,9 @@ class Base6(Head5):
     pass
 
 
-class SimplePullRequest(BaseModel):
+class SimplePullRequest(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     url: Optional[AnyUrl] = None
     id: Optional[int] = None
@@ -3890,9 +4006,9 @@ class SimplePullRequest(BaseModel):
     active_lock_reason: Optional[ActiveLockReason] = None
 
 
-class WorkflowJob(BaseModel):
+class WorkflowJob(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     id: Optional[int] = None
     run_id: Optional[float] = None
@@ -3934,9 +4050,9 @@ class WorkflowJob(BaseModel):
     completed_at: Optional[Optional[str]] = None
 
 
-class WorkflowRun(BaseModel):
+class WorkflowRun(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     artifacts_url: Optional[AnyUrl] = None
     cancel_url: Optional[AnyUrl] = None
@@ -3950,6 +4066,7 @@ class WorkflowRun(BaseModel):
     head_commit: Optional[CommitSimple] = None
     head_repository: Optional[RepositoryLite] = None
     head_sha: Optional[str] = None
+    path: Optional[str] = None
     html_url: Optional[AnyUrl] = None
     id: Optional[int] = None
     jobs_url: Optional[AnyUrl] = None
@@ -3972,9 +4089,9 @@ class WorkflowRun(BaseModel):
     triggering_actor: Optional[User] = None
 
 
-class BranchProtectionRuleCreated(BaseModel):
+class BranchProtectionRuleCreated(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     action: Optional[Literal["created"]] = None
     rule: Optional[BranchProtectionRule] = None
@@ -3984,9 +4101,9 @@ class BranchProtectionRuleCreated(BaseModel):
     organization: Optional[Organization] = None
 
 
-class BranchProtectionRuleDeleted(BaseModel):
+class BranchProtectionRuleDeleted(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     action: Optional[Literal["deleted"]] = None
     rule: Optional[BranchProtectionRule] = None
@@ -3996,9 +4113,9 @@ class BranchProtectionRuleDeleted(BaseModel):
     organization: Optional[Organization] = None
 
 
-class BranchProtectionRuleEdited(BaseModel):
+class BranchProtectionRuleEdited(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     action: Optional[Literal["edited"]] = None
     rule: Optional[BranchProtectionRule] = None
@@ -4011,7 +4128,7 @@ class BranchProtectionRuleEdited(BaseModel):
     organization: Optional[Organization] = None
 
 
-class BranchProtectionRuleEvent(BaseModel):
+class BranchProtectionRuleEvent(GhWebhooksModel):
     __root__: Optional[
         Union[
             BranchProtectionRuleCreated,
@@ -4021,9 +4138,9 @@ class BranchProtectionRuleEvent(BaseModel):
     ] = None
 
 
-class CheckSuite(BaseModel):
+class CheckSuite(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     id: Optional[int] = Field(
         None, description="The id of the check suite that this check run is part of."
@@ -4048,9 +4165,9 @@ class CheckSuite(BaseModel):
     updated_at: Optional[datetime] = None
 
 
-class CheckRun(BaseModel):
+class CheckRun(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     id: Optional[int] = Field(None, description="The id of the check.")
     node_id: Optional[str] = None
@@ -4085,9 +4202,9 @@ class CheckRun(BaseModel):
     deployment: Optional[CheckRunDeployment] = None
 
 
-class CheckRunCompleted(BaseModel):
+class CheckRunCompleted(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     action: Optional[Literal["completed"]] = None
     check_run: Optional[CheckRun] = Field(
@@ -4103,9 +4220,9 @@ class CheckRunCompleted(BaseModel):
     organization: Optional[Organization] = None
 
 
-class CheckSuite1(BaseModel):
+class CheckSuite1(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     id: Optional[int] = Field(
         None, description="The id of the check suite that this check run is part of."
@@ -4130,9 +4247,9 @@ class CheckSuite1(BaseModel):
     updated_at: Optional[datetime] = None
 
 
-class CheckRun1(BaseModel):
+class CheckRun1(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     id: Optional[int] = Field(None, description="The id of the check.")
     node_id: Optional[str] = None
@@ -4167,9 +4284,9 @@ class CheckRun1(BaseModel):
     deployment: Optional[CheckRunDeployment] = None
 
 
-class CheckRunCreated(BaseModel):
+class CheckRunCreated(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     action: Optional[Literal["created"]] = None
     check_run: Optional[CheckRun1] = Field(
@@ -4185,9 +4302,9 @@ class CheckRunCreated(BaseModel):
     organization: Optional[Organization] = None
 
 
-class CheckSuite2(BaseModel):
+class CheckSuite2(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     id: Optional[int] = Field(
         None, description="The id of the check suite that this check run is part of."
@@ -4212,9 +4329,9 @@ class CheckSuite2(BaseModel):
     updated_at: Optional[datetime] = None
 
 
-class CheckRun2(BaseModel):
+class CheckRun2(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     id: Optional[int] = Field(None, description="The id of the check.")
     node_id: Optional[str] = None
@@ -4249,9 +4366,9 @@ class CheckRun2(BaseModel):
     deployment: Optional[CheckRunDeployment] = None
 
 
-class CheckRunRequestedAction(BaseModel):
+class CheckRunRequestedAction(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     action: Optional[Literal["requested_action"]] = None
     check_run: Optional[CheckRun2] = Field(
@@ -4267,9 +4384,9 @@ class CheckRunRequestedAction(BaseModel):
     organization: Optional[Organization] = None
 
 
-class CheckSuite3(BaseModel):
+class CheckSuite3(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     id: Optional[int] = Field(
         None, description="The id of the check suite that this check run is part of."
@@ -4294,9 +4411,9 @@ class CheckSuite3(BaseModel):
     updated_at: Optional[datetime] = None
 
 
-class CheckRun3(BaseModel):
+class CheckRun3(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     id: Optional[int] = Field(None, description="The id of the check.")
     node_id: Optional[str] = None
@@ -4330,9 +4447,9 @@ class CheckRun3(BaseModel):
     deployment: Optional[CheckRunDeployment] = None
 
 
-class CheckRunRerequested(BaseModel):
+class CheckRunRerequested(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     action: Optional[Literal["rerequested"]] = None
     check_run: Optional[CheckRun3] = Field(
@@ -4348,7 +4465,7 @@ class CheckRunRerequested(BaseModel):
     organization: Optional[Organization] = None
 
 
-class CheckRunEvent(BaseModel):
+class CheckRunEvent(GhWebhooksModel):
     __root__: Optional[
         Union[
             CheckRunCompleted,
@@ -4359,9 +4476,9 @@ class CheckRunEvent(BaseModel):
     ] = None
 
 
-class CheckSuite4(BaseModel):
+class CheckSuite4(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     id: Optional[int] = None
     node_id: Optional[str] = None
@@ -4398,9 +4515,9 @@ class CheckSuite4(BaseModel):
     head_commit: Optional[CommitSimple] = None
 
 
-class CheckSuiteCompleted(BaseModel):
+class CheckSuiteCompleted(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     action: Optional[Literal["completed"]] = None
     check_suite: Optional[CheckSuite4] = Field(
@@ -4413,9 +4530,9 @@ class CheckSuiteCompleted(BaseModel):
     organization: Optional[Organization] = None
 
 
-class CheckSuite5(BaseModel):
+class CheckSuite5(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     id: Optional[int] = None
     node_id: Optional[str] = None
@@ -4452,9 +4569,9 @@ class CheckSuite5(BaseModel):
     head_commit: Optional[CommitSimple] = None
 
 
-class CheckSuiteRequested(BaseModel):
+class CheckSuiteRequested(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     action: Optional[Literal["requested"]] = None
     check_suite: Optional[CheckSuite5] = Field(
@@ -4467,9 +4584,9 @@ class CheckSuiteRequested(BaseModel):
     organization: Optional[Organization] = None
 
 
-class CheckSuite6(BaseModel):
+class CheckSuite6(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     id: Optional[int] = None
     node_id: Optional[str] = None
@@ -4504,9 +4621,9 @@ class CheckSuite6(BaseModel):
     head_commit: Optional[CommitSimple] = None
 
 
-class CheckSuiteRerequested(BaseModel):
+class CheckSuiteRerequested(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     action: Optional[Literal["rerequested"]] = None
     check_suite: Optional[CheckSuite6] = Field(
@@ -4519,15 +4636,15 @@ class CheckSuiteRerequested(BaseModel):
     organization: Optional[Organization] = None
 
 
-class CheckSuiteEvent(BaseModel):
+class CheckSuiteEvent(GhWebhooksModel):
     __root__: Optional[
         Union[CheckSuiteCompleted, CheckSuiteRequested, CheckSuiteRerequested]
     ] = None
 
 
-class CodeScanningAlertAppearedInBranch(BaseModel):
+class CodeScanningAlertAppearedInBranch(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     action: Optional[Literal["appeared_in_branch"]] = None
     alert: Optional[Alert] = Field(
@@ -4547,9 +4664,9 @@ class CodeScanningAlertAppearedInBranch(BaseModel):
     organization: Optional[Organization] = None
 
 
-class CodeScanningAlertClosedByUser(BaseModel):
+class CodeScanningAlertClosedByUser(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     action: Optional[Literal["closed_by_user"]] = None
     alert: Optional[Alert1] = Field(
@@ -4569,9 +4686,9 @@ class CodeScanningAlertClosedByUser(BaseModel):
     organization: Optional[Organization] = None
 
 
-class CodeScanningAlertCreated(BaseModel):
+class CodeScanningAlertCreated(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     action: Optional[Literal["created"]] = None
     alert: Optional[Alert2] = Field(
@@ -4591,9 +4708,9 @@ class CodeScanningAlertCreated(BaseModel):
     organization: Optional[Organization] = None
 
 
-class CodeScanningAlertFixed(BaseModel):
+class CodeScanningAlertFixed(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     action: Optional[Literal["fixed"]] = None
     alert: Optional[Alert3] = Field(
@@ -4613,9 +4730,9 @@ class CodeScanningAlertFixed(BaseModel):
     organization: Optional[Organization] = None
 
 
-class CodeScanningAlertReopened(BaseModel):
+class CodeScanningAlertReopened(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     action: Optional[Literal["reopened"]] = None
     alert: Optional[Alert4] = Field(
@@ -4635,9 +4752,9 @@ class CodeScanningAlertReopened(BaseModel):
     organization: Optional[Organization] = None
 
 
-class CodeScanningAlertReopenedByUser(BaseModel):
+class CodeScanningAlertReopenedByUser(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     action: Optional[Literal["reopened_by_user"]] = None
     alert: Optional[Alert5] = Field(
@@ -4657,7 +4774,7 @@ class CodeScanningAlertReopenedByUser(BaseModel):
     organization: Optional[Organization] = None
 
 
-class CodeScanningAlertEvent(BaseModel):
+class CodeScanningAlertEvent(GhWebhooksModel):
     __root__: Optional[
         Union[
             CodeScanningAlertAppearedInBranch,
@@ -4670,9 +4787,9 @@ class CodeScanningAlertEvent(BaseModel):
     ] = None
 
 
-class CommitCommentCreated(BaseModel):
+class CommitCommentCreated(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     action: Optional[Literal["created"]] = Field(
         None, description="The action performed. Can be `created`."
@@ -4687,13 +4804,13 @@ class CommitCommentCreated(BaseModel):
     organization: Optional[Organization] = None
 
 
-class CommitCommentEvent(BaseModel):
+class CommitCommentEvent(GhWebhooksModel):
     __root__: Optional[CommitCommentCreated] = None
 
 
-class CreateEvent(BaseModel):
+class CreateEvent(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     ref: Optional[str] = Field(
         None,
@@ -4720,9 +4837,9 @@ class CreateEvent(BaseModel):
     organization: Optional[Organization] = None
 
 
-class DeleteEvent(BaseModel):
+class DeleteEvent(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     ref: Optional[str] = Field(
         None,
@@ -4742,9 +4859,9 @@ class DeleteEvent(BaseModel):
     organization: Optional[Organization] = None
 
 
-class DeployKeyCreated(BaseModel):
+class DeployKeyCreated(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     action: Optional[Literal["created"]] = None
     key: Optional[Key] = Field(
@@ -4757,9 +4874,9 @@ class DeployKeyCreated(BaseModel):
     organization: Optional[Organization] = None
 
 
-class DeployKeyDeleted(BaseModel):
+class DeployKeyDeleted(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     action: Optional[Literal["deleted"]] = None
     key: Optional[Key1] = Field(
@@ -4772,13 +4889,13 @@ class DeployKeyDeleted(BaseModel):
     organization: Optional[Organization] = None
 
 
-class DeployKeyEvent(BaseModel):
+class DeployKeyEvent(GhWebhooksModel):
     __root__: Optional[Union[DeployKeyCreated, DeployKeyDeleted]] = None
 
 
-class DeploymentCreated(BaseModel):
+class DeploymentCreated(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     action: Optional[Literal["created"]] = None
     deployment: Optional[Deployment] = None
@@ -4790,13 +4907,13 @@ class DeploymentCreated(BaseModel):
     organization: Optional[Organization] = None
 
 
-class DeploymentEvent(BaseModel):
+class DeploymentEvent(GhWebhooksModel):
     __root__: Optional[DeploymentCreated] = None
 
 
-class DeploymentStatus(BaseModel):
+class DeploymentStatus(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     url: Optional[AnyUrl] = None
     id: Optional[int] = None
@@ -4822,9 +4939,9 @@ class DeploymentStatus(BaseModel):
     performed_via_github_app: Optional[Optional[App]] = None
 
 
-class DeploymentStatusCreated(BaseModel):
+class DeploymentStatusCreated(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     action: Optional[Literal["created"]] = None
     deployment_status: Optional[DeploymentStatus] = Field(
@@ -4841,13 +4958,13 @@ class DeploymentStatusCreated(BaseModel):
     organization: Optional[Organization] = None
 
 
-class DeploymentStatusEvent(BaseModel):
+class DeploymentStatusEvent(GhWebhooksModel):
     __root__: Optional[DeploymentStatusCreated] = None
 
 
 class DiscussionModel(Discussion):
     class Config:
-        extra = Extra.forbid
+        pass
 
     category: Optional[Category] = None
     answer_html_url: Optional[AnyUrl] = None
@@ -4855,9 +4972,9 @@ class DiscussionModel(Discussion):
     answer_chosen_by: Optional[User] = None
 
 
-class DiscussionAnswered(BaseModel):
+class DiscussionAnswered(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     action: Optional[Literal["answered"]] = None
     discussion: Optional[DiscussionModel] = None
@@ -4868,9 +4985,9 @@ class DiscussionAnswered(BaseModel):
     organization: Optional[Organization] = None
 
 
-class DiscussionCategoryChanged(BaseModel):
+class DiscussionCategoryChanged(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     changes: Optional[Changes1] = None
     action: Optional[Literal["category_changed"]] = None
@@ -4889,9 +5006,9 @@ class Discussion1(Discussion):
     answer_chosen_by: Optional[Any] = None
 
 
-class DiscussionCreated(BaseModel):
+class DiscussionCreated(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     action: Optional[Literal["created"]] = None
     discussion: Optional[Discussion1] = None
@@ -4901,9 +5018,9 @@ class DiscussionCreated(BaseModel):
     organization: Optional[Organization] = None
 
 
-class DiscussionDeleted(BaseModel):
+class DiscussionDeleted(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     action: Optional[Literal["deleted"]] = None
     discussion: Optional[Discussion] = None
@@ -4913,9 +5030,9 @@ class DiscussionDeleted(BaseModel):
     organization: Optional[Organization] = None
 
 
-class DiscussionEdited(BaseModel):
+class DiscussionEdited(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     changes: Optional[Changes2] = None
     action: Optional[Literal["edited"]] = None
@@ -4926,9 +5043,9 @@ class DiscussionEdited(BaseModel):
     organization: Optional[Organization] = None
 
 
-class DiscussionLabeled(BaseModel):
+class DiscussionLabeled(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     action: Optional[Literal["labeled"]] = None
     discussion: Optional[Discussion] = None
@@ -4944,9 +5061,9 @@ class Discussion2(Discussion):
     locked: Optional[Literal[True]] = None
 
 
-class DiscussionLocked(BaseModel):
+class DiscussionLocked(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     action: Optional[Literal["locked"]] = None
     discussion: Optional[Discussion2] = None
@@ -4956,9 +5073,9 @@ class DiscussionLocked(BaseModel):
     organization: Optional[Organization] = None
 
 
-class DiscussionPinned(BaseModel):
+class DiscussionPinned(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     action: Optional[Literal["pinned"]] = None
     discussion: Optional[Discussion] = None
@@ -4968,17 +5085,17 @@ class DiscussionPinned(BaseModel):
     organization: Optional[Organization] = None
 
 
-class Changes3(BaseModel):
+class Changes3(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     new_discussion: Optional[Discussion] = None
     new_repository: Optional[Repository] = None
 
 
-class DiscussionTransferred(BaseModel):
+class DiscussionTransferred(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     changes: Optional[Changes3] = None
     action: Optional[Literal["transferred"]] = None
@@ -4996,9 +5113,9 @@ class Discussion3(Discussion):
     answer_chosen_by: Optional[Any] = None
 
 
-class DiscussionUnanswered(BaseModel):
+class DiscussionUnanswered(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     action: Optional[Literal["unanswered"]] = None
     discussion: Optional[Discussion3] = None
@@ -5009,9 +5126,9 @@ class DiscussionUnanswered(BaseModel):
     organization: Optional[Organization] = None
 
 
-class DiscussionUnlabeled(BaseModel):
+class DiscussionUnlabeled(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     action: Optional[Literal["unlabeled"]] = None
     discussion: Optional[Discussion] = None
@@ -5027,9 +5144,9 @@ class Discussion4(Discussion):
     locked: Optional[Literal[False]] = None
 
 
-class DiscussionUnlocked(BaseModel):
+class DiscussionUnlocked(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     action: Optional[Literal["unlocked"]] = None
     discussion: Optional[Discussion4] = None
@@ -5039,9 +5156,9 @@ class DiscussionUnlocked(BaseModel):
     organization: Optional[Organization] = None
 
 
-class DiscussionUnpinned(BaseModel):
+class DiscussionUnpinned(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     action: Optional[Literal["unpinned"]] = None
     discussion: Optional[Discussion] = None
@@ -5051,7 +5168,7 @@ class DiscussionUnpinned(BaseModel):
     organization: Optional[Organization] = None
 
 
-class DiscussionEvent(BaseModel):
+class DiscussionEvent(GhWebhooksModel):
     __root__: Optional[
         Union[
             DiscussionAnswered,
@@ -5071,9 +5188,9 @@ class DiscussionEvent(BaseModel):
     ] = None
 
 
-class DiscussionCommentCreated(BaseModel):
+class DiscussionCommentCreated(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     action: Optional[Literal["created"]] = None
     comment: Optional[Comment1] = None
@@ -5084,9 +5201,9 @@ class DiscussionCommentCreated(BaseModel):
     organization: Optional[Organization] = None
 
 
-class DiscussionCommentDeleted(BaseModel):
+class DiscussionCommentDeleted(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     action: Optional[Literal["deleted"]] = None
     comment: Optional[Comment2] = None
@@ -5097,9 +5214,9 @@ class DiscussionCommentDeleted(BaseModel):
     organization: Optional[Organization] = None
 
 
-class DiscussionCommentEdited(BaseModel):
+class DiscussionCommentEdited(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     changes: Optional[Changes4] = None
     action: Optional[Literal["edited"]] = None
@@ -5111,7 +5228,7 @@ class DiscussionCommentEdited(BaseModel):
     organization: Optional[Organization] = None
 
 
-class DiscussionCommentEvent(BaseModel):
+class DiscussionCommentEvent(GhWebhooksModel):
     __root__: Optional[
         Union[
             DiscussionCommentCreated, DiscussionCommentDeleted, DiscussionCommentEdited
@@ -5123,9 +5240,9 @@ class Forkee(Repository):
     fork: Optional[Literal[True]] = None
 
 
-class ForkEvent(BaseModel):
+class ForkEvent(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     forkee: Optional[Forkee] = Field(
         None,
@@ -5137,9 +5254,9 @@ class ForkEvent(BaseModel):
     organization: Optional[Organization] = None
 
 
-class GollumEvent(BaseModel):
+class GollumEvent(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     pages: Optional[List[Page]] = Field(
         None, description="The pages that were updated."
@@ -5150,9 +5267,9 @@ class GollumEvent(BaseModel):
     organization: Optional[Organization] = None
 
 
-class InstallationCreated(BaseModel):
+class InstallationCreated(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     action: Optional[Literal["created"]] = None
     installation: Optional[Installation] = None
@@ -5164,9 +5281,9 @@ class InstallationCreated(BaseModel):
     sender: Optional[User] = None
 
 
-class InstallationDeleted(BaseModel):
+class InstallationDeleted(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     action: Optional[Literal["deleted"]] = None
     installation: Optional[Installation] = None
@@ -5178,9 +5295,9 @@ class InstallationDeleted(BaseModel):
     sender: Optional[User] = None
 
 
-class InstallationNewPermissionsAccepted(BaseModel):
+class InstallationNewPermissionsAccepted(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     action: Optional[Literal["new_permissions_accepted"]] = None
     installation: Optional[Installation] = None
@@ -5197,9 +5314,9 @@ class Installation1(Installation):
     suspended_at: Optional[datetime] = None
 
 
-class InstallationSuspend(BaseModel):
+class InstallationSuspend(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     action: Optional[Literal["suspend"]] = None
     installation: Optional[Installation1] = None
@@ -5216,9 +5333,9 @@ class Installation2(Installation):
     suspended_at: Optional[Any] = None
 
 
-class InstallationUnsuspend(BaseModel):
+class InstallationUnsuspend(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     action: Optional[Literal["unsuspend"]] = None
     installation: Optional[Installation2] = None
@@ -5230,7 +5347,7 @@ class InstallationUnsuspend(BaseModel):
     sender: Optional[User] = None
 
 
-class InstallationEvent(BaseModel):
+class InstallationEvent(GhWebhooksModel):
     __root__: Optional[
         Union[
             InstallationCreated,
@@ -5242,9 +5359,9 @@ class InstallationEvent(BaseModel):
     ] = None
 
 
-class InstallationRepositoriesAdded(BaseModel):
+class InstallationRepositoriesAdded(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     action: Optional[Literal["added"]] = None
     installation: Optional[Installation] = None
@@ -5265,9 +5382,9 @@ class InstallationRepositoriesAdded(BaseModel):
     sender: Optional[User] = None
 
 
-class InstallationRepositoriesRemoved(BaseModel):
+class InstallationRepositoriesRemoved(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     action: Optional[Literal["removed"]] = None
     installation: Optional[Installation] = None
@@ -5288,15 +5405,15 @@ class InstallationRepositoriesRemoved(BaseModel):
     sender: Optional[User] = None
 
 
-class InstallationRepositoriesEvent(BaseModel):
+class InstallationRepositoriesEvent(GhWebhooksModel):
     __root__: Optional[
         Union[InstallationRepositoriesAdded, InstallationRepositoriesRemoved]
     ] = None
 
 
-class LabelCreated(BaseModel):
+class LabelCreated(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     action: Optional[Literal["created"]] = None
     label: Optional[Label] = Field(None, description="The label that was added.")
@@ -5306,9 +5423,9 @@ class LabelCreated(BaseModel):
     organization: Optional[Organization] = None
 
 
-class LabelDeleted(BaseModel):
+class LabelDeleted(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     action: Optional[Literal["deleted"]] = None
     label: Optional[Label] = Field(None, description="The label that was removed.")
@@ -5318,9 +5435,9 @@ class LabelDeleted(BaseModel):
     organization: Optional[Organization] = None
 
 
-class LabelEdited(BaseModel):
+class LabelEdited(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     action: Optional[Literal["edited"]] = None
     label: Optional[Label] = Field(None, description="The label that was edited.")
@@ -5333,25 +5450,26 @@ class LabelEdited(BaseModel):
     organization: Optional[Organization] = None
 
 
-class LabelEvent(BaseModel):
+class LabelEvent(GhWebhooksModel):
     __root__: Optional[Union[LabelCreated, LabelDeleted, LabelEdited]] = None
 
 
-class MemberAdded(BaseModel):
+class MemberAdded(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     action: Optional[Literal["added"]] = None
     changes: Optional[Changes10] = None
     member: Optional[User] = Field(None, description="The user that was added.")
     repository: Optional[Repository] = None
     installation: Optional[InstallationLite] = None
+    organization: Optional[Organization] = None
     sender: Optional[User] = None
 
 
-class MemberEdited(BaseModel):
+class MemberEdited(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     action: Optional[Literal["edited"]] = None
     member: Optional[User] = Field(
@@ -5362,27 +5480,29 @@ class MemberEdited(BaseModel):
     )
     repository: Optional[Repository] = None
     installation: Optional[InstallationLite] = None
+    organization: Optional[Organization] = None
     sender: Optional[User] = None
 
 
-class MemberRemoved(BaseModel):
+class MemberRemoved(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     action: Optional[Literal["removed"]] = None
     member: Optional[User] = Field(None, description="The user that was removed.")
     repository: Optional[Repository] = None
     installation: Optional[InstallationLite] = None
+    organization: Optional[Organization] = None
     sender: Optional[User] = None
 
 
-class MemberEvent(BaseModel):
+class MemberEvent(GhWebhooksModel):
     __root__: Optional[Union[MemberAdded, MemberEdited, MemberRemoved]] = None
 
 
-class MetaDeleted(BaseModel):
+class MetaDeleted(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     action: Optional[Literal["deleted"]] = None
     hook_id: Optional[int] = Field(None, description="The id of the modified webhook.")
@@ -5394,7 +5514,7 @@ class MetaDeleted(BaseModel):
     sender: Optional[User] = None
 
 
-class MetaEvent(BaseModel):
+class MetaEvent(GhWebhooksModel):
     __root__: Optional[MetaDeleted] = None
 
 
@@ -5403,9 +5523,9 @@ class Milestone1(Milestone):
     closed_at: Optional[str] = None
 
 
-class MilestoneClosed(BaseModel):
+class MilestoneClosed(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     action: Optional[Literal["closed"]] = None
     milestone: Optional[Milestone1] = None
@@ -5420,9 +5540,9 @@ class Milestone2(Milestone):
     closed_at: Optional[Any] = None
 
 
-class MilestoneCreated(BaseModel):
+class MilestoneCreated(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     action: Optional[Literal["created"]] = None
     milestone: Optional[Milestone2] = None
@@ -5432,9 +5552,9 @@ class MilestoneCreated(BaseModel):
     organization: Optional[Organization] = None
 
 
-class MilestoneDeleted(BaseModel):
+class MilestoneDeleted(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     action: Optional[Literal["deleted"]] = None
     milestone: Optional[Milestone] = None
@@ -5444,9 +5564,9 @@ class MilestoneDeleted(BaseModel):
     organization: Optional[Organization] = None
 
 
-class MilestoneEdited(BaseModel):
+class MilestoneEdited(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     action: Optional[Literal["edited"]] = None
     changes: Optional[Changes12] = Field(
@@ -5463,9 +5583,9 @@ class Milestone3(Milestone2):
     pass
 
 
-class MilestoneOpened(BaseModel):
+class MilestoneOpened(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     action: Optional[Literal["opened"]] = None
     milestone: Optional[Milestone3] = None
@@ -5475,7 +5595,7 @@ class MilestoneOpened(BaseModel):
     organization: Optional[Organization] = None
 
 
-class MilestoneEvent(BaseModel):
+class MilestoneEvent(GhWebhooksModel):
     __root__: Optional[
         Union[
             MilestoneClosed,
@@ -5487,9 +5607,9 @@ class MilestoneEvent(BaseModel):
     ] = None
 
 
-class OrganizationDeleted(BaseModel):
+class OrganizationDeleted(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     action: Optional[Literal["deleted"]] = None
     membership: Optional[Membership] = None
@@ -5498,9 +5618,9 @@ class OrganizationDeleted(BaseModel):
     organization: Optional[Organization] = None
 
 
-class OrganizationMemberAdded(BaseModel):
+class OrganizationMemberAdded(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     action: Optional[Literal["member_added"]] = None
     membership: Optional[Membership] = None
@@ -5509,9 +5629,9 @@ class OrganizationMemberAdded(BaseModel):
     organization: Optional[Organization] = None
 
 
-class OrganizationMemberRemoved(BaseModel):
+class OrganizationMemberRemoved(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     action: Optional[Literal["member_removed"]] = None
     membership: Optional[Membership] = None
@@ -5520,9 +5640,9 @@ class OrganizationMemberRemoved(BaseModel):
     organization: Optional[Organization] = None
 
 
-class OrganizationRenamed(BaseModel):
+class OrganizationRenamed(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     action: Optional[Literal["renamed"]] = None
     membership: Optional[Membership] = None
@@ -5531,7 +5651,7 @@ class OrganizationRenamed(BaseModel):
     organization: Optional[Organization] = None
 
 
-class OrganizationEvent(BaseModel):
+class OrganizationEvent(GhWebhooksModel):
     __root__: Optional[
         Union[
             OrganizationDeleted,
@@ -5543,9 +5663,9 @@ class OrganizationEvent(BaseModel):
     ] = None
 
 
-class PackagePublished(BaseModel):
+class PackagePublished(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     action: Optional[Literal["published"]] = None
     package: Optional[Package] = Field(
@@ -5556,9 +5676,9 @@ class PackagePublished(BaseModel):
     organization: Optional[Organization] = None
 
 
-class PackageUpdated(BaseModel):
+class PackageUpdated(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     action: Optional[Literal["updated"]] = None
     package: Optional[Package1] = Field(
@@ -5569,13 +5689,13 @@ class PackageUpdated(BaseModel):
     organization: Optional[Organization] = None
 
 
-class PackageEvent(BaseModel):
+class PackageEvent(GhWebhooksModel):
     __root__: Optional[Union[PackagePublished, PackageUpdated]] = None
 
 
-class PageBuildEvent(BaseModel):
+class PageBuildEvent(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     id: Optional[int] = None
     build: Optional[Build] = Field(
@@ -5588,9 +5708,9 @@ class PageBuildEvent(BaseModel):
     organization: Optional[Organization] = None
 
 
-class PingEvent(BaseModel):
+class PingEvent(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     zen: Optional[str] = None
     hook_id: Optional[int] = Field(
@@ -5605,9 +5725,9 @@ class PingEvent(BaseModel):
     organization: Optional[Organization] = None
 
 
-class ProjectClosed(BaseModel):
+class ProjectClosed(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     action: Optional[Literal["closed"]] = None
     project: Optional[Project] = None
@@ -5617,9 +5737,9 @@ class ProjectClosed(BaseModel):
     organization: Optional[Organization] = None
 
 
-class ProjectCreated(BaseModel):
+class ProjectCreated(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     action: Optional[Literal["created"]] = None
     project: Optional[Project] = None
@@ -5629,9 +5749,9 @@ class ProjectCreated(BaseModel):
     organization: Optional[Organization] = None
 
 
-class ProjectDeleted(BaseModel):
+class ProjectDeleted(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     action: Optional[Literal["deleted"]] = None
     project: Optional[Project] = None
@@ -5641,9 +5761,9 @@ class ProjectDeleted(BaseModel):
     organization: Optional[Organization] = None
 
 
-class ProjectEdited(BaseModel):
+class ProjectEdited(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     action: Optional[Literal["edited"]] = None
     changes: Optional[Changes13] = Field(
@@ -5656,9 +5776,9 @@ class ProjectEdited(BaseModel):
     organization: Optional[Organization] = None
 
 
-class ProjectReopened(BaseModel):
+class ProjectReopened(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     action: Optional[Literal["reopened"]] = None
     project: Optional[Project] = None
@@ -5668,7 +5788,7 @@ class ProjectReopened(BaseModel):
     organization: Optional[Organization] = None
 
 
-class ProjectEvent(BaseModel):
+class ProjectEvent(GhWebhooksModel):
     __root__: Optional[
         Union[
             ProjectClosed,
@@ -5680,9 +5800,9 @@ class ProjectEvent(BaseModel):
     ] = None
 
 
-class ProjectCardConverted(BaseModel):
+class ProjectCardConverted(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     action: Optional[Literal["converted"]] = None
     changes: Optional[Changes14] = None
@@ -5693,9 +5813,9 @@ class ProjectCardConverted(BaseModel):
     installation: Optional[InstallationLite] = None
 
 
-class ProjectCardCreated(BaseModel):
+class ProjectCardCreated(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     action: Optional[Literal["created"]] = None
     project_card: Optional[ProjectCard] = None
@@ -5705,9 +5825,9 @@ class ProjectCardCreated(BaseModel):
     installation: Optional[InstallationLite] = None
 
 
-class ProjectCardDeleted(BaseModel):
+class ProjectCardDeleted(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     action: Optional[Literal["deleted"]] = None
     project_card: Optional[ProjectCard] = None
@@ -5717,9 +5837,9 @@ class ProjectCardDeleted(BaseModel):
     installation: Optional[InstallationLite] = None
 
 
-class ProjectCardEdited(BaseModel):
+class ProjectCardEdited(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     action: Optional[Literal["edited"]] = None
     changes: Optional[Changes15] = None
@@ -5734,9 +5854,9 @@ class ProjectCard1(ProjectCard):
     after_id: Optional[Optional[float]] = None
 
 
-class ProjectCardMoved(BaseModel):
+class ProjectCardMoved(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     action: Optional[Literal["moved"]] = None
     changes: Optional[Changes16] = None
@@ -5747,7 +5867,7 @@ class ProjectCardMoved(BaseModel):
     installation: Optional[InstallationLite] = None
 
 
-class ProjectCardEvent(BaseModel):
+class ProjectCardEvent(GhWebhooksModel):
     __root__: Optional[
         Union[
             ProjectCardConverted,
@@ -5759,9 +5879,9 @@ class ProjectCardEvent(BaseModel):
     ] = None
 
 
-class ProjectColumnCreated(BaseModel):
+class ProjectColumnCreated(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     action: Optional[Literal["created"]] = None
     project_column: Optional[ProjectColumn] = None
@@ -5771,9 +5891,9 @@ class ProjectColumnCreated(BaseModel):
     organization: Optional[Organization] = None
 
 
-class ProjectColumnDeleted(BaseModel):
+class ProjectColumnDeleted(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     action: Optional[Literal["deleted"]] = None
     project_column: Optional[ProjectColumn] = None
@@ -5783,9 +5903,9 @@ class ProjectColumnDeleted(BaseModel):
     organization: Optional[Organization] = None
 
 
-class ProjectColumnEdited(BaseModel):
+class ProjectColumnEdited(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     action: Optional[Literal["edited"]] = None
     changes: Optional[Changes17] = None
@@ -5796,9 +5916,9 @@ class ProjectColumnEdited(BaseModel):
     organization: Optional[Organization] = None
 
 
-class ProjectColumnMoved(BaseModel):
+class ProjectColumnMoved(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     action: Optional[Literal["moved"]] = None
     project_column: Optional[ProjectColumn] = None
@@ -5808,7 +5928,7 @@ class ProjectColumnMoved(BaseModel):
     organization: Optional[Organization] = None
 
 
-class ProjectColumnEvent(BaseModel):
+class ProjectColumnEvent(GhWebhooksModel):
     __root__: Optional[
         Union[
             ProjectColumnCreated,
@@ -5819,13 +5939,128 @@ class ProjectColumnEvent(BaseModel):
     ] = None
 
 
+class ProjectsV2ItemModel(ProjectsV2Item):
+    class Config:
+        pass
+
+    archived_at: Optional[datetime] = None
+
+
+class ProjectsV2ItemArchived(GhWebhooksModel):
+    class Config:
+        pass
+
+    changes: Optional[Changes18] = None
+    action: Optional[Literal["archived"]] = None
+    projects_v2_item: Optional[ProjectsV2ItemModel] = None
+    sender: Optional[User] = None
+    organization: Optional[Organization] = None
+    installation: Optional[InstallationLite] = None
+
+
+class ProjectsV2Item1(ProjectsV2Item):
+    content_type: Optional[Literal["Issue"]] = None
+
+
+class ProjectsV2ItemConverted(GhWebhooksModel):
+    class Config:
+        pass
+
+    changes: Optional[Changes19] = None
+    action: Optional[Literal["converted"]] = None
+    projects_v2_item: Optional[ProjectsV2Item1] = None
+    sender: Optional[User] = None
+    organization: Optional[Organization] = None
+    installation: Optional[InstallationLite] = None
+
+
+class ProjectsV2Item2(ProjectsV2Item):
+    archived_at: Optional[Any] = None
+
+
+class ProjectsV2ItemCreated(GhWebhooksModel):
+    class Config:
+        pass
+
+    action: Optional[Literal["created"]] = None
+    projects_v2_item: Optional[ProjectsV2Item2] = None
+    sender: Optional[User] = None
+    organization: Optional[Organization] = None
+    installation: Optional[InstallationLite] = None
+
+
+class ProjectsV2ItemDeleted(GhWebhooksModel):
+    class Config:
+        pass
+
+    action: Optional[Literal["deleted"]] = None
+    projects_v2_item: Optional[ProjectsV2Item] = None
+    sender: Optional[User] = None
+    organization: Optional[Organization] = None
+    installation: Optional[InstallationLite] = None
+
+
+class ProjectsV2ItemEdited(GhWebhooksModel):
+    class Config:
+        pass
+
+    changes: Optional[Changes20] = None
+    action: Optional[Literal["edited"]] = None
+    projects_v2_item: Optional[ProjectsV2Item] = None
+    sender: Optional[User] = None
+    organization: Optional[Organization] = None
+    installation: Optional[InstallationLite] = None
+
+
+class ProjectsV2ItemReordered(GhWebhooksModel):
+    class Config:
+        pass
+
+    changes: Optional[Changes21] = None
+    action: Optional[Literal["reordered"]] = None
+    projects_v2_item: Optional[ProjectsV2Item] = None
+    sender: Optional[User] = None
+    organization: Optional[Organization] = None
+    installation: Optional[InstallationLite] = None
+
+
+class ProjectsV2Item3(ProjectsV2Item2):
+    pass
+
+
+class ProjectsV2ItemRestored(GhWebhooksModel):
+    class Config:
+        pass
+
+    changes: Optional[Changes22] = None
+    action: Optional[Literal["restored"]] = None
+    projects_v2_item: Optional[ProjectsV2Item3] = None
+    sender: Optional[User] = None
+    organization: Optional[Organization] = None
+    installation: Optional[InstallationLite] = None
+
+
+class ProjectsV2ItemEvent(GhWebhooksModel):
+    __root__: Optional[
+        Union[
+            ProjectsV2ItemArchived,
+            ProjectsV2ItemConverted,
+            ProjectsV2ItemCreated,
+            ProjectsV2ItemDeleted,
+            ProjectsV2ItemEdited,
+            ProjectsV2ItemReordered,
+            ProjectsV2ItemRestored,
+        ]
+    ] = None
+
+
 class Repository6(Repository):
     private: Optional[Literal[False]] = None
 
 
-class PublicEvent(BaseModel):
+class PublicEvent(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     repository: Optional[Repository6] = None
     sender: Optional[User] = None
@@ -5833,9 +6068,9 @@ class PublicEvent(BaseModel):
     organization: Optional[Organization] = None
 
 
-class PullRequestReviewDismissed(BaseModel):
+class PullRequestReviewDismissed(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     action: Optional[Literal["dismissed"]] = None
     review: Optional[Review] = Field(None, description="The review that was affected.")
@@ -5846,12 +6081,12 @@ class PullRequestReviewDismissed(BaseModel):
     sender: Optional[User] = None
 
 
-class PullRequestReviewEdited(BaseModel):
+class PullRequestReviewEdited(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     action: Optional[Literal["edited"]] = None
-    changes: Optional[Changes19] = None
+    changes: Optional[Changes24] = None
     review: Optional[Review1] = Field(None, description="The review that was affected.")
     pull_request: Optional[SimplePullRequest] = None
     repository: Optional[Repository] = None
@@ -5860,9 +6095,9 @@ class PullRequestReviewEdited(BaseModel):
     sender: Optional[User] = None
 
 
-class PullRequestReviewSubmitted(BaseModel):
+class PullRequestReviewSubmitted(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     action: Optional[Literal["submitted"]] = None
     review: Optional[Review2] = Field(None, description="The review that was affected.")
@@ -5873,7 +6108,7 @@ class PullRequestReviewSubmitted(BaseModel):
     sender: Optional[User] = None
 
 
-class PullRequestReviewEvent(BaseModel):
+class PullRequestReviewEvent(GhWebhooksModel):
     __root__: Optional[
         Union[
             PullRequestReviewDismissed,
@@ -5891,9 +6126,9 @@ class Base1(Head5):
     pass
 
 
-class PullRequest6(BaseModel):
+class PullRequest6(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     url: Optional[AnyUrl] = None
     id: Optional[int] = None
@@ -5933,9 +6168,9 @@ class PullRequest6(BaseModel):
     active_lock_reason: Optional[ActiveLockReason] = None
 
 
-class PullRequestReviewCommentCreated(BaseModel):
+class PullRequestReviewCommentCreated(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     action: Optional[Literal["created"]] = None
     comment: Optional[PullRequestReviewComment] = None
@@ -5954,9 +6189,9 @@ class Base2(Head5):
     pass
 
 
-class PullRequest7(BaseModel):
+class PullRequest7(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     url: Optional[AnyUrl] = None
     id: Optional[int] = None
@@ -5996,9 +6231,9 @@ class PullRequest7(BaseModel):
     active_lock_reason: Optional[ActiveLockReason] = None
 
 
-class PullRequestReviewCommentDeleted(BaseModel):
+class PullRequestReviewCommentDeleted(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     action: Optional[Literal["deleted"]] = None
     comment: Optional[PullRequestReviewComment] = None
@@ -6017,9 +6252,9 @@ class Base3(Head5):
     pass
 
 
-class PullRequest8(BaseModel):
+class PullRequest8(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     url: Optional[AnyUrl] = None
     id: Optional[int] = None
@@ -6059,12 +6294,12 @@ class PullRequest8(BaseModel):
     active_lock_reason: Optional[ActiveLockReason] = None
 
 
-class PullRequestReviewCommentEdited(BaseModel):
+class PullRequestReviewCommentEdited(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     action: Optional[Literal["edited"]] = None
-    changes: Optional[Changes20] = Field(
+    changes: Optional[Changes25] = Field(
         None, description="The changes to the comment."
     )
     comment: Optional[PullRequestReviewComment] = None
@@ -6075,7 +6310,7 @@ class PullRequestReviewCommentEdited(BaseModel):
     sender: Optional[User] = None
 
 
-class PullRequestReviewCommentEvent(BaseModel):
+class PullRequestReviewCommentEvent(GhWebhooksModel):
     __root__: Optional[
         Union[
             PullRequestReviewCommentCreated,
@@ -6085,17 +6320,17 @@ class PullRequestReviewCommentEvent(BaseModel):
     ] = None
 
 
-class Thread(BaseModel):
+class Thread(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     node_id: Optional[str] = None
     comments: Optional[List[PullRequestReviewComment]] = None
 
 
-class PullRequestReviewThreadResolved(BaseModel):
+class PullRequestReviewThreadResolved(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     action: Optional[Literal["resolved"]] = None
     thread: Optional[Thread] = None
@@ -6110,9 +6345,9 @@ class Thread1(Thread):
     pass
 
 
-class PullRequestReviewThreadUnresolved(BaseModel):
+class PullRequestReviewThreadUnresolved(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     action: Optional[Literal["unresolved"]] = None
     thread: Optional[Thread1] = None
@@ -6123,15 +6358,15 @@ class PullRequestReviewThreadUnresolved(BaseModel):
     sender: Optional[User] = None
 
 
-class PullRequestReviewThreadEvent(BaseModel):
+class PullRequestReviewThreadEvent(GhWebhooksModel):
     __root__: Optional[
         Union[PullRequestReviewThreadResolved, PullRequestReviewThreadUnresolved]
     ] = None
 
 
-class PushEvent(BaseModel):
+class PushEvent(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     ref: Optional[str] = Field(
         None,
@@ -6172,9 +6407,9 @@ class PushEvent(BaseModel):
     organization: Optional[Organization] = None
 
 
-class ReleaseCreated(BaseModel):
+class ReleaseCreated(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     action: Optional[Literal["created"]] = None
     release: Optional[ReleaseModel] = None
@@ -6184,9 +6419,9 @@ class ReleaseCreated(BaseModel):
     organization: Optional[Organization] = None
 
 
-class ReleaseDeleted(BaseModel):
+class ReleaseDeleted(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     action: Optional[Literal["deleted"]] = None
     release: Optional[ReleaseModel] = None
@@ -6196,12 +6431,12 @@ class ReleaseDeleted(BaseModel):
     organization: Optional[Organization] = None
 
 
-class ReleaseEdited(BaseModel):
+class ReleaseEdited(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     action: Optional[Literal["edited"]] = None
-    changes: Optional[Changes21] = None
+    changes: Optional[Changes26] = None
     release: Optional[ReleaseModel] = None
     repository: Optional[Repository] = None
     sender: Optional[User] = None
@@ -6216,9 +6451,9 @@ class Release2(ReleaseModel):
     )
 
 
-class ReleasePrereleased(BaseModel):
+class ReleasePrereleased(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     action: Optional[Literal["prereleased"]] = None
     release: Optional[Release2] = None
@@ -6232,9 +6467,9 @@ class Release3(ReleaseModel):
     published_at: Optional[datetime] = None
 
 
-class ReleasePublished(BaseModel):
+class ReleasePublished(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     action: Optional[Literal["published"]] = None
     release: Optional[Release3] = None
@@ -6244,9 +6479,9 @@ class ReleasePublished(BaseModel):
     organization: Optional[Organization] = None
 
 
-class ReleaseReleased(BaseModel):
+class ReleaseReleased(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     action: Optional[Literal["released"]] = None
     release: Optional[ReleaseModel] = None
@@ -6260,9 +6495,9 @@ class Release4(ReleaseModel):
     published_at: Optional[Any] = None
 
 
-class ReleaseUnpublished(BaseModel):
+class ReleaseUnpublished(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     action: Optional[Literal["unpublished"]] = None
     release: Optional[Release4] = None
@@ -6272,7 +6507,7 @@ class ReleaseUnpublished(BaseModel):
     organization: Optional[Organization] = None
 
 
-class ReleaseEvent(BaseModel):
+class ReleaseEvent(GhWebhooksModel):
     __root__: Optional[
         Union[
             ReleaseCreated,
@@ -6292,9 +6527,9 @@ class Repository7(Repository):
     )
 
 
-class RepositoryArchived(BaseModel):
+class RepositoryArchived(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     action: Optional[Literal["archived"]] = None
     repository: Optional[Repository7] = None
@@ -6303,9 +6538,9 @@ class RepositoryArchived(BaseModel):
     organization: Optional[Organization] = None
 
 
-class RepositoryCreated(BaseModel):
+class RepositoryCreated(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     action: Optional[Literal["created"]] = None
     repository: Optional[Repository] = None
@@ -6314,9 +6549,9 @@ class RepositoryCreated(BaseModel):
     organization: Optional[Organization] = None
 
 
-class RepositoryDeleted(BaseModel):
+class RepositoryDeleted(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     action: Optional[Literal["deleted"]] = None
     repository: Optional[Repository] = None
@@ -6325,12 +6560,12 @@ class RepositoryDeleted(BaseModel):
     organization: Optional[Organization] = None
 
 
-class RepositoryEdited(BaseModel):
+class RepositoryEdited(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     action: Optional[Literal["edited"]] = None
-    changes: Optional[Changes22] = None
+    changes: Optional[Changes27] = None
     repository: Optional[Repository] = None
     sender: Optional[User] = None
     installation: Optional[InstallationLite] = None
@@ -6343,9 +6578,9 @@ class Repository8(Repository):
     )
 
 
-class RepositoryPrivatized(BaseModel):
+class RepositoryPrivatized(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     action: Optional[Literal["privatized"]] = None
     repository: Optional[Repository8] = None
@@ -6360,9 +6595,9 @@ class Repository9(Repository):
     )
 
 
-class RepositoryPublicized(BaseModel):
+class RepositoryPublicized(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     action: Optional[Literal["publicized"]] = None
     repository: Optional[Repository9] = None
@@ -6371,24 +6606,24 @@ class RepositoryPublicized(BaseModel):
     organization: Optional[Organization] = None
 
 
-class RepositoryRenamed(BaseModel):
+class RepositoryRenamed(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     action: Optional[Literal["renamed"]] = None
-    changes: Optional[Changes23] = None
+    changes: Optional[Changes28] = None
     repository: Optional[Repository] = None
     sender: Optional[User] = None
     installation: Optional[InstallationLite] = None
     organization: Optional[Organization] = None
 
 
-class RepositoryTransferred(BaseModel):
+class RepositoryTransferred(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     action: Optional[Literal["transferred"]] = None
-    changes: Optional[Changes24] = None
+    changes: Optional[Changes29] = None
     repository: Optional[Repository] = None
     sender: Optional[User] = None
     installation: Optional[InstallationLite] = None
@@ -6401,9 +6636,9 @@ class Repository11(Repository):
     )
 
 
-class RepositoryUnarchived(BaseModel):
+class RepositoryUnarchived(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     action: Optional[Literal["unarchived"]] = None
     repository: Optional[Repository11] = None
@@ -6412,7 +6647,7 @@ class RepositoryUnarchived(BaseModel):
     organization: Optional[Organization] = None
 
 
-class RepositoryEvent(BaseModel):
+class RepositoryEvent(GhWebhooksModel):
     __root__: Optional[
         Union[
             RepositoryArchived,
@@ -6428,9 +6663,9 @@ class RepositoryEvent(BaseModel):
     ] = None
 
 
-class RepositoryDispatchEvent(BaseModel):
+class RepositoryDispatchEvent(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     action: Optional[str] = None
     branch: Optional[str] = None
@@ -6441,9 +6676,9 @@ class RepositoryDispatchEvent(BaseModel):
     organization: Optional[Organization] = None
 
 
-class RepositoryImportEvent(BaseModel):
+class RepositoryImportEvent(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     status: Optional[Status9] = None
     repository: Optional[Repository] = None
@@ -6456,9 +6691,9 @@ class Alert6(RepositoryVulnerabilityAlertAlert):
     state: Optional[Literal["open"]] = None
 
 
-class RepositoryVulnerabilityAlertCreate(BaseModel):
+class RepositoryVulnerabilityAlertCreate(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     action: Optional[Literal["create"]] = None
     alert: Optional[Alert6] = None
@@ -6474,9 +6709,9 @@ class Alert7(RepositoryVulnerabilityAlertAlert):
     state: Optional[Literal["dismissed"]] = None
 
 
-class RepositoryVulnerabilityAlertDismiss(BaseModel):
+class RepositoryVulnerabilityAlertDismiss(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     action: Optional[Literal["dismiss"]] = None
     alert: Optional[Alert7] = None
@@ -6489,9 +6724,9 @@ class Alert8(Alert6):
     pass
 
 
-class RepositoryVulnerabilityAlertReopen(BaseModel):
+class RepositoryVulnerabilityAlertReopen(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     action: Optional[Literal["reopen"]] = None
     alert: Optional[Alert8] = None
@@ -6506,9 +6741,9 @@ class Alert9(RepositoryVulnerabilityAlertAlert):
     fix_reason: Optional[str] = None
 
 
-class RepositoryVulnerabilityAlertResolve(BaseModel):
+class RepositoryVulnerabilityAlertResolve(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     action: Optional[Literal["resolve"]] = None
     alert: Optional[Alert9] = None
@@ -6517,7 +6752,7 @@ class RepositoryVulnerabilityAlertResolve(BaseModel):
     organization: Optional[Organization] = None
 
 
-class RepositoryVulnerabilityAlertEvent(BaseModel):
+class RepositoryVulnerabilityAlertEvent(GhWebhooksModel):
     __root__: Optional[
         Union[
             RepositoryVulnerabilityAlertCreate,
@@ -6528,9 +6763,9 @@ class RepositoryVulnerabilityAlertEvent(BaseModel):
     ] = None
 
 
-class SecretScanningAlertCreated(BaseModel):
+class SecretScanningAlertCreated(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     action: Optional[Literal["created"]] = None
     alert: Optional[Alert10] = Field(
@@ -6541,9 +6776,9 @@ class SecretScanningAlertCreated(BaseModel):
     installation: Optional[InstallationLite] = None
 
 
-class SecretScanningAlertReopened(BaseModel):
+class SecretScanningAlertReopened(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     action: Optional[Literal["reopened"]] = None
     alert: Optional[Alert11] = Field(
@@ -6555,9 +6790,9 @@ class SecretScanningAlertReopened(BaseModel):
     sender: Optional[User] = None
 
 
-class SecretScanningAlertResolved(BaseModel):
+class SecretScanningAlertResolved(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     action: Optional[Literal["resolved"]] = None
     alert: Optional[Alert12] = Field(
@@ -6569,7 +6804,7 @@ class SecretScanningAlertResolved(BaseModel):
     sender: Optional[User] = None
 
 
-class SecretScanningAlertEvent(BaseModel):
+class SecretScanningAlertEvent(GhWebhooksModel):
     __root__: Optional[
         Union[
             SecretScanningAlertCreated,
@@ -6579,9 +6814,9 @@ class SecretScanningAlertEvent(BaseModel):
     ] = None
 
 
-class StarCreated(BaseModel):
+class StarCreated(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     action: Optional[Literal["created"]] = None
     starred_at: Optional[str] = Field(
@@ -6594,9 +6829,9 @@ class StarCreated(BaseModel):
     installation: Optional[InstallationLite] = None
 
 
-class StarDeleted(BaseModel):
+class StarDeleted(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     action: Optional[Literal["deleted"]] = None
     starred_at: Optional[Any] = Field(
@@ -6609,13 +6844,13 @@ class StarDeleted(BaseModel):
     installation: Optional[InstallationLite] = None
 
 
-class StarEvent(BaseModel):
+class StarEvent(GhWebhooksModel):
     __root__: Optional[Union[StarCreated, StarDeleted]] = None
 
 
-class StatusEvent(BaseModel):
+class StatusEvent(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     id: Optional[int] = Field(None, description="The unique identifier of the status.")
     sha: Optional[str] = Field(None, description="The Commit SHA.")
@@ -6645,9 +6880,9 @@ class StatusEvent(BaseModel):
     organization: Optional[Organization] = None
 
 
-class TeamAddedToRepository(BaseModel):
+class TeamAddedToRepository(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     action: Optional[Literal["added_to_repository"]] = None
     team: Optional[Team] = None
@@ -6657,9 +6892,9 @@ class TeamAddedToRepository(BaseModel):
     installation: Optional[InstallationLite] = None
 
 
-class TeamCreated(BaseModel):
+class TeamCreated(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     action: Optional[Literal["created"]] = None
     team: Optional[Team] = None
@@ -6669,9 +6904,9 @@ class TeamCreated(BaseModel):
     installation: Optional[InstallationLite] = None
 
 
-class TeamDeleted(BaseModel):
+class TeamDeleted(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     action: Optional[Literal["deleted"]] = None
     team: Optional[Team] = None
@@ -6681,12 +6916,12 @@ class TeamDeleted(BaseModel):
     installation: Optional[InstallationLite] = None
 
 
-class TeamEdited(BaseModel):
+class TeamEdited(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     action: Optional[Literal["edited"]] = None
-    changes: Optional[Changes28] = Field(
+    changes: Optional[Changes33] = Field(
         None, description="The changes to the team if the action was `edited`."
     )
     team: Optional[Team] = None
@@ -6696,9 +6931,9 @@ class TeamEdited(BaseModel):
     installation: Optional[InstallationLite] = None
 
 
-class TeamRemovedFromRepository(BaseModel):
+class TeamRemovedFromRepository(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     action: Optional[Literal["removed_from_repository"]] = None
     team: Optional[Team] = None
@@ -6708,7 +6943,7 @@ class TeamRemovedFromRepository(BaseModel):
     installation: Optional[InstallationLite] = None
 
 
-class TeamEvent(BaseModel):
+class TeamEvent(GhWebhooksModel):
     __root__: Optional[
         Union[
             TeamAddedToRepository,
@@ -6720,9 +6955,9 @@ class TeamEvent(BaseModel):
     ] = None
 
 
-class TeamAddEvent(BaseModel):
+class TeamAddEvent(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     team: Optional[Team] = None
     repository: Optional[Repository] = None
@@ -6731,9 +6966,9 @@ class TeamAddEvent(BaseModel):
     organization: Optional[Organization] = None
 
 
-class WatchStarted(BaseModel):
+class WatchStarted(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     action: Optional[Literal["started"]] = None
     repository: Optional[Repository] = None
@@ -6742,33 +6977,41 @@ class WatchStarted(BaseModel):
     organization: Optional[Organization] = None
 
 
-class WatchEvent(BaseModel):
+class WatchEvent(GhWebhooksModel):
     __root__: Optional[WatchStarted] = None
 
 
-class WorkflowDispatchEvent(BaseModel):
+class WorkflowDispatchEvent(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
-    inputs: Optional[Union[Dict[str, Any], Any]] = None
-    ref: Optional[str] = None
+    inputs: Optional[Union[Dict[str, Any], Any]] = Field(
+        None,
+        description="Inputs to the workflow. Each key represents the name of the input while it's value represents the value of that input.",
+    )
+    ref: Optional[str] = Field(
+        None, description="The branch ref from which the workflow was run."
+    )
     repository: Optional[Repository] = None
     sender: Optional[User] = None
     installation: Optional[InstallationLite] = None
     organization: Optional[Organization] = None
-    workflow: Optional[str] = None
+    workflow: Optional[str] = Field(
+        None,
+        description="Relative path to the workflow file which contains the workflow.",
+    )
 
 
 class WorkflowJobModel(WorkflowJob):
     class Config:
-        extra = Extra.forbid
+        pass
 
     conclusion: Optional[Conclusion12] = None
 
 
-class WorkflowJobCompleted(BaseModel):
+class WorkflowJobCompleted(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     action: Optional[Literal["completed"]] = None
     organization: Optional[Organization] = None
@@ -6780,12 +7023,11 @@ class WorkflowJobCompleted(BaseModel):
 
 class WorkflowJob1(WorkflowJob):
     status: Optional[Literal["in_progress"]] = None
-    steps: Optional[List[WorkflowStepInProgress]] = Field(None, min_items=1)
 
 
-class WorkflowJobInProgress(BaseModel):
+class WorkflowJobInProgress(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     action: Optional[Literal["in_progress"]] = None
     organization: Optional[Organization] = None
@@ -6795,9 +7037,9 @@ class WorkflowJobInProgress(BaseModel):
     workflow_job: Optional[WorkflowJob1] = None
 
 
-class WorkflowJobQueued(BaseModel):
+class WorkflowJobQueued(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     action: Optional[Literal["queued"]] = None
     organization: Optional[Organization] = None
@@ -6807,7 +7049,7 @@ class WorkflowJobQueued(BaseModel):
     workflow_job: Optional[WorkflowJob2] = None
 
 
-class WorkflowJobEvent(BaseModel):
+class WorkflowJobEvent(GhWebhooksModel):
     __root__: Optional[
         Union[WorkflowJobCompleted, WorkflowJobInProgress, WorkflowJobQueued]
     ] = None
@@ -6815,14 +7057,14 @@ class WorkflowJobEvent(BaseModel):
 
 class WorkflowRunModel(WorkflowRun):
     class Config:
-        extra = Extra.forbid
+        pass
 
     conclusion: Optional[Conclusion13] = None
 
 
-class WorkflowRunCompleted(BaseModel):
+class WorkflowRunCompleted(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     action: Optional[Literal["completed"]] = None
     organization: Optional[Organization] = None
@@ -6833,9 +7075,9 @@ class WorkflowRunCompleted(BaseModel):
     installation: Optional[InstallationLite] = None
 
 
-class WorkflowRunRequested(BaseModel):
+class WorkflowRunRequested(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     action: Optional[Literal["requested"]] = None
     organization: Optional[Organization] = None
@@ -6846,13 +7088,13 @@ class WorkflowRunRequested(BaseModel):
     installation: Optional[InstallationLite] = None
 
 
-class WorkflowRunEvent(BaseModel):
+class WorkflowRunEvent(GhWebhooksModel):
     __root__: Optional[Union[WorkflowRunCompleted, WorkflowRunRequested]] = None
 
 
-class Issue(BaseModel):
+class Issue(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     url: Optional[AnyUrl] = Field(None, description="URL for the issue")
     repository_url: Optional[AnyUrl] = None
@@ -6885,6 +7127,7 @@ class Issue(BaseModel):
     body: Optional[Optional[str]] = Field(None, description="Contents of the issue")
     reactions: Optional[Reactions] = None
     timeline_url: Optional[AnyUrl] = None
+    state_reason: Optional[Optional[str]] = None
 
 
 class Head4(Head5):
@@ -6895,9 +7138,9 @@ class Base5(Head5):
     pass
 
 
-class PullRequest(BaseModel):
+class PullRequest(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     url: Optional[AnyUrl] = None
     id: Optional[int] = None
@@ -6960,7 +7203,7 @@ class PullRequest(BaseModel):
 
 class IssueModel(Issue):
     class Config:
-        extra = Extra.forbid
+        pass
 
     assignee: Optional[Optional[User]] = None
     state: Optional[State5] = Field(
@@ -6970,9 +7213,9 @@ class IssueModel(Issue):
     labels: Optional[List[Label]] = None
 
 
-class IssueCommentCreated(BaseModel):
+class IssueCommentCreated(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     action: Optional[Literal["created"]] = None
     issue: Optional[IssueModel] = Field(
@@ -6995,9 +7238,9 @@ class Issue1(Issue):
     labels: Optional[List[Label]] = None
 
 
-class IssueCommentDeleted(BaseModel):
+class IssueCommentDeleted(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     action: Optional[Literal["deleted"]] = None
     issue: Optional[Issue1] = Field(
@@ -7015,9 +7258,9 @@ class Issue2(Issue1):
     pass
 
 
-class IssueCommentEdited(BaseModel):
+class IssueCommentEdited(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     action: Optional[Literal["edited"]] = None
     changes: Optional[Changes5] = Field(None, description="The changes to the comment.")
@@ -7032,15 +7275,15 @@ class IssueCommentEdited(BaseModel):
     organization: Optional[Organization] = None
 
 
-class IssueCommentEvent(BaseModel):
+class IssueCommentEvent(GhWebhooksModel):
     __root__: Optional[
         Union[IssueCommentCreated, IssueCommentDeleted, IssueCommentEdited]
     ] = None
 
 
-class IssuesAssigned(BaseModel):
+class IssuesAssigned(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     action: Optional[Literal["assigned"]] = Field(
         None, description="The action that was performed."
@@ -7061,9 +7304,9 @@ class Issue3(Issue):
     closed_at: Optional[str] = None
 
 
-class IssuesClosed(BaseModel):
+class IssuesClosed(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     action: Optional[Literal["closed"]] = Field(
         None, description="The action that was performed."
@@ -7078,9 +7321,9 @@ class IssuesClosed(BaseModel):
     organization: Optional[Organization] = None
 
 
-class IssuesDeleted(BaseModel):
+class IssuesDeleted(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     action: Optional[Literal["deleted"]] = None
     issue: Optional[Issue] = None
@@ -7094,9 +7337,9 @@ class Issue4(Issue):
     milestone: Optional[Any] = None
 
 
-class IssuesDemilestoned(BaseModel):
+class IssuesDemilestoned(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     action: Optional[Literal["demilestoned"]] = None
     issue: Optional[Issue4] = None
@@ -7107,9 +7350,9 @@ class IssuesDemilestoned(BaseModel):
     organization: Optional[Organization] = None
 
 
-class IssuesEdited(BaseModel):
+class IssuesEdited(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     action: Optional[Literal["edited"]] = None
     issue: Optional[Issue] = None
@@ -7121,9 +7364,9 @@ class IssuesEdited(BaseModel):
     organization: Optional[Organization] = None
 
 
-class IssuesLabeled(BaseModel):
+class IssuesLabeled(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     action: Optional[Literal["labeled"]] = None
     issue: Optional[Issue] = None
@@ -7141,9 +7384,9 @@ class Issue5(Issue):
     active_lock_reason: Optional[ActiveLockReason] = None
 
 
-class IssuesLocked(BaseModel):
+class IssuesLocked(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     action: Optional[Literal["locked"]] = None
     issue: Optional[Issue5] = None
@@ -7157,9 +7400,9 @@ class Issue6(Issue):
     milestone: Optional[Milestone] = None
 
 
-class IssuesMilestoned(BaseModel):
+class IssuesMilestoned(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     action: Optional[Literal["milestoned"]] = None
     issue: Optional[Issue6] = None
@@ -7170,9 +7413,9 @@ class IssuesMilestoned(BaseModel):
     organization: Optional[Organization] = None
 
 
-class Changes7(BaseModel):
+class Changes7(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     old_issue: Optional[Issue] = None
     old_repository: Optional[Repository] = None
@@ -7183,9 +7426,9 @@ class Issue7(Issue):
     closed_at: Optional[Any] = None
 
 
-class IssuesOpened(BaseModel):
+class IssuesOpened(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     action: Optional[Literal["opened"]] = None
     changes: Optional[Changes7] = None
@@ -7196,9 +7439,9 @@ class IssuesOpened(BaseModel):
     organization: Optional[Organization] = None
 
 
-class IssuesPinned(BaseModel):
+class IssuesPinned(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     action: Optional[Literal["pinned"]] = None
     issue: Optional[Issue] = None
@@ -7212,9 +7455,9 @@ class Issue8(Issue):
     state: Optional[Literal["open"]] = None
 
 
-class IssuesReopened(BaseModel):
+class IssuesReopened(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     action: Optional[Literal["reopened"]] = None
     issue: Optional[Issue8] = None
@@ -7224,17 +7467,17 @@ class IssuesReopened(BaseModel):
     organization: Optional[Organization] = None
 
 
-class Changes8(BaseModel):
+class Changes8(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     new_issue: Optional[Issue] = None
     new_repository: Optional[Repository] = None
 
 
-class IssuesTransferred(BaseModel):
+class IssuesTransferred(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     action: Optional[Literal["transferred"]] = None
     changes: Optional[Changes8] = None
@@ -7245,9 +7488,9 @@ class IssuesTransferred(BaseModel):
     organization: Optional[Organization] = None
 
 
-class IssuesUnassigned(BaseModel):
+class IssuesUnassigned(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     action: Optional[Literal["unassigned"]] = Field(
         None, description="The action that was performed."
@@ -7263,9 +7506,9 @@ class IssuesUnassigned(BaseModel):
     organization: Optional[Organization] = None
 
 
-class IssuesUnlabeled(BaseModel):
+class IssuesUnlabeled(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     action: Optional[Literal["unlabeled"]] = None
     issue: Optional[Issue] = None
@@ -7283,9 +7526,9 @@ class Issue9(Issue):
     active_lock_reason: Optional[Any] = None
 
 
-class IssuesUnlocked(BaseModel):
+class IssuesUnlocked(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     action: Optional[Literal["unlocked"]] = None
     issue: Optional[Issue9] = None
@@ -7295,9 +7538,9 @@ class IssuesUnlocked(BaseModel):
     organization: Optional[Organization] = None
 
 
-class IssuesUnpinned(BaseModel):
+class IssuesUnpinned(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     action: Optional[Literal["unpinned"]] = None
     issue: Optional[Issue] = None
@@ -7307,7 +7550,7 @@ class IssuesUnpinned(BaseModel):
     organization: Optional[Organization] = None
 
 
-class IssuesEvent(BaseModel):
+class IssuesEvent(GhWebhooksModel):
     __root__: Optional[
         Union[
             IssuesAssigned,
@@ -7330,9 +7573,9 @@ class IssuesEvent(BaseModel):
     ] = None
 
 
-class PullRequestAssigned(BaseModel):
+class PullRequestAssigned(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     action: Optional[Literal["assigned"]] = None
     number: Optional[int] = Field(None, description="The pull request number.")
@@ -7344,9 +7587,9 @@ class PullRequestAssigned(BaseModel):
     sender: Optional[User] = None
 
 
-class PullRequestAutoMergeDisabled(BaseModel):
+class PullRequestAutoMergeDisabled(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     action: Optional[Literal["auto_merge_disabled"]] = None
     number: Optional[int] = None
@@ -7358,9 +7601,9 @@ class PullRequestAutoMergeDisabled(BaseModel):
     sender: Optional[User] = None
 
 
-class PullRequestAutoMergeEnabled(BaseModel):
+class PullRequestAutoMergeEnabled(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     action: Optional[Literal["auto_merge_enabled"]] = None
     number: Optional[int] = None
@@ -7380,9 +7623,9 @@ class PullRequest1(PullRequest):
     merged: Optional[bool] = None
 
 
-class PullRequestClosed(BaseModel):
+class PullRequestClosed(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     action: Optional[Literal["closed"]] = None
     number: Optional[int] = Field(None, description="The pull request number.")
@@ -7403,9 +7646,9 @@ class PullRequest2(PullRequest):
     merged_by: Optional[Any] = None
 
 
-class PullRequestConvertedToDraft(BaseModel):
+class PullRequestConvertedToDraft(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     action: Optional[Literal["converted_to_draft"]] = None
     number: Optional[int] = Field(None, description="The pull request number.")
@@ -7416,13 +7659,13 @@ class PullRequestConvertedToDraft(BaseModel):
     sender: Optional[User] = None
 
 
-class PullRequestEdited(BaseModel):
+class PullRequestEdited(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     action: Optional[Literal["edited"]] = None
     number: Optional[int] = Field(None, description="The pull request number.")
-    changes: Optional[Changes18] = Field(
+    changes: Optional[Changes23] = Field(
         None, description="The changes to the comment if the action was `edited`."
     )
     pull_request: Optional[PullRequest] = None
@@ -7432,9 +7675,9 @@ class PullRequestEdited(BaseModel):
     sender: Optional[User] = None
 
 
-class PullRequestLabeled(BaseModel):
+class PullRequestLabeled(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     action: Optional[Literal["labeled"]] = None
     number: Optional[int] = Field(None, description="The pull request number.")
@@ -7446,9 +7689,9 @@ class PullRequestLabeled(BaseModel):
     sender: Optional[User] = None
 
 
-class PullRequestLocked(BaseModel):
+class PullRequestLocked(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     action: Optional[Literal["locked"]] = None
     number: Optional[int] = Field(None, description="The pull request number.")
@@ -7468,9 +7711,9 @@ class PullRequest3(PullRequest):
     merged_by: Optional[Any] = None
 
 
-class PullRequestOpened(BaseModel):
+class PullRequestOpened(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     action: Optional[Literal["opened"]] = None
     number: Optional[int] = Field(None, description="The pull request number.")
@@ -7492,9 +7735,9 @@ class PullRequest4(PullRequest):
     merged_by: Optional[Any] = None
 
 
-class PullRequestReadyForReview(BaseModel):
+class PullRequestReadyForReview(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     action: Optional[Literal["ready_for_review"]] = None
     number: Optional[int] = Field(None, description="The pull request number.")
@@ -7513,9 +7756,9 @@ class PullRequest5(PullRequest):
     merged_by: Optional[Any] = None
 
 
-class PullRequestReopened(BaseModel):
+class PullRequestReopened(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     action: Optional[Literal["reopened"]] = None
     number: Optional[int] = Field(None, description="The pull request number.")
@@ -7526,9 +7769,9 @@ class PullRequestReopened(BaseModel):
     sender: Optional[User] = None
 
 
-class PullRequestReviewRequestRemovedItem(BaseModel):
+class PullRequestReviewRequestRemovedItem(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     action: Optional[Literal["review_request_removed"]] = None
     number: Optional[int] = Field(None, description="The pull request number.")
@@ -7540,9 +7783,9 @@ class PullRequestReviewRequestRemovedItem(BaseModel):
     sender: Optional[User] = None
 
 
-class PullRequestReviewRequestRemovedItem1(BaseModel):
+class PullRequestReviewRequestRemovedItem1(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     action: Optional[Literal["review_request_removed"]] = None
     number: Optional[int] = Field(None, description="The pull request number.")
@@ -7554,15 +7797,15 @@ class PullRequestReviewRequestRemovedItem1(BaseModel):
     sender: Optional[User] = None
 
 
-class PullRequestReviewRequestRemoved(BaseModel):
+class PullRequestReviewRequestRemoved(GhWebhooksModel):
     __root__: Optional[
         Union[PullRequestReviewRequestRemovedItem, PullRequestReviewRequestRemovedItem1]
     ] = Field(None, title="pull_request review_request_removed event")
 
 
-class PullRequestReviewRequestedItem(BaseModel):
+class PullRequestReviewRequestedItem(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     action: Optional[Literal["review_requested"]] = None
     number: Optional[int] = Field(None, description="The pull request number.")
@@ -7574,9 +7817,9 @@ class PullRequestReviewRequestedItem(BaseModel):
     sender: Optional[User] = None
 
 
-class PullRequestReviewRequestedItem1(BaseModel):
+class PullRequestReviewRequestedItem1(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     action: Optional[Literal["review_requested"]] = None
     number: Optional[int] = Field(None, description="The pull request number.")
@@ -7588,15 +7831,15 @@ class PullRequestReviewRequestedItem1(BaseModel):
     sender: Optional[User] = None
 
 
-class PullRequestReviewRequested(BaseModel):
+class PullRequestReviewRequested(GhWebhooksModel):
     __root__: Optional[
         Union[PullRequestReviewRequestedItem, PullRequestReviewRequestedItem1]
     ] = Field(None, title="pull_request review_requested event")
 
 
-class PullRequestSynchronize(BaseModel):
+class PullRequestSynchronize(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     action: Optional[Literal["synchronize"]] = None
     number: Optional[int] = Field(None, description="The pull request number.")
@@ -7609,9 +7852,9 @@ class PullRequestSynchronize(BaseModel):
     sender: Optional[User] = None
 
 
-class PullRequestUnassigned(BaseModel):
+class PullRequestUnassigned(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     action: Optional[Literal["unassigned"]] = None
     number: Optional[int] = Field(None, description="The pull request number.")
@@ -7623,9 +7866,9 @@ class PullRequestUnassigned(BaseModel):
     sender: Optional[User] = None
 
 
-class PullRequestUnlabeled(BaseModel):
+class PullRequestUnlabeled(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     action: Optional[Literal["unlabeled"]] = None
     number: Optional[int] = Field(None, description="The pull request number.")
@@ -7637,9 +7880,9 @@ class PullRequestUnlabeled(BaseModel):
     sender: Optional[User] = None
 
 
-class PullRequestUnlocked(BaseModel):
+class PullRequestUnlocked(GhWebhooksModel):
     class Config:
-        extra = Extra.forbid
+        pass
 
     action: Optional[Literal["unlocked"]] = None
     number: Optional[int] = Field(None, description="The pull request number.")
@@ -7650,7 +7893,7 @@ class PullRequestUnlocked(BaseModel):
     sender: Optional[User] = None
 
 
-class PullRequestEvent(BaseModel):
+class PullRequestEvent(GhWebhooksModel):
     __root__: Optional[
         Union[
             PullRequestAssigned,
@@ -7674,7 +7917,7 @@ class PullRequestEvent(BaseModel):
     ] = None
 
 
-class Model(BaseModel):
+class Model(GhWebhooksModel):
     __root__: Optional[
         Union[
             BranchProtectionRuleEvent,
@@ -7710,6 +7953,7 @@ class Model(BaseModel):
             ProjectEvent,
             ProjectCardEvent,
             ProjectColumnEvent,
+            ProjectsV2ItemEvent,
             PublicEvent,
             PullRequestEvent,
             PullRequestReviewEvent,

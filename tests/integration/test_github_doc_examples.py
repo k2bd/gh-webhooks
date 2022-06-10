@@ -22,6 +22,22 @@ def test_example_events_parse_from_dict(event: Dict[str, Any]):
         raise ValueError(event) from e
 
 
+def test_example_events_parse_from_dict_with_extra_fields():
+    """
+    Test that all example events from the GitHub Webhook events documentation
+    get properly parsed.
+    """
+    event = {**(EVENTS[0]), "another_random_field_not_in_spec": 123}
+
+    # TMP
+    BranchProtectionRuleCreated.parse_obj(event)
+
+    try:
+        resolve_event(event)
+    except Exception as e:
+        raise ValueError(event) from e
+
+
 @pytest.mark.asyncio
 async def test_event_handler():
     """
