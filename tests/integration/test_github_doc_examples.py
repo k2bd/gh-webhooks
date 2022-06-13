@@ -22,6 +22,7 @@ def test_example_events_parse_from_dict(event: Dict[str, Any]):
         raise ValueError(event) from e
 
 
+@pytest.mark.xfail(reason="See k2bd/gh-webhooks#7")
 def test_example_events_parse_from_dict_with_extra_fields():
     """
     Test that adding a new field (e.g. when the spec is updated in a
