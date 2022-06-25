@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "gh-webhooks"
-version = "0.5.1-alpha.0"
+version = "0.6.0"
 description = "Typed event handling for GitHub Webhooks"
 authors = ["Kevin Duff <kevinkelduff@gmail.com>"]
 
