@@ -1,5 +1,3 @@
-from typing import Any, Dict, List
-
 import pytest
 
 from gh_webhooks import GhWebhookEventHandler
