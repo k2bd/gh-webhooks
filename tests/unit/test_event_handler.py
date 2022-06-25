@@ -19,7 +19,7 @@ async def test_event_handler():
     class Model(BaseModel):
         __root__: Union[A, B]
 
-    def fake_resolve_event(event: Dict[str, Any]):
+    def fake_resolve_event(event: Dict[str, Any], kind: str):
         return Model.parse_obj(event).__root__
 
     a_calls = 0
@@ -38,12 +38,12 @@ async def test_event_handler():
             nonlocal b_calls
             b_calls += 1
 
-        await handler.handle_event({"a": 1})
+        await handler.handle_event({"a": 1}, "a")
 
         assert a_calls == 1
         assert b_calls == 0
 
-        await handler.handle_event({"b": "hello"})
+        await handler.handle_event({"b": "hello"}, "b")
 
         assert a_calls == 1
         assert b_calls == 1
@@ -57,7 +57,7 @@ async def test_event_handler():
             assert event.b == "hello again"
             second_b_calls += 1
 
-        await handler.handle_event({"b": "hello again"})
+        await handler.handle_event({"b": "hello again"}, "b")
 
         assert a_calls == 1
         assert b_calls == 2

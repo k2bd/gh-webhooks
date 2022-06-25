@@ -1,3 +1,4 @@
+from collections import defaultdict
 from typing import Any, Dict, List
 
 import requests
@@ -7,17 +8,17 @@ EXAMPLE_EVENTS_URL = (
 )
 
 
-def get_example_events() -> List[Dict[str, Any]]:
+def get_example_events() -> Dict[str, List[Any]]:
     """
     Get the latest example events from the GitHub Webhooks spec documentation.
 
     See https://github.com/octokit/webhooks/tree/master/payload-examples
     """
     r = requests.get(EXAMPLE_EVENTS_URL)
-    events = [
-        example
-        for kind in r.json()
-        for example in kind["examples"]
-        if "examples" in kind
-    ]
-    return events
+    result = defaultdict(list)
+    for group in r.json():
+        kind = group["name"]
+        examples = group["examples"]
+        result[kind].extend(examples)
+
+    return result
