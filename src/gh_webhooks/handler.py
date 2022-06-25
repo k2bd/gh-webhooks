@@ -35,10 +35,17 @@ class GhWebhookEventHandler:
 
         return register_event_handler
 
-    async def handle_event(self, event: Dict[str, Any]):
+    async def handle_event(self, event: Dict[str, Any], kind: str):
         """
         Handle a GitHub webhook event JSON, concurrently calling all functions
         registered to that event type.
+
+        ``kind`` is provided by the ``X-Github-Event`` header
+
+        Raises
+        ------
+        gh_webhooks.exceptions.NoMatchingModel
+            If the event can't be matched to a model
         """
-        resolved = resolve_event(event)
+        resolved = resolve_event(event, kind)
         return await asyncio.gather(*[fn(resolved) for fn in self._ons[type(resolved)]])
