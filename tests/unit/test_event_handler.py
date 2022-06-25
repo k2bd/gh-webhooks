@@ -5,7 +5,9 @@ import pytest
 from pydantic import BaseModel
 
 from gh_webhooks import GhWebhookEventHandler
+from gh_webhooks.exceptions import NoMatchingModel
 from gh_webhooks.handler import __name__ as HANDLER_NAME
+from gh_webhooks.resolve_event import resolve_event
 
 
 @pytest.mark.asyncio
@@ -62,3 +64,11 @@ async def test_event_handler():
         assert a_calls == 1
         assert b_calls == 2
         assert second_b_calls == 1
+
+
+def test_resolve_event_no_matching_model():
+    """
+    Test NoMatchingModel will be raised if there's an event with no corresponding model
+    """
+    with pytest.raises(NoMatchingModel):
+        resolve_event({}, "some-event-kind-that-doesnt-exist")
