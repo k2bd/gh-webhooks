@@ -44,6 +44,7 @@ requests = "^2.27.1"
 types-requests = "^2.27.30"
 pytest-asyncio = "^0.18.3"
 sphinx-rtd-theme = "^1.0.0"
+coverage = "^6.4.1"
 
 [tool.isort]
 profile = "black"
