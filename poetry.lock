@@ -191,7 +191,7 @@ http = ["httpx"]
 name = "dnspython"
 version = "2.2.1"
 description = "DNS toolkit"
-category = "dev"
+category = "main"
 optional = false
 python-versions = ">=3.6,<4.0"
 
@@ -215,7 +215,7 @@ python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*"
 name = "email-validator"
 version = "1.2.1"
 description = "A robust email syntax and deliverability validation library."
-category = "dev"
+category = "main"
 optional = false
 python-versions = "!=3.0.*,!=3.1.*,!=3.2.*,!=3.3.*,!=3.4.*,>=2.7"
 
@@ -295,7 +295,7 @@ socks = ["socksio (>=1.0.0,<2.0.0)"]
 name = "idna"
 version = "3.3"
 description = "Internationalized Domain Names in Applications (IDNA)"
-category = "dev"
+category = "main"
 optional = false
 python-versions = ">=3.5"
 
@@ -1026,7 +1026,7 @@ docs = []
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.7"
-content-hash = "20dc300c93e1ce7938287b229b3f873346870c4f628476db2dcc48af1bcb5ae6"
+content-hash = "ca46540205982ed34a03c4333beb6a8e6fb8a8bca8cf5c93b82053cf8421b390"
 
 [metadata.files]
 alabaster = [

@@ -27,7 +27,7 @@ include = [
 
 [tool.poetry.dependencies]
 python = "^3.7"
-pydantic = "1.9.0"  # Pin to 1.9.0 - see https://github.com/koxudaxi/datamodel-code-generator/discussions/778
+pydantic = {version = "1.9.0", extras = ["email"]}  # Pin to 1.9.0 - see https://github.com/koxudaxi/datamodel-code-generator/discussions/778
 typing-extensions = "^4.2.0"
 stringcase = "^1.2.0"
 
