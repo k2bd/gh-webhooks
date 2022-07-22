@@ -7,7 +7,7 @@ from datetime import datetime
 from enum import Enum
 from typing import Any, Dict, List, Optional, Union
 
-from pydantic import AnyUrl, EmailStr, Extra, Field
+from pydantic import AnyUrl, Extra, Field
 from typing_extensions import Literal
 
 from gh_webhooks.base import GhWebhooksModel
@@ -274,7 +274,7 @@ class Key(GhWebhooksModel):
     url: Optional[AnyUrl] = None
     title: Optional[str] = None
     verified: Optional[bool] = None
-    created_at: Optional[str] = None
+    created_at: Optional[datetime] = None
     read_only: Optional[bool] = None
 
 
@@ -322,7 +322,7 @@ class From(GhWebhooksModel):
     name: Optional[str] = None
     description: Optional[str] = None
     created_at: Optional[datetime] = None
-    updated_at: Optional[str] = None
+    updated_at: Optional[datetime] = None
     slug: Optional[str] = None
     is_answerable: Optional[bool] = None
 
@@ -640,14 +640,30 @@ class ContentType(str, Enum):
     form = "form"
 
 
+class InsecureSsl(str, Enum):
+    field_0 = "0"
+    field_1 = "1"
+
+
 class Config(GhWebhooksModel):
     class Config:
         pass
 
-    content_type: Optional[ContentType] = None
-    insecure_ssl: Optional[str] = None
-    url: Optional[AnyUrl] = None
-    secret: Optional[str] = None
+    content_type: Optional[ContentType] = Field(
+        None,
+        description="The media type used to serialize the payloads. Supported values include `json` and `form`. The default is `form`.",
+    )
+    secret: Optional[str] = Field(
+        None,
+        description="If provided, the `secret` will be used as the `key` to generate the HMAC hex digest value for [delivery signature headers](https://docs.github.com/webhooks/event-payloads/#delivery-headers).",
+    )
+    url: Optional[AnyUrl] = Field(
+        None, description="The URL to which the payloads will be delivered."
+    )
+    insecure_ssl: Optional[InsecureSsl] = Field(
+        None,
+        description="Determines whether the SSL certificate of the host for `url` will be verified when delivering payloads. Supported values include `0` (verification is performed) and `1` (verification is not performed). The default is `0`.",
+    )
 
 
 class Description1(Description):
@@ -685,6 +701,15 @@ class Changes12(GhWebhooksModel):
     title: Optional[Title2] = None
 
 
+class PackageType(str, Enum):
+    npm = "npm"
+    maven = "maven"
+    rubygems = "rubygems"
+    docker = "docker"
+    nuget = "nuget"
+    container = "container"
+
+
 class PackageFile(GhWebhooksModel):
     class Config:
         pass
@@ -698,8 +723,8 @@ class PackageFile(GhWebhooksModel):
     content_type: Optional[str] = None
     state: Optional[str] = None
     size: Optional[int] = None
-    created_at: Optional[str] = None
-    updated_at: Optional[str] = None
+    created_at: Optional[datetime] = None
+    updated_at: Optional[datetime] = None
 
 
 class Registry(GhWebhooksModel):
@@ -728,14 +753,14 @@ class Error(GhWebhooksModel):
     message: Optional[Optional[str]] = None
 
 
-class Config1(GhWebhooksModel):
-    class Config:
-        pass
+class Type(str, Enum):
+    Repository = "Repository"
+    Organization = "Organization"
+    App = "App"
 
-    content_type: Optional[ContentType] = None
-    secret: Optional[str] = None
-    url: Optional[AnyUrl] = None
-    insecure_ssl: Optional[str] = None
+
+class Config1(Config):
+    pass
 
 
 class LastResponse(GhWebhooksModel):
@@ -1116,9 +1141,9 @@ class SecurityAdvisory(GhWebhooksModel):
     severity: Optional[str] = None
     identifiers: Optional[List[Identifier]] = None
     references: Optional[List[Reference]] = None
-    published_at: Optional[str] = None
-    updated_at: Optional[str] = None
-    withdrawn_at: Optional[Optional[str]] = None
+    published_at: Optional[datetime] = None
+    updated_at: Optional[datetime] = None
+    withdrawn_at: Optional[Optional[datetime]] = None
     vulnerabilities: Optional[List[Vulnerability]] = None
 
 
@@ -1179,9 +1204,9 @@ class SecurityAdvisory1(GhWebhooksModel):
     severity: Optional[str] = None
     identifiers: Optional[List[Identifier1]] = None
     references: Optional[List[Reference1]] = None
-    published_at: Optional[str] = None
-    updated_at: Optional[str] = None
-    withdrawn_at: Optional[Optional[str]] = None
+    published_at: Optional[datetime] = None
+    updated_at: Optional[datetime] = None
+    withdrawn_at: Optional[Optional[datetime]] = None
     vulnerabilities: Optional[List[Vulnerability1]] = None
 
 
@@ -1242,9 +1267,9 @@ class SecurityAdvisory2(GhWebhooksModel):
     severity: Optional[str] = None
     identifiers: Optional[List[Identifier2]] = None
     references: Optional[List[Reference2]] = None
-    published_at: Optional[str] = None
-    updated_at: Optional[str] = None
-    withdrawn_at: Optional[Optional[str]] = None
+    published_at: Optional[datetime] = None
+    updated_at: Optional[datetime] = None
+    withdrawn_at: Optional[Optional[datetime]] = None
     vulnerabilities: Optional[List[Vulnerability2]] = None
 
 
@@ -1305,9 +1330,9 @@ class SecurityAdvisory3(GhWebhooksModel):
     severity: Optional[str] = None
     identifiers: Optional[List[Identifier3]] = None
     references: Optional[List[Reference3]] = None
-    published_at: Optional[str] = None
-    updated_at: Optional[str] = None
-    withdrawn_at: Optional[str] = None
+    published_at: Optional[datetime] = None
+    updated_at: Optional[datetime] = None
+    withdrawn_at: Optional[datetime] = None
     vulnerabilities: Optional[List[Vulnerability3]] = None
 
 
@@ -1555,6 +1580,7 @@ class Permissions1(GhWebhooksModel):
     issues: Optional[Actions] = None
     keys: Optional[Actions] = None
     members: Optional[Actions] = None
+    merge_queues: Optional[Actions] = None
     metadata: Optional[Actions] = None
     organization_administration: Optional[Actions] = None
     organization_hooks: Optional[Actions] = None
@@ -1602,11 +1628,14 @@ class Event(str, Enum):
     label = "label"
     member = "member"
     membership = "membership"
+    merge_group = "merge_group"
+    merge_queue_entry = "merge_queue_entry"
     milestone = "milestone"
     organization = "organization"
     org_block = "org_block"
     page_build = "page_build"
     project = "project"
+    projects_v2_item = "projects_v2_item"
     project_card = "project_card"
     project_column = "project_column"
     public = "public"
@@ -1619,6 +1648,8 @@ class Event(str, Enum):
     repository = "repository"
     repository_dispatch = "repository_dispatch"
     secret_scanning_alert = "secret_scanning_alert"
+    secret_scanning_alert_location = "secret_scanning_alert_location"
+    security_and_analysis = "security_and_analysis"
     star = "star"
     status = "status"
     team = "team"
@@ -1626,6 +1657,7 @@ class Event(str, Enum):
     watch = "watch"
     workflow_dispatch = "workflow_dispatch"
     workflow_run = "workflow_run"
+    workflow_job = "workflow_job"
 
 
 class AuthorAssociation(str, Enum):
@@ -1720,7 +1752,7 @@ class Committer(GhWebhooksModel):
         pass
 
     name: Optional[str] = Field(None, description="The git author's name.")
-    email: Optional[Optional[EmailStr]] = Field(
+    email: Optional[Optional[str]] = Field(
         None, description="The git author's email address."
     )
     date: Optional[datetime] = None
@@ -1787,41 +1819,131 @@ class Permissions2(GhWebhooksModel):
     class Config:
         pass
 
-    actions: Optional[Actions] = None
-    administration: Optional[Actions] = None
-    checks: Optional[Actions] = None
+    actions: Optional[Actions] = Field(
+        None,
+        description="The level of permission granted to the access token for GitHub Actions workflows, workflow runs, and artifacts.",
+    )
+    administration: Optional[Actions] = Field(
+        None,
+        description="The level of permission granted to the access token for repository creation, deletion, settings, teams, and collaborators creation.",
+    )
+    checks: Optional[Actions] = Field(
+        None,
+        description="The level of permission granted to the access token for checks on code.",
+    )
     content_references: Optional[Actions] = None
-    contents: Optional[Actions] = None
-    deployments: Optional[Actions] = None
+    contents: Optional[Actions] = Field(
+        None,
+        description="The level of permission granted to the access token for repository contents, commits, branches, downloads, releases, and merges.",
+    )
+    deployments: Optional[Actions] = Field(
+        None,
+        description="The level of permission granted to the access token for deployments and deployment statuses.",
+    )
     discussions: Optional[Actions] = None
     emails: Optional[Actions] = None
-    environments: Optional[Actions] = None
-    issues: Optional[Actions] = None
-    members: Optional[Actions] = None
-    metadata: Optional[Actions] = None
-    organization_administration: Optional[Actions] = None
+    environments: Optional[Actions] = Field(
+        None,
+        description="The level of permission granted to the access token for managing repository environments.",
+    )
+    issues: Optional[Actions] = Field(
+        None,
+        description="The level of permission granted to the access token for issues and related comments, assignees, labels, and milestones.",
+    )
+    members: Optional[Actions] = Field(
+        None,
+        description="The level of permission granted to the access token for organization teams and members.",
+    )
+    metadata: Optional[Actions] = Field(
+        None,
+        description="The level of permission granted to the access token to search repositories, list collaborators, and access repository metadata.",
+    )
+    organization_administration: Optional[Actions] = Field(
+        None,
+        description="The level of permission granted to the access token to manage access to an organization.",
+    )
     organization_events: Optional[Actions] = None
-    organization_hooks: Optional[Actions] = None
-    organization_packages: Optional[Actions] = None
-    organization_plan: Optional[Actions] = None
-    organization_projects: Optional[Actions] = None
-    organization_secrets: Optional[Actions] = None
-    organization_self_hosted_runners: Optional[Actions] = None
-    organization_user_blocking: Optional[Actions] = None
-    packages: Optional[Actions] = None
-    pages: Optional[Actions] = None
-    pull_requests: Optional[Actions] = None
-    repository_hooks: Optional[Actions] = None
-    repository_projects: Optional[Actions] = None
-    secret_scanning_alerts: Optional[Actions] = None
-    secrets: Optional[Actions] = None
-    security_events: Optional[Actions] = None
+    organization_hooks: Optional[Actions] = Field(
+        None,
+        description="The level of permission granted to the access token to manage the post-receive hooks for an organization.",
+    )
+    organization_packages: Optional[Actions] = Field(
+        None,
+        description="The level of permission granted to the access token for organization packages published to GitHub Packages.",
+    )
+    organization_plan: Optional[Actions] = Field(
+        None,
+        description="The level of permission granted to the access token for viewing an organization's plan.",
+    )
+    organization_projects: Optional[Actions] = Field(
+        None,
+        description="The level of permission granted to the access token to manage organization projects and projects beta (where available).",
+    )
+    organization_secrets: Optional[Actions] = Field(
+        None,
+        description="The level of permission granted to the access token to manage organization secrets.",
+    )
+    organization_self_hosted_runners: Optional[Actions] = Field(
+        None,
+        description="The level of permission granted to the access token to view and manage GitHub Actions self-hosted runners available to an organization.",
+    )
+    organization_user_blocking: Optional[Actions] = Field(
+        None,
+        description="The level of permission granted to the access token to view and manage users blocked by the organization.",
+    )
+    packages: Optional[Actions] = Field(
+        None,
+        description="The level of permission granted to the access token for packages published to GitHub Packages.",
+    )
+    pages: Optional[Actions] = Field(
+        None,
+        description="The level of permission granted to the access token to retrieve Pages statuses, configuration, and builds, as well as create new builds.",
+    )
+    pull_requests: Optional[Actions] = Field(
+        None,
+        description="The level of permission granted to the access token for pull requests and related comments, assignees, labels, milestones, and merges.",
+    )
+    repository_hooks: Optional[Actions] = Field(
+        None,
+        description="The level of permission granted to the access token to manage the post-receive hooks for a repository.",
+    )
+    repository_projects: Optional[Actions] = Field(
+        None,
+        description="The level of permission granted to the access token to manage repository projects, columns, and cards.",
+    )
+    secret_scanning_alerts: Optional[Actions] = Field(
+        None,
+        description="The level of permission granted to the access token to view and manage secret scanning alerts.",
+    )
+    secrets: Optional[Actions] = Field(
+        None,
+        description="The level of permission granted to the access token to manage repository secrets.",
+    )
+    security_events: Optional[Actions] = Field(
+        None,
+        description="The level of permission granted to the access token to view and manage security events like code scanning alerts.",
+    )
     security_scanning_alert: Optional[Actions] = None
-    single_file: Optional[Actions] = None
-    statuses: Optional[Actions] = None
-    team_discussions: Optional[Actions] = None
-    vulnerability_alerts: Optional[Actions] = None
-    workflows: Optional[Actions] = None
+    single_file: Optional[Actions] = Field(
+        None,
+        description="The level of permission granted to the access token to manage just a single file.",
+    )
+    statuses: Optional[Actions] = Field(
+        None,
+        description="The level of permission granted to the access token for commit statuses.",
+    )
+    team_discussions: Optional[Actions] = Field(
+        None,
+        description="The level of permission granted to the access token to manage team discussions and related comments.",
+    )
+    vulnerability_alerts: Optional[Actions] = Field(
+        None,
+        description="The level of permission granted to the access token to manage Dependabot alerts.",
+    )
+    workflows: Optional[Actions] = Field(
+        None,
+        description="The level of permission granted to the access token to update GitHub Actions workflow files.",
+    )
 
 
 class Event1(str, Enum):
@@ -1956,7 +2078,7 @@ class MarketplacePurchase(GhWebhooksModel):
     billing_cycle: Optional[str] = None
     unit_count: Optional[int] = None
     on_free_trial: Optional[bool] = None
-    free_trial_ends_on: Optional[Any] = None
+    free_trial_ends_on: Optional[Optional[datetime]] = None
     next_billing_date: Optional[str] = None
     plan: Optional[Plan] = None
 
@@ -2052,6 +2174,15 @@ class Reactions(GhWebhooksModel):
     eyes: Optional[int] = None
 
 
+class ReferencedWorkflow(GhWebhooksModel):
+    class Config:
+        pass
+
+    path: Optional[str] = None
+    sha: Optional[str] = None
+    ref: Optional[str] = None
+
+
 class RepoRef(GhWebhooksModel):
     class Config:
         pass
@@ -2087,7 +2218,7 @@ class SponsorshipTier(GhWebhooksModel):
         pass
 
     node_id: Optional[str] = None
-    created_at: Optional[str] = None
+    created_at: Optional[datetime] = None
     description: Optional[str] = None
     monthly_price_in_cents: Optional[int] = None
     monthly_price_in_dollars: Optional[int] = None
@@ -2145,7 +2276,7 @@ class Team(GhWebhooksModel):
     parent: Optional[Parent1] = None
 
 
-class Type(str, Enum):
+class Type1(str, Enum):
     Bot = "Bot"
     User = "User"
     Organization = "Organization"
@@ -2173,7 +2304,7 @@ class User(GhWebhooksModel):
     repos_url: Optional[AnyUrl] = None
     events_url: Optional[str] = None
     received_events_url: Optional[AnyUrl] = None
-    type: Optional[Type] = None
+    type: Optional[Type1] = None
     site_admin: Optional[bool] = None
 
 
@@ -2204,6 +2335,7 @@ class WebhookEvent(str, Enum):
     package = "package"
     page_build = "page_build"
     project = "project"
+    projects_v2_item = "projects_v2_item"
     project_card = "project_card"
     project_column = "project_column"
     public = "public"
@@ -2218,6 +2350,8 @@ class WebhookEvent(str, Enum):
     repository_import = "repository_import"
     repository_vulnerability_alert = "repository_vulnerability_alert"
     secret_scanning_alert = "secret_scanning_alert"
+    secret_scanning_alert_location = "secret_scanning_alert_location"
+    security_and_analysis = "security_and_analysis"
     star = "star"
     status = "status"
     team = "team"
@@ -2287,8 +2421,8 @@ class WorkflowStepCompleted(GhWebhooksModel):
     status: Optional[Literal["completed"]] = None
     conclusion: Optional[Conclusion17] = None
     number: Optional[int] = None
-    started_at: Optional[str] = None
-    completed_at: Optional[str] = None
+    started_at: Optional[datetime] = None
+    completed_at: Optional[datetime] = None
 
 
 class WorkflowStepInProgress(GhWebhooksModel):
@@ -2299,7 +2433,7 @@ class WorkflowStepInProgress(GhWebhooksModel):
     status: Optional[Literal["in_progress"]] = None
     conclusion: Optional[Any] = None
     number: Optional[int] = None
-    started_at: Optional[str] = None
+    started_at: Optional[datetime] = None
     completed_at: Optional[Any] = None
 
 
@@ -2334,7 +2468,9 @@ class Alert(GhWebhooksModel):
         None,
         description="The time that the alert was created in ISO 8601 format: `YYYY-MM-DDTHH:MM:SSZ.`",
     )
-    url: Optional[AnyUrl] = None
+    url: Optional[AnyUrl] = Field(
+        None, description="The REST API URL of the alert resource."
+    )
     html_url: Optional[AnyUrl] = Field(
         None, description="The GitHub URL of the alert resource."
     )
@@ -2367,7 +2503,9 @@ class Alert1(GhWebhooksModel):
         None,
         description="The time that the alert was created in ISO 8601 format: `YYYY-MM-DDTHH:MM:SSZ.`",
     )
-    url: Optional[AnyUrl] = None
+    url: Optional[AnyUrl] = Field(
+        None, description="The REST API URL of the alert resource."
+    )
     html_url: Optional[AnyUrl] = Field(
         None, description="The GitHub URL of the alert resource."
     )
@@ -2402,7 +2540,9 @@ class Alert2(GhWebhooksModel):
         None,
         description="The time that the alert was created in ISO 8601 format: `YYYY-MM-DDTHH:MM:SSZ.`",
     )
-    url: Optional[AnyUrl] = None
+    url: Optional[AnyUrl] = Field(
+        None, description="The REST API URL of the alert resource."
+    )
     html_url: Optional[AnyUrl] = Field(
         None, description="The GitHub URL of the alert resource."
     )
@@ -2435,7 +2575,9 @@ class Alert3(GhWebhooksModel):
         None,
         description="The time that the alert was created in ISO 8601 format: `YYYY-MM-DDTHH:MM:SSZ.`",
     )
-    url: Optional[AnyUrl] = None
+    url: Optional[AnyUrl] = Field(
+        None, description="The REST API URL of the alert resource."
+    )
     html_url: Optional[AnyUrl] = Field(
         None, description="The GitHub URL of the alert resource."
     )
@@ -2471,7 +2613,9 @@ class Alert4(GhWebhooksModel):
         None,
         description="The time that the alert was created in ISO 8601 format: `YYYY-MM-DDTHH:MM:SSZ.`",
     )
-    url: Optional[AnyUrl] = None
+    url: Optional[AnyUrl] = Field(
+        None, description="The REST API URL of the alert resource."
+    )
     html_url: Optional[AnyUrl] = Field(
         None, description="The GitHub URL of the alert resource."
     )
@@ -2504,7 +2648,9 @@ class Alert5(GhWebhooksModel):
         None,
         description="The time that the alert was created in ISO 8601 format: `YYYY-MM-DDTHH:MM:SSZ.`",
     )
-    url: Optional[AnyUrl] = None
+    url: Optional[AnyUrl] = Field(
+        None, description="The REST API URL of the alert resource."
+    )
     html_url: Optional[AnyUrl] = Field(
         None, description="The GitHub URL of the alert resource."
     )
@@ -2550,8 +2696,8 @@ class Comment(GhWebhooksModel):
     commit_id: Optional[str] = Field(
         None, description="The SHA of the commit to which the comment applies."
     )
-    created_at: Optional[str] = None
-    updated_at: Optional[str] = None
+    created_at: Optional[datetime] = None
+    updated_at: Optional[datetime] = None
     author_association: Optional[AuthorAssociation] = None
     body: Optional[str] = Field(None, description="The text of the comment.")
 
@@ -2591,9 +2737,9 @@ class Comment1(GhWebhooksModel):
     discussion_id: Optional[int] = None
     author_association: Optional[AuthorAssociation] = None
     user: Optional[User] = None
-    created_at: Optional[str] = None
-    updated_at: Optional[str] = None
-    body: Optional[str] = None
+    created_at: Optional[datetime] = None
+    updated_at: Optional[datetime] = None
+    body: Optional[str] = Field(None, description="The main text of the comment.")
     reactions: Optional[Reactions] = None
 
 
@@ -2621,7 +2767,7 @@ class MarketplacePurchaseModel(MarketplacePurchase):
     class Config:
         pass
 
-    next_billing_date: Optional[str] = None
+    next_billing_date: Optional[datetime] = None
 
 
 class MarketplacePurchaseCancelled(GhWebhooksModel):
@@ -2629,14 +2775,14 @@ class MarketplacePurchaseCancelled(GhWebhooksModel):
         pass
 
     action: Optional[Literal["cancelled"]] = None
-    effective_date: Optional[str] = None
+    effective_date: Optional[datetime] = None
     sender: Optional[Sender] = None
     marketplace_purchase: Optional[MarketplacePurchaseModel] = None
     previous_marketplace_purchase: Optional[MarketplacePurchase] = None
 
 
 class MarketplacePurchase1(MarketplacePurchase):
-    next_billing_date: Optional[str] = None
+    next_billing_date: Optional[datetime] = None
 
 
 class MarketplacePurchaseChanged(GhWebhooksModel):
@@ -2644,7 +2790,7 @@ class MarketplacePurchaseChanged(GhWebhooksModel):
         pass
 
     action: Optional[Literal["changed"]] = None
-    effective_date: Optional[str] = None
+    effective_date: Optional[datetime] = None
     sender: Optional[Sender1] = None
     marketplace_purchase: Optional[MarketplacePurchase1] = None
     previous_marketplace_purchase: Optional[MarketplacePurchase] = None
@@ -2659,7 +2805,7 @@ class MarketplacePurchasePendingChange(GhWebhooksModel):
         pass
 
     action: Optional[Literal["pending_change"]] = None
-    effective_date: Optional[str] = None
+    effective_date: Optional[datetime] = None
     sender: Optional[Sender2] = None
     marketplace_purchase: Optional[MarketplacePurchase2] = None
     previous_marketplace_purchase: Optional[MarketplacePurchase] = None
@@ -2674,7 +2820,7 @@ class MarketplacePurchasePendingChangeCancelled(GhWebhooksModel):
         pass
 
     action: Optional[Literal["pending_change_cancelled"]] = None
-    effective_date: Optional[str] = None
+    effective_date: Optional[datetime] = None
     sender: Optional[Sender3] = None
     marketplace_purchase: Optional[MarketplacePurchase3] = None
     previous_marketplace_purchase: Optional[MarketplacePurchase] = None
@@ -2689,7 +2835,7 @@ class MarketplacePurchasePurchased(GhWebhooksModel):
         pass
 
     action: Optional[Literal["purchased"]] = None
-    effective_date: Optional[str] = None
+    effective_date: Optional[datetime] = None
     sender: Optional[Sender4] = None
     marketplace_purchase: Optional[MarketplacePurchase4] = None
     previous_marketplace_purchase: Optional[MarketplacePurchase] = None
@@ -2762,9 +2908,11 @@ class Hook(GhWebhooksModel):
     name: Optional[str] = None
     active: Optional[bool] = None
     events: Optional[WebhookEvents] = None
-    config: Optional[Config] = None
-    updated_at: Optional[str] = None
-    created_at: Optional[str] = None
+    config: Optional[Config] = Field(
+        None, description="Configuration object of the webhook"
+    )
+    updated_at: Optional[datetime] = None
+    created_at: Optional[datetime] = None
 
 
 class OrgBlockBlocked(GhWebhooksModel):
@@ -2842,18 +2990,20 @@ class Release(GhWebhooksModel):
     draft: Optional[bool] = None
     author: Optional[User] = None
     prerelease: Optional[bool] = None
-    created_at: Optional[str] = None
-    published_at: Optional[str] = None
+    created_at: Optional[datetime] = None
+    published_at: Optional[datetime] = None
 
 
 class PackageVersion(GhWebhooksModel):
     class Config:
         pass
 
-    id: Optional[int] = None
+    id: Optional[int] = Field(
+        None, description="Unique identifier of the package version."
+    )
     version: Optional[str] = None
     summary: Optional[str] = None
-    name: Optional[str] = None
+    name: Optional[str] = Field(None, description="The name of the package version.")
     description: Optional[str] = None
     body: Optional[str] = None
     body_html: Optional[str] = None
@@ -2865,9 +3015,9 @@ class PackageVersion(GhWebhooksModel):
     target_oid: Optional[str] = None
     draft: Optional[bool] = None
     prerelease: Optional[bool] = None
-    created_at: Optional[str] = None
-    updated_at: Optional[str] = None
-    metadata: Optional[List] = None
+    created_at: Optional[datetime] = None
+    updated_at: Optional[datetime] = None
+    metadata: Optional[List] = Field(None, description="Package Version Metadata")
     docker_metadata: Optional[List] = None
     package_files: Optional[List[PackageFile]] = None
     author: Optional[User] = None
@@ -2879,17 +3029,22 @@ class Package(GhWebhooksModel):
     class Config:
         pass
 
-    id: Optional[int] = None
-    name: Optional[str] = None
+    id: Optional[int] = Field(None, description="Unique identifier of the package.")
+    name: Optional[str] = Field(None, description="The name of the package.")
     namespace: Optional[str] = None
     description: Optional[Optional[str]] = None
     ecosystem: Optional[str] = None
-    package_type: Optional[str] = None
+    package_type: Optional[PackageType] = Field(
+        None,
+        description="The type of supported package. Packages in GitHub's Gradle registry have the type `maven`. Docker images pushed to GitHub's Container registry (`ghcr.io`) have the type `container`. You can use the type `docker` to find images that were pushed to GitHub's Docker registry (`docker.pkg.github.com`), even if these have now been migrated to the Container registry.",
+    )
     html_url: Optional[AnyUrl] = None
-    created_at: Optional[str] = None
-    updated_at: Optional[str] = None
+    created_at: Optional[datetime] = None
+    updated_at: Optional[datetime] = None
     owner: Optional[User] = None
-    package_version: Optional[PackageVersion] = None
+    package_version: Optional[PackageVersion] = Field(
+        None, description="A version of a software package"
+    )
     registry: Optional[Registry] = None
 
 
@@ -2906,18 +3061,20 @@ class Release1(GhWebhooksModel):
     draft: Optional[bool] = None
     author: Optional[User] = None
     prerelease: Optional[bool] = None
-    created_at: Optional[str] = None
-    published_at: Optional[str] = None
+    created_at: Optional[datetime] = None
+    published_at: Optional[datetime] = None
 
 
 class PackageVersion1(GhWebhooksModel):
     class Config:
         pass
 
-    id: Optional[int] = None
+    id: Optional[int] = Field(
+        None, description="Unique identifier of the package version."
+    )
     version: Optional[str] = None
     summary: Optional[str] = None
-    name: Optional[str] = None
+    name: Optional[str] = Field(None, description="The name of the package version.")
     description: Optional[str] = None
     body: Optional[str] = None
     body_html: Optional[str] = None
@@ -2929,13 +3086,13 @@ class PackageVersion1(GhWebhooksModel):
     target_oid: Optional[str] = None
     draft: Optional[bool] = None
     prerelease: Optional[bool] = None
-    created_at: Optional[str] = None
-    updated_at: Optional[str] = None
-    metadata: Optional[List] = None
+    created_at: Optional[datetime] = None
+    updated_at: Optional[datetime] = None
+    metadata: Optional[List] = Field(None, description="Package Version Metadata")
     docker_metadata: Optional[List] = None
     package_files: Optional[List[PackageFile1]] = None
     author: Optional[User] = None
-    source_url: Optional[AnyUrl] = None
+    source_url: Optional[str] = None
     installation_command: Optional[str] = None
 
 
@@ -2943,17 +3100,19 @@ class Package1(GhWebhooksModel):
     class Config:
         pass
 
-    id: Optional[int] = None
-    name: Optional[str] = None
+    id: Optional[int] = Field(None, description="Unique identifier of the package.")
+    name: Optional[str] = Field(None, description="The name of the package.")
     namespace: Optional[str] = None
     description: Optional[Optional[str]] = None
     ecosystem: Optional[str] = None
-    package_type: Optional[str] = None
+    package_type: Optional[PackageType] = None
     html_url: Optional[AnyUrl] = None
-    created_at: Optional[str] = None
-    updated_at: Optional[str] = None
+    created_at: Optional[datetime] = None
+    updated_at: Optional[datetime] = None
     owner: Optional[User] = None
-    package_version: Optional[PackageVersion1] = None
+    package_version: Optional[PackageVersion1] = Field(
+        None, description="A version of a software package"
+    )
     registry: Optional[Registry1] = None
 
 
@@ -2967,15 +3126,15 @@ class Build(GhWebhooksModel):
     pusher: Optional[User] = None
     commit: Optional[str] = None
     duration: Optional[int] = None
-    created_at: Optional[str] = None
-    updated_at: Optional[str] = None
+    created_at: Optional[datetime] = None
+    updated_at: Optional[datetime] = None
 
 
 class Hook1(GhWebhooksModel):
     class Config:
         pass
 
-    type: Optional[str] = None
+    type: Optional[Type] = None
     id: Optional[int] = None
     name: Optional[str] = None
     active: Optional[bool] = None
@@ -2984,9 +3143,11 @@ class Hook1(GhWebhooksModel):
         description="When you register a new GitHub App, GitHub sends a ping event to the **webhook URL** you specified during registration. The event contains the `app_id`, which is required for [authenticating](https://docs.github.com/en/apps/building-integrations/setting-up-and-registering-github-apps/about-authentication-options-for-github-apps) an app.",
     )
     events: Optional[WebhookEvents] = None
-    config: Optional[Config1] = None
-    updated_at: Optional[str] = None
-    created_at: Optional[str] = None
+    config: Optional[Config1] = Field(
+        None, description="Configuration object of the webhook"
+    )
+    updated_at: Optional[datetime] = None
+    created_at: Optional[datetime] = None
     url: Optional[AnyUrl] = None
     test_url: Optional[AnyUrl] = None
     ping_url: Optional[AnyUrl] = None
@@ -3102,7 +3263,7 @@ class Alert12(GhWebhooksModel):
     secret_type: Optional[str] = None
     resolution: Optional[Resolution] = None
     resolved_by: Optional[User] = None
-    resolved_at: Optional[str] = None
+    resolved_at: Optional[datetime] = None
 
 
 class Sponsorship(GhWebhooksModel):
@@ -3110,7 +3271,7 @@ class Sponsorship(GhWebhooksModel):
         pass
 
     node_id: Optional[str] = None
-    created_at: Optional[str] = None
+    created_at: Optional[datetime] = None
     sponsorable: Optional[User] = None
     sponsor: Optional[User] = None
     privacy_level: Optional[str] = None
@@ -3276,32 +3437,6 @@ class Commit1(GhWebhooksModel):
     parents: Optional[List[Parent]] = None
 
 
-class WorkflowJob2(GhWebhooksModel):
-    class Config:
-        pass
-
-    id: Optional[int] = None
-    run_id: Optional[float] = None
-    run_url: Optional[AnyUrl] = None
-    run_attempt: Optional[int] = None
-    head_sha: Optional[str] = None
-    node_id: Optional[str] = None
-    name: Optional[str] = None
-    check_run_url: Optional[AnyUrl] = None
-    html_url: Optional[AnyUrl] = None
-    url: Optional[AnyUrl] = None
-    status: Optional[Literal["queued"]] = None
-    steps: Optional[List[WorkflowStep]] = None
-    conclusion: Optional[Any] = None
-    labels: Optional[List[str]] = None
-    runner_id: Optional[Optional[int]] = None
-    runner_name: Optional[Optional[str]] = None
-    runner_group_id: Optional[Optional[int]] = None
-    runner_group_name: Optional[Optional[str]] = None
-    started_at: Optional[datetime] = None
-    completed_at: Optional[Any] = None
-
-
 class App(GhWebhooksModel):
     class Config:
         pass
@@ -3427,6 +3562,7 @@ class DeploymentWorkflowRun(GhWebhooksModel):
     triggering_actor: Optional[User] = None
     run_attempt: Optional[int] = None
     run_started_at: Optional[datetime] = None
+    referenced_workflows: Optional[List[ReferencedWorkflow]] = None
 
 
 class Deployment(GhWebhooksModel):
@@ -3434,20 +3570,32 @@ class Deployment(GhWebhooksModel):
         pass
 
     url: Optional[AnyUrl] = None
-    id: Optional[int] = None
+    id: Optional[int] = Field(None, description="Unique identifier of the deployment")
     node_id: Optional[str] = None
     sha: Optional[str] = None
-    ref: Optional[str] = None
-    task: Optional[str] = None
+    ref: Optional[str] = Field(
+        None, description="The ref to deploy. This can be a branch, tag, or sha."
+    )
+    task: Optional[str] = Field(
+        None, description="Parameter to specify a task to execute"
+    )
     payload: Optional[Dict[str, Any]] = None
     original_environment: Optional[str] = None
-    environment: Optional[str] = None
-    transient_environment: Optional[bool] = None
-    production_environment: Optional[bool] = None
+    environment: Optional[str] = Field(
+        None, description="Name of the target deployment environment."
+    )
+    transient_environment: Optional[bool] = Field(
+        None,
+        description="Specifies if the given environment will no longer exist at some point in the future. Default: false.",
+    )
+    production_environment: Optional[bool] = Field(
+        None,
+        description="Specifies if the given environment is one that end-users directly interact with. Default: false.",
+    )
     description: Optional[Optional[str]] = None
     creator: Optional[User] = None
-    created_at: Optional[str] = None
-    updated_at: Optional[str] = None
+    created_at: Optional[datetime] = None
+    updated_at: Optional[datetime] = None
     statuses_url: Optional[AnyUrl] = None
     repository_url: Optional[AnyUrl] = None
     performed_via_github_app: Optional[Optional[App]] = None
@@ -3460,13 +3608,13 @@ class Discussion(GhWebhooksModel):
     repository_url: Optional[str] = None
     category: Optional[Category3] = None
     answer_html_url: Optional[Optional[str]] = None
-    answer_chosen_at: Optional[Optional[str]] = None
+    answer_chosen_at: Optional[Optional[datetime]] = None
     answer_chosen_by: Optional[Optional[User]] = None
     html_url: Optional[str] = None
     id: Optional[int] = None
     node_id: Optional[str] = None
     number: Optional[int] = None
-    title: Optional[str] = None
+    title: Optional[str] = Field(None, description="The discussion post's title.")
     user: Optional[User] = None
     state: Optional[State13] = None
     locked: Optional[bool] = None
@@ -3475,7 +3623,7 @@ class Discussion(GhWebhooksModel):
     updated_at: Optional[datetime] = None
     author_association: Optional[AuthorAssociation] = None
     active_lock_reason: Optional[Optional[str]] = None
-    body: Optional[str] = None
+    body: Optional[str] = Field(None, description="The discussion post's body text.")
     reactions: Optional[Reactions] = None
 
 
@@ -3535,8 +3683,10 @@ class Membership(GhWebhooksModel):
         pass
 
     url: Optional[AnyUrl] = None
-    state: Optional[str] = None
-    role: Optional[str] = None
+    state: Optional[str] = Field(
+        None, description="The state of the user's membership in the team."
+    )
+    role: Optional[str] = Field(None, description="The role of the user in the team.")
     organization_url: Optional[AnyUrl] = None
     user: Optional[User] = None
 
@@ -3756,54 +3906,162 @@ class RepositoryLite(GhWebhooksModel):
     class Config:
         pass
 
-    archive_url: Optional[str] = None
-    assignees_url: Optional[str] = None
-    blobs_url: Optional[str] = None
-    branches_url: Optional[str] = None
-    collaborators_url: Optional[str] = None
-    comments_url: Optional[str] = None
-    commits_url: Optional[str] = None
-    compare_url: Optional[str] = None
-    contents_url: Optional[str] = None
-    contributors_url: Optional[AnyUrl] = None
-    deployments_url: Optional[AnyUrl] = None
-    description: Optional[Optional[str]] = None
-    downloads_url: Optional[AnyUrl] = None
-    events_url: Optional[AnyUrl] = None
-    fork: Optional[bool] = None
-    forks_url: Optional[AnyUrl] = None
-    full_name: Optional[str] = None
-    git_commits_url: Optional[str] = None
-    git_refs_url: Optional[str] = None
-    git_tags_url: Optional[str] = None
-    hooks_url: Optional[AnyUrl] = None
-    html_url: Optional[AnyUrl] = None
+    archive_url: Optional[str] = Field(
+        None,
+        description="A template for the API URL to download the repository as an archive.",
+    )
+    assignees_url: Optional[str] = Field(
+        None,
+        description="A template for the API URL to list the available assignees for issues in the repository.",
+    )
+    blobs_url: Optional[str] = Field(
+        None,
+        description="A template for the API URL to create or retrieve a raw Git blob in the repository.",
+    )
+    branches_url: Optional[str] = Field(
+        None,
+        description="A template for the API URL to get information about branches in the repository.",
+    )
+    collaborators_url: Optional[str] = Field(
+        None,
+        description="A template for the API URL to get information about collaborators of the repository.",
+    )
+    comments_url: Optional[str] = Field(
+        None,
+        description="A template for the API URL to get information about comments on the repository.",
+    )
+    commits_url: Optional[str] = Field(
+        None,
+        description="A template for the API URL to get information about commits on the repository.",
+    )
+    compare_url: Optional[str] = Field(
+        None, description="A template for the API URL to compare two commits or refs."
+    )
+    contents_url: Optional[str] = Field(
+        None,
+        description="A template for the API URL to get the contents of the repository.",
+    )
+    contributors_url: Optional[AnyUrl] = Field(
+        None,
+        description="A template for the API URL to list the contributors to the repository.",
+    )
+    deployments_url: Optional[AnyUrl] = Field(
+        None, description="The API URL to list the deployments of the repository."
+    )
+    description: Optional[Optional[str]] = Field(
+        None, description="The repository description."
+    )
+    downloads_url: Optional[AnyUrl] = Field(
+        None, description="The API URL to list the downloads on the repository."
+    )
+    events_url: Optional[AnyUrl] = Field(
+        None, description="The API URL to list the events of the repository."
+    )
+    fork: Optional[bool] = Field(None, description="Whether the repository is a fork.")
+    forks_url: Optional[AnyUrl] = Field(
+        None, description="The API URL to list the forks of the repository."
+    )
+    full_name: Optional[str] = Field(
+        None, description="The full, globally unique, name of the repository."
+    )
+    git_commits_url: Optional[str] = Field(
+        None,
+        description="A template for the API URL to get information about Git commits of the repository.",
+    )
+    git_refs_url: Optional[str] = Field(
+        None,
+        description="A template for the API URL to get information about Git refs of the repository.",
+    )
+    git_tags_url: Optional[str] = Field(
+        None,
+        description="A template for the API URL to get information about Git tags of the repository.",
+    )
+    hooks_url: Optional[AnyUrl] = Field(
+        None, description="The API URL to list the hooks on the repository."
+    )
+    html_url: Optional[AnyUrl] = Field(
+        None, description="The URL to view the repository on GitHub.com."
+    )
     id: Optional[int] = Field(None, description="Unique identifier of the repository")
-    issue_comment_url: Optional[str] = None
-    issue_events_url: Optional[str] = None
-    issues_url: Optional[str] = None
-    keys_url: Optional[str] = None
-    labels_url: Optional[str] = None
-    languages_url: Optional[AnyUrl] = None
-    merges_url: Optional[AnyUrl] = None
-    milestones_url: Optional[str] = None
+    issue_comment_url: Optional[str] = Field(
+        None,
+        description="A template for the API URL to get information about issue comments on the repository.",
+    )
+    issue_events_url: Optional[str] = Field(
+        None,
+        description="A template for the API URL to get information about issue events on the repository.",
+    )
+    issues_url: Optional[str] = Field(
+        None,
+        description="A template for the API URL to get information about issues on the repository.",
+    )
+    keys_url: Optional[str] = Field(
+        None,
+        description="A template for the API URL to get information about deploy keys on the repository.",
+    )
+    labels_url: Optional[str] = Field(
+        None,
+        description="A template for the API URL to get information about labels of the repository.",
+    )
+    languages_url: Optional[AnyUrl] = Field(
+        None,
+        description="The API URL to get information about the languages of the repository.",
+    )
+    merges_url: Optional[AnyUrl] = Field(
+        None, description="The API URL to merge branches in the repository."
+    )
+    milestones_url: Optional[str] = Field(
+        None,
+        description="A template for the API URL to get information about milestones of the repository.",
+    )
     name: Optional[str] = Field(None, description="The name of the repository.")
-    node_id: Optional[str] = None
-    notifications_url: Optional[str] = None
+    node_id: Optional[str] = Field(
+        None, description="The GraphQL identifier of the repository."
+    )
+    notifications_url: Optional[str] = Field(
+        None,
+        description="A template for the API URL to get information about notifications on the repository.",
+    )
     owner: Optional[User] = None
     private: Optional[bool] = Field(
         None, description="Whether the repository is private or public."
     )
-    pulls_url: Optional[str] = None
-    releases_url: Optional[str] = None
-    stargazers_url: Optional[AnyUrl] = None
-    statuses_url: Optional[str] = None
-    subscribers_url: Optional[AnyUrl] = None
-    subscription_url: Optional[AnyUrl] = None
-    tags_url: Optional[AnyUrl] = None
-    teams_url: Optional[AnyUrl] = None
-    trees_url: Optional[str] = None
-    url: Optional[AnyUrl] = None
+    pulls_url: Optional[str] = Field(
+        None,
+        description="A template for the API URL to get information about pull requests on the repository.",
+    )
+    releases_url: Optional[str] = Field(
+        None,
+        description="A template for the API URL to get information about releases on the repository.",
+    )
+    stargazers_url: Optional[AnyUrl] = Field(
+        None, description="The API URL to list the stargazers on the repository."
+    )
+    statuses_url: Optional[str] = Field(
+        None,
+        description="A template for the API URL to get information about statuses of a commit.",
+    )
+    subscribers_url: Optional[AnyUrl] = Field(
+        None, description="The API URL to list the subscribers on the repository."
+    )
+    subscription_url: Optional[AnyUrl] = Field(
+        None,
+        description="The API URL to subscribe to notifications for this repository.",
+    )
+    tags_url: Optional[AnyUrl] = Field(
+        None, description="The API URL to get information about tags on the repository."
+    )
+    teams_url: Optional[AnyUrl] = Field(
+        None, description="The API URL to list the teams on the repository."
+    )
+    trees_url: Optional[str] = Field(
+        None,
+        description="A template for the API URL to create or retrieve a raw Git tree of the repository.",
+    )
+    url: Optional[AnyUrl] = Field(
+        None,
+        description="The URL to get more information about the repository from the GitHub API.",
+    )
 
 
 class RepositoryVulnerabilityAlertAlert(GhWebhooksModel):
@@ -3818,7 +4076,7 @@ class RepositoryVulnerabilityAlertAlert(GhWebhooksModel):
     affected_package_name: Optional[str] = None
     dismisser: Optional[User] = None
     dismiss_reason: Optional[str] = None
-    dismissed_at: Optional[str] = None
+    dismissed_at: Optional[datetime] = None
     severity: Optional[str] = None
     ghsa_id: Optional[str] = None
     external_reference: Optional[AnyUrl] = None
@@ -3826,7 +4084,7 @@ class RepositoryVulnerabilityAlertAlert(GhWebhooksModel):
     fixed_in: Optional[str] = None
     fixed_at: Optional[datetime] = None
     fix_reason: Optional[str] = None
-    created_at: Optional[str] = None
+    created_at: Optional[datetime] = None
 
 
 class Repository(GhWebhooksModel):
@@ -3834,53 +4092,161 @@ class Repository(GhWebhooksModel):
         pass
 
     id: Optional[int] = Field(None, description="Unique identifier of the repository")
-    node_id: Optional[str] = None
+    node_id: Optional[str] = Field(
+        None, description="The GraphQL identifier of the repository."
+    )
     name: Optional[str] = Field(None, description="The name of the repository.")
-    full_name: Optional[str] = None
+    full_name: Optional[str] = Field(
+        None, description="The full, globally unique, name of the repository."
+    )
     private: Optional[bool] = Field(
         None, description="Whether the repository is private or public."
     )
     owner: Optional[User] = None
-    html_url: Optional[AnyUrl] = None
-    description: Optional[Optional[str]] = None
-    fork: Optional[bool] = None
-    url: Optional[AnyUrl] = None
-    forks_url: Optional[AnyUrl] = None
-    keys_url: Optional[str] = None
-    collaborators_url: Optional[str] = None
-    teams_url: Optional[AnyUrl] = None
-    hooks_url: Optional[AnyUrl] = None
-    issue_events_url: Optional[str] = None
-    events_url: Optional[AnyUrl] = None
-    assignees_url: Optional[str] = None
-    branches_url: Optional[str] = None
-    tags_url: Optional[AnyUrl] = None
-    blobs_url: Optional[str] = None
-    git_tags_url: Optional[str] = None
-    git_refs_url: Optional[str] = None
-    trees_url: Optional[str] = None
-    statuses_url: Optional[str] = None
-    languages_url: Optional[AnyUrl] = None
-    stargazers_url: Optional[AnyUrl] = None
-    contributors_url: Optional[AnyUrl] = None
-    subscribers_url: Optional[AnyUrl] = None
-    subscription_url: Optional[AnyUrl] = None
-    commits_url: Optional[str] = None
-    git_commits_url: Optional[str] = None
-    comments_url: Optional[str] = None
-    issue_comment_url: Optional[str] = None
-    contents_url: Optional[str] = None
-    compare_url: Optional[str] = None
-    merges_url: Optional[AnyUrl] = None
-    archive_url: Optional[str] = None
-    downloads_url: Optional[AnyUrl] = None
-    issues_url: Optional[str] = None
-    pulls_url: Optional[str] = None
-    milestones_url: Optional[str] = None
-    notifications_url: Optional[str] = None
-    labels_url: Optional[str] = None
-    releases_url: Optional[str] = None
-    deployments_url: Optional[AnyUrl] = None
+    html_url: Optional[AnyUrl] = Field(
+        None, description="The URL to view the repository on GitHub.com."
+    )
+    description: Optional[Optional[str]] = Field(
+        None, description="The repository description."
+    )
+    fork: Optional[bool] = Field(None, description="Whether the repository is a fork.")
+    url: Optional[AnyUrl] = Field(
+        None,
+        description="The URL to get more information about the repository from the GitHub API.",
+    )
+    forks_url: Optional[AnyUrl] = Field(
+        None, description="The API URL to list the forks of the repository."
+    )
+    keys_url: Optional[str] = Field(
+        None,
+        description="A template for the API URL to get information about deploy keys on the repository.",
+    )
+    collaborators_url: Optional[str] = Field(
+        None,
+        description="A template for the API URL to get information about collaborators of the repository.",
+    )
+    teams_url: Optional[AnyUrl] = Field(
+        None, description="The API URL to list the teams on the repository."
+    )
+    hooks_url: Optional[AnyUrl] = Field(
+        None, description="The API URL to list the hooks on the repository."
+    )
+    issue_events_url: Optional[str] = Field(
+        None,
+        description="A template for the API URL to get information about issue events on the repository.",
+    )
+    events_url: Optional[AnyUrl] = Field(
+        None, description="The API URL to list the events of the repository."
+    )
+    assignees_url: Optional[str] = Field(
+        None,
+        description="A template for the API URL to list the available assignees for issues in the repository.",
+    )
+    branches_url: Optional[str] = Field(
+        None,
+        description="A template for the API URL to get information about branches in the repository.",
+    )
+    tags_url: Optional[AnyUrl] = Field(
+        None, description="The API URL to get information about tags on the repository."
+    )
+    blobs_url: Optional[str] = Field(
+        None,
+        description="A template for the API URL to create or retrieve a raw Git blob in the repository.",
+    )
+    git_tags_url: Optional[str] = Field(
+        None,
+        description="A template for the API URL to get information about Git tags of the repository.",
+    )
+    git_refs_url: Optional[str] = Field(
+        None,
+        description="A template for the API URL to get information about Git refs of the repository.",
+    )
+    trees_url: Optional[str] = Field(
+        None,
+        description="A template for the API URL to create or retrieve a raw Git tree of the repository.",
+    )
+    statuses_url: Optional[str] = Field(
+        None,
+        description="A template for the API URL to get information about statuses of a commit.",
+    )
+    languages_url: Optional[AnyUrl] = Field(
+        None,
+        description="The API URL to get information about the languages of the repository.",
+    )
+    stargazers_url: Optional[AnyUrl] = Field(
+        None, description="The API URL to list the stargazers on the repository."
+    )
+    contributors_url: Optional[AnyUrl] = Field(
+        None,
+        description="A template for the API URL to list the contributors to the repository.",
+    )
+    subscribers_url: Optional[AnyUrl] = Field(
+        None, description="The API URL to list the subscribers on the repository."
+    )
+    subscription_url: Optional[AnyUrl] = Field(
+        None,
+        description="The API URL to subscribe to notifications for this repository.",
+    )
+    commits_url: Optional[str] = Field(
+        None,
+        description="A template for the API URL to get information about commits on the repository.",
+    )
+    git_commits_url: Optional[str] = Field(
+        None,
+        description="A template for the API URL to get information about Git commits of the repository.",
+    )
+    comments_url: Optional[str] = Field(
+        None,
+        description="A template for the API URL to get information about comments on the repository.",
+    )
+    issue_comment_url: Optional[str] = Field(
+        None,
+        description="A template for the API URL to get information about issue comments on the repository.",
+    )
+    contents_url: Optional[str] = Field(
+        None,
+        description="A template for the API URL to get the contents of the repository.",
+    )
+    compare_url: Optional[str] = Field(
+        None, description="A template for the API URL to compare two commits or refs."
+    )
+    merges_url: Optional[AnyUrl] = Field(
+        None, description="The API URL to merge branches in the repository."
+    )
+    archive_url: Optional[str] = Field(
+        None,
+        description="A template for the API URL to download the repository as an archive.",
+    )
+    downloads_url: Optional[AnyUrl] = Field(
+        None, description="The API URL to list the downloads on the repository."
+    )
+    issues_url: Optional[str] = Field(
+        None,
+        description="A template for the API URL to get information about issues on the repository.",
+    )
+    pulls_url: Optional[str] = Field(
+        None,
+        description="A template for the API URL to get information about pull requests on the repository.",
+    )
+    milestones_url: Optional[str] = Field(
+        None,
+        description="A template for the API URL to get information about milestones of the repository.",
+    )
+    notifications_url: Optional[str] = Field(
+        None,
+        description="A template for the API URL to get information about notifications on the repository.",
+    )
+    labels_url: Optional[str] = Field(
+        None,
+        description="A template for the API URL to get information about labels of the repository.",
+    )
+    releases_url: Optional[str] = Field(
+        None,
+        description="A template for the API URL to get information about releases on the repository.",
+    )
+    deployments_url: Optional[AnyUrl] = Field(
+        None, description="The API URL to list the deployments of the repository."
+    )
     created_at: Optional[Union[int, datetime]] = None
     updated_at: Optional[datetime] = None
     pushed_at: Optional[Optional[Union[int, datetime]]] = None
@@ -3937,6 +4303,7 @@ class Repository(GhWebhooksModel):
     allow_update_branch: Optional[bool] = None
     use_squash_pr_title_as_default: Optional[bool] = None
     is_template: Optional[bool] = None
+    web_commit_signoff_required: Optional[bool] = None
     topics: Optional[List[str]] = None
     visibility: Optional[Visibility] = None
     delete_branch_on_merge: Optional[bool] = Field(
@@ -3980,11 +4347,11 @@ class SimplePullRequest(GhWebhooksModel):
     locked: Optional[bool] = None
     title: Optional[str] = None
     user: Optional[User] = None
-    body: Optional[str] = None
-    created_at: Optional[str] = None
-    updated_at: Optional[str] = None
-    closed_at: Optional[Optional[str]] = None
-    merged_at: Optional[Optional[str]] = None
+    body: Optional[Optional[str]] = None
+    created_at: Optional[datetime] = None
+    updated_at: Optional[datetime] = None
+    closed_at: Optional[Optional[datetime]] = None
+    merged_at: Optional[Optional[datetime]] = None
     merge_commit_sha: Optional[Optional[str]] = None
     assignee: Optional[Optional[User]] = None
     assignees: Optional[List[User]] = None
@@ -4024,7 +4391,7 @@ class WorkflowJob(GhWebhooksModel):
         None,
         description="The current status of the job. Can be `queued`, `in_progress`, or `completed`.",
     )
-    steps: Optional[List[WorkflowStep]] = Field(None, min_items=1)
+    steps: Optional[List[WorkflowStep]] = None
     conclusion: Optional[Conclusion15] = None
     labels: Optional[List[str]] = Field(
         None,
@@ -4046,45 +4413,77 @@ class WorkflowJob(GhWebhooksModel):
         None,
         description="The name of the runner group that is running this job. This will be `null` as long as `workflow_job[status]` is `queued`.",
     )
-    started_at: Optional[str] = None
-    completed_at: Optional[Optional[str]] = None
+    started_at: Optional[datetime] = None
+    completed_at: Optional[Optional[datetime]] = None
 
 
 class WorkflowRun(GhWebhooksModel):
     class Config:
         pass
 
-    artifacts_url: Optional[AnyUrl] = None
-    cancel_url: Optional[AnyUrl] = None
-    check_suite_url: Optional[AnyUrl] = None
-    check_suite_id: Optional[int] = None
-    check_suite_node_id: Optional[str] = None
+    artifacts_url: Optional[AnyUrl] = Field(
+        None, description="The URL to the artifacts for the workflow run."
+    )
+    cancel_url: Optional[AnyUrl] = Field(
+        None, description="The URL to cancel the workflow run."
+    )
+    check_suite_url: Optional[AnyUrl] = Field(
+        None, description="The URL to the associated check suite."
+    )
+    check_suite_id: Optional[int] = Field(
+        None, description="The ID of the associated check suite."
+    )
+    check_suite_node_id: Optional[str] = Field(
+        None, description="The node ID of the associated check suite."
+    )
     conclusion: Optional[Conclusion] = None
     created_at: Optional[datetime] = None
     event: Optional[str] = None
     head_branch: Optional[str] = None
     head_commit: Optional[CommitSimple] = None
     head_repository: Optional[RepositoryLite] = None
-    head_sha: Optional[str] = None
-    path: Optional[str] = None
+    head_sha: Optional[str] = Field(
+        None,
+        description="The SHA of the head commit that points to the version of the workflow being run.",
+    )
+    path: Optional[str] = Field(None, description="The full path of the workflow")
     html_url: Optional[AnyUrl] = None
-    id: Optional[int] = None
-    jobs_url: Optional[AnyUrl] = None
-    logs_url: Optional[AnyUrl] = None
+    id: Optional[int] = Field(None, description="The ID of the workflow run.")
+    jobs_url: Optional[AnyUrl] = Field(
+        None, description="The URL to the jobs for the workflow run."
+    )
+    logs_url: Optional[AnyUrl] = Field(
+        None, description="The URL to download the logs for the workflow run."
+    )
     node_id: Optional[str] = None
-    name: Optional[str] = None
+    name: Optional[str] = Field(None, description="The name of the workflow run.")
     pull_requests: Optional[List[PullRequest10]] = None
     repository: Optional[RepositoryLite] = None
-    rerun_url: Optional[AnyUrl] = None
-    run_number: Optional[int] = None
+    rerun_url: Optional[AnyUrl] = Field(
+        None, description="The URL to rerun the workflow run."
+    )
+    run_number: Optional[int] = Field(
+        None, description="The auto incrementing run number for the workflow run."
+    )
     status: Optional[Status12] = None
     updated_at: Optional[datetime] = None
-    url: Optional[AnyUrl] = None
-    workflow_id: Optional[int] = None
-    workflow_url: Optional[AnyUrl] = None
-    run_attempt: Optional[int] = None
-    run_started_at: Optional[datetime] = None
-    previous_attempt_url: Optional[Optional[AnyUrl]] = None
+    url: Optional[AnyUrl] = Field(None, description="The URL to the workflow run.")
+    workflow_id: Optional[int] = Field(
+        None, description="The ID of the parent workflow."
+    )
+    workflow_url: Optional[AnyUrl] = Field(None, description="The URL to the workflow.")
+    run_attempt: Optional[int] = Field(
+        None,
+        description="Attempt number of the run, 1 for first attempt and higher if the workflow was re-run.",
+    )
+    referenced_workflows: Optional[List[ReferencedWorkflow]] = None
+    run_started_at: Optional[datetime] = Field(
+        None, description="The start time of the latest run. Resets on re-run."
+    )
+    previous_attempt_url: Optional[Optional[AnyUrl]] = Field(
+        None,
+        description="The URL to the previous attempted run of this workflow, if one exists.",
+    )
     actor: Optional[User] = None
     triggering_actor: Optional[User] = None
 
@@ -4186,11 +4585,11 @@ class CheckRun(GhWebhooksModel):
         None,
         description="The result of the completed check run. Can be one of `success`, `failure`, `neutral`, `cancelled`, `timed_out`, `action_required` or `stale`. This value will be `null` until the check run has completed.",
     )
-    started_at: Optional[str] = Field(
+    started_at: Optional[datetime] = Field(
         None,
         description="The time that the check run began. This is a timestamp in [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) format: `YYYY-MM-DDTHH:MM:SSZ`.",
     )
-    completed_at: Optional[str] = Field(
+    completed_at: Optional[datetime] = Field(
         None,
         description="The time the check completed. This is a timestamp in [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) format: `YYYY-MM-DDTHH:MM:SSZ`.",
     )
@@ -4268,11 +4667,11 @@ class CheckRun1(GhWebhooksModel):
         None,
         description="The result of the completed check run. Can be one of `success`, `failure`, `neutral`, `cancelled`, `timed_out`, `action_required` or `stale`. This value will be `null` until the check run has completed.",
     )
-    started_at: Optional[str] = Field(
+    started_at: Optional[datetime] = Field(
         None,
         description="The time that the check run began. This is a timestamp in [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) format: `YYYY-MM-DDTHH:MM:SSZ`.",
     )
-    completed_at: Optional[Optional[str]] = Field(
+    completed_at: Optional[Optional[datetime]] = Field(
         None,
         description="The time the check completed. This is a timestamp in [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) format: `YYYY-MM-DDTHH:MM:SSZ`.",
     )
@@ -4350,11 +4749,11 @@ class CheckRun2(GhWebhooksModel):
         None,
         description="The result of the completed check run. Can be one of `success`, `failure`, `neutral`, `cancelled`, `timed_out`, `action_required` or `stale`. This value will be `null` until the check run has completed.",
     )
-    started_at: Optional[str] = Field(
+    started_at: Optional[datetime] = Field(
         None,
         description="The time that the check run began. This is a timestamp in [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) format: `YYYY-MM-DDTHH:MM:SSZ`.",
     )
-    completed_at: Optional[Optional[str]] = Field(
+    completed_at: Optional[Optional[datetime]] = Field(
         None,
         description="The time the check completed. This is a timestamp in [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) format: `YYYY-MM-DDTHH:MM:SSZ`.",
     )
@@ -4431,11 +4830,11 @@ class CheckRun3(GhWebhooksModel):
         None,
         description="The result of the completed check run. Can be one of `success`, `failure`, `neutral`, `cancelled`, `timed_out`, `action_required` or `stale`. This value will be `null` until the check run has `completed`.",
     )
-    started_at: Optional[str] = Field(
+    started_at: Optional[datetime] = Field(
         None,
         description="The time that the check run began. This is a timestamp in [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) format: `YYYY-MM-DDTHH:MM:SSZ`.",
     )
-    completed_at: Optional[str] = Field(
+    completed_at: Optional[datetime] = Field(
         None,
         description="The time the check completed. This is a timestamp in [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) format: `YYYY-MM-DDTHH:MM:SSZ`.",
     )
@@ -4490,7 +4889,7 @@ class CheckSuite4(GhWebhooksModel):
     )
     status: Optional[Status5] = Field(
         None,
-        description="The summary status for all check runs that are part of the check suite. Can be `requested`, `in_progress`, or `completed`.",
+        description="The summary status for all check runs that are part of the check suite. Can be `queued`, `requested`, `in_progress`, or `completed`.",
     )
     conclusion: Optional[Conclusion1] = Field(
         None,
@@ -4544,7 +4943,7 @@ class CheckSuite5(GhWebhooksModel):
     )
     status: Optional[Status5] = Field(
         None,
-        description="The summary status for all check runs that are part of the check suite. Can be `requested`, `in_progress`, or `completed`.",
+        description="The summary status for all check runs that are part of the check suite. Can be `queued`, `requested`, `in_progress`, or `completed`.",
     )
     conclusion: Optional[Conclusion1] = Field(
         None,
@@ -4598,7 +4997,7 @@ class CheckSuite6(GhWebhooksModel):
     )
     status: Optional[Status5] = Field(
         None,
-        description="The summary status for all check runs that are part of the check suite. Can be `requested`, `in_progress`, or `completed`.",
+        description="The summary status for all check runs that are part of the check suite. Can be `queued`, `requested`, `in_progress`, or `completed`.",
     )
     conclusion: Optional[Conclusion1] = Field(
         None,
@@ -4932,8 +5331,8 @@ class DeploymentStatus(GhWebhooksModel):
     target_url: Optional[str] = Field(
         None, description="The optional link added to the status."
     )
-    created_at: Optional[str] = None
-    updated_at: Optional[str] = None
+    created_at: Optional[datetime] = None
+    updated_at: Optional[datetime] = None
     deployment_url: Optional[AnyUrl] = None
     repository_url: Optional[AnyUrl] = None
     performed_via_github_app: Optional[Optional[App]] = None
@@ -6142,11 +6541,11 @@ class PullRequest6(GhWebhooksModel):
     locked: Optional[bool] = None
     title: Optional[str] = None
     user: Optional[User] = None
-    body: Optional[str] = None
-    created_at: Optional[str] = None
-    updated_at: Optional[str] = None
-    closed_at: Optional[Optional[str]] = None
-    merged_at: Optional[Optional[str]] = None
+    body: Optional[Optional[str]] = None
+    created_at: Optional[datetime] = None
+    updated_at: Optional[datetime] = None
+    closed_at: Optional[Optional[datetime]] = None
+    merged_at: Optional[Optional[datetime]] = None
     merge_commit_sha: Optional[Optional[str]] = None
     assignee: Optional[Optional[User]] = None
     assignees: Optional[List[User]] = None
@@ -6205,11 +6604,11 @@ class PullRequest7(GhWebhooksModel):
     locked: Optional[bool] = None
     title: Optional[str] = None
     user: Optional[User] = None
-    body: Optional[str] = None
-    created_at: Optional[str] = None
-    updated_at: Optional[str] = None
-    closed_at: Optional[Optional[str]] = None
-    merged_at: Optional[Optional[str]] = None
+    body: Optional[Optional[str]] = None
+    created_at: Optional[datetime] = None
+    updated_at: Optional[datetime] = None
+    closed_at: Optional[Optional[datetime]] = None
+    merged_at: Optional[Optional[datetime]] = None
     merge_commit_sha: Optional[Optional[str]] = None
     assignee: Optional[Optional[User]] = None
     assignees: Optional[List[User]] = None
@@ -6268,11 +6667,11 @@ class PullRequest8(GhWebhooksModel):
     locked: Optional[bool] = None
     title: Optional[str] = None
     user: Optional[User] = None
-    body: Optional[str] = None
-    created_at: Optional[str] = None
-    updated_at: Optional[str] = None
-    closed_at: Optional[Optional[str]] = None
-    merged_at: Optional[Optional[str]] = None
+    body: Optional[Optional[str]] = None
+    created_at: Optional[datetime] = None
+    updated_at: Optional[datetime] = None
+    closed_at: Optional[Optional[datetime]] = None
+    merged_at: Optional[Optional[datetime]] = None
     merge_commit_sha: Optional[Optional[str]] = None
     assignee: Optional[Optional[User]] = None
     assignees: Optional[List[User]] = None
@@ -6819,7 +7218,7 @@ class StarCreated(GhWebhooksModel):
         pass
 
     action: Optional[Literal["created"]] = None
-    starred_at: Optional[str] = Field(
+    starred_at: Optional[datetime] = Field(
         None,
         description="The time the star was created. This is a timestamp in ISO 8601 format: `YYYY-MM-DDTHH:MM:SSZ`. Will be `null` for the `deleted` action.",
     )
@@ -6872,8 +7271,8 @@ class StatusEvent(GhWebhooksModel):
         None,
         description="An array of branch objects containing the status' SHA. Each branch contains the given SHA, but the SHA may or may not be the head of the branch. The array includes a maximum of 10 branches.",
     )
-    created_at: Optional[str] = None
-    updated_at: Optional[str] = None
+    created_at: Optional[datetime] = None
+    updated_at: Optional[datetime] = None
     repository: Optional[Repository] = None
     sender: Optional[User] = None
     installation: Optional[InstallationLite] = None
@@ -7037,6 +7436,10 @@ class WorkflowJobInProgress(GhWebhooksModel):
     workflow_job: Optional[WorkflowJob1] = None
 
 
+class WorkflowJob2(WorkflowJob):
+    status: Optional[Literal["queued"]] = None
+
+
 class WorkflowJobQueued(GhWebhooksModel):
     class Config:
         pass
@@ -7104,7 +7507,9 @@ class Issue(GhWebhooksModel):
     html_url: Optional[AnyUrl] = None
     id: Optional[int] = None
     node_id: Optional[str] = None
-    number: Optional[int] = None
+    number: Optional[int] = Field(
+        None, description="Number uniquely identifying the issue within its repository"
+    )
     title: Optional[str] = Field(None, description="Title of the issue")
     user: Optional[User] = None
     labels: Optional[List[Label]] = None
@@ -7127,7 +7532,9 @@ class Issue(GhWebhooksModel):
     body: Optional[Optional[str]] = Field(None, description="Contents of the issue")
     reactions: Optional[Reactions] = None
     timeline_url: Optional[AnyUrl] = None
-    state_reason: Optional[Optional[str]] = None
+    state_reason: Optional[Optional[str]] = Field(
+        None, description="The reason for the current state"
+    )
 
 
 class Head4(Head5):
@@ -7706,7 +8113,6 @@ class PullRequest3(PullRequest):
     state: Optional[Literal["open"]] = None
     closed_at: Optional[Any] = None
     merged_at: Optional[Any] = None
-    merge_commit_sha: Optional[Any] = None
     active_lock_reason: Optional[Any] = None
     merged_by: Optional[Any] = None
 
