@@ -3,6 +3,10 @@ node_modules
 
 .vscode/
 
+.idea/
+
+.python-version
+
 .dev.env
 
 *.DS_Store

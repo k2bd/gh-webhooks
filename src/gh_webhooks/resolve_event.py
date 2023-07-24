@@ -37,7 +37,7 @@ def resolve_event(event: Dict[str, Any], kind: str):
     cls = _get_cls(kind)
     logger.info(f"Matching event to {cls!r}")
 
-    result = Model.parse_obj(event)
-    while "__root__" in result.dict():
-        result = result.__root__  # type: ignore
+    result = Model.model_validate(event)
+    while hasattr(result, "root") and result.root is not None:
+        result = result.root  # type: ignore
     return result

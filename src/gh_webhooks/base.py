@@ -1,6 +1,6 @@
-from pydantic import BaseModel, Extra
+from pydantic import BaseModel
 
 
 class GhWebhooksModel(BaseModel):
     class Config:
-        extra = Extra.allow
+        extra = "allow"

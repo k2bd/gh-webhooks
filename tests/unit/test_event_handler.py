@@ -1,8 +1,9 @@
 from typing import Any, Dict, Union
 from unittest import mock
 
+import pydantic
 import pytest
-from pydantic import BaseModel
+from pydantic import BaseModel, RootModel
 
 from gh_webhooks import GhWebhookEventHandler
 from gh_webhooks.exceptions import NoMatchingModel
@@ -18,11 +19,12 @@ async def test_event_handler():
     class B(BaseModel):
         b: str
 
-    class Model(BaseModel):
-        __root__: Union[A, B]
+    class Model(RootModel):
+        root: Union[A, B]
 
     def fake_resolve_event(event: Dict[str, Any], kind: str):
-        return Model.parse_obj(event).__root__
+        model = Model.model_validate(event).root
+        return model
 
     a_calls = 0
     b_calls = 0
