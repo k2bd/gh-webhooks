@@ -25,6 +25,8 @@ include = [
     "LICENSE",
 ]
 
+packages = [{include = "gh_webhooks", from = "src"}]
+
 [tool.poetry.dependencies]
 python = "^3.7"
 pydantic = {version = "^2.0.3", extras = ["email"]}
