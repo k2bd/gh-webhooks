@@ -2,7 +2,11 @@ import pytest
 
 from gh_webhooks import GhWebhookEventHandler
 from gh_webhooks.resolve_event import resolve_event
-from gh_webhooks.types import BranchProtectionRuleCreated
+from gh_webhooks.types import (
+    BranchProtectionRuleCreated,
+    WorkflowJobQueued,
+    PullRequestReviewCommentCreated,
+)
 from tests.integration.helpers import get_example_events
 
 EVENTS = get_example_events()
@@ -46,6 +50,18 @@ async def test_event_handler():
     handler = GhWebhookEventHandler()
 
     branch_protection_rule_events = 0
+    workflow_job_events = 0
+    pull_request_events = 0
+
+    @handler.on(WorkflowJobQueued)
+    async def handle_workflow_job_queued(event: WorkflowJobQueued):
+        nonlocal workflow_job_events
+        workflow_job_events += 1
+
+    @handler.on(PullRequestReviewCommentCreated)
+    async def handle_workflow_job_queued(event: PullRequestReviewCommentCreated):
+        nonlocal pull_request_events
+        pull_request_events += 1
 
     @handler.on(BranchProtectionRuleCreated)
     async def handle_branch_protection_rule_created(event: BranchProtectionRuleCreated):
@@ -56,4 +72,20 @@ async def test_event_handler():
         for event in EVENTS[kind]:
             await handler.handle_event(event, kind)
 
-    assert branch_protection_rule_events > 0
+    assert branch_protection_rule_events == len(
+        [
+            event
+            for event in EVENTS["branch_protection_rule"]
+            if event["action"] == "created"
+        ]
+    )
+    assert workflow_job_events == len(
+        [event for event in EVENTS["workflow_job"] if event["action"] == "queued"]
+    )
+    assert pull_request_events == len(
+        [
+            event
+            for event in EVENTS["pull_request_review_comment"]
+            if event["action"] == "created"
+        ]
+    )

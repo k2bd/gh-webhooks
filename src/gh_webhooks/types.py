@@ -5061,7 +5061,7 @@ class CodeScanningAlertAppearedInBranch(GhWebhooksModel):
 class CodeScanningAlertClosedByUser(GhWebhooksModel):
     model_config = ConfigDict(extra="allow")
     action: Optional[Literal["closed_by_user"]] = None
-    alert: Optional[Alert1] = Field(
+    alert: Optional[Alert] = Field(
         None, description="The code scanning alert involved in the event."
     )
     ref: Optional[str] = Field(
@@ -5081,7 +5081,7 @@ class CodeScanningAlertClosedByUser(GhWebhooksModel):
 class CodeScanningAlertCreated(GhWebhooksModel):
     model_config = ConfigDict(extra="allow")
     action: Optional[Literal["created"]] = None
-    alert: Optional[Alert2] = Field(
+    alert: Optional[Alert] = Field(
         None, description="The code scanning alert involved in the event."
     )
     ref: Optional[str] = Field(
@@ -5101,7 +5101,7 @@ class CodeScanningAlertCreated(GhWebhooksModel):
 class CodeScanningAlertFixed(GhWebhooksModel):
     model_config = ConfigDict(extra="allow")
     action: Optional[Literal["fixed"]] = None
-    alert: Optional[Alert3] = Field(
+    alert: Optional[Alert] = Field(
         None, description="The code scanning alert involved in the event."
     )
     ref: Optional[str] = Field(
@@ -5121,7 +5121,7 @@ class CodeScanningAlertFixed(GhWebhooksModel):
 class CodeScanningAlertReopened(GhWebhooksModel):
     model_config = ConfigDict(extra="allow")
     action: Optional[Literal["reopened"]] = None
-    alert: Optional[Alert4] = Field(
+    alert: Optional[Alert] = Field(
         None, description="The code scanning alert involved in the event."
     )
     ref: Optional[str] = Field(
@@ -5141,7 +5141,7 @@ class CodeScanningAlertReopened(GhWebhooksModel):
 class CodeScanningAlertReopenedByUser(GhWebhooksModel):
     model_config = ConfigDict(extra="allow")
     action: Optional[Literal["reopened_by_user"]] = None
-    alert: Optional[Alert5] = Field(
+    alert: Optional[Alert] = Field(
         None, description="The code scanning alert involved in the event."
     )
     ref: Optional[str] = Field(
